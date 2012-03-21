@@ -22,11 +22,11 @@
 #include <QWidget>
 using namespace std;
 
-class MyPaint : public QWidget {
+class Draw : public QWidget {
  	Q_OBJECT
 
 public:
-	MyPaint(QWidget *parent = 0);
+	Draw(QWidget *parent = 0);
 
 protected:
 	void paintEvent(QPaintEvent *e);
