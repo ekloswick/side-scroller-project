@@ -19,6 +19,11 @@ using namespace std;
 class character
 {
 public:
+  int getX();
+  int getY();
+
+  void setX(int n);
+  void setY(int n);
 /*
   character(); // constructor
   void moveLeft(); // function to move left
@@ -27,12 +32,15 @@ public:
   void shoot(); // function to use weapon
 */
 private:
+  int xPos;
+  int yPos;
 /*
   int health; // percentage of health remaining
   int lives; // number of lives remaining
   char press; // gets keyboard input
 */
 };
+
 /*
 character::character()
 {
@@ -66,5 +74,25 @@ void character::shoot()
 }
 
 */
+
+int character::getX()
+{
+  return xPos;
+}
+
+int character::getY()
+{
+  return yPos;
+}
+
+void characet::setX(int n)
+{
+  xPos = n;
+}
+
+void character::setY(int n)
+{
+  yPos = n;
+}
 
 #endif
