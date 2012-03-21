@@ -14,7 +14,7 @@
 
 int main(int argc, char *argv[]) {
      QApplication app(argc, argv);
-     MyPaint p;
+     Draw p;
      p.show();
      return app.exec();
  }
