@@ -1,0 +1,14 @@
+Lab 8 Contract/Rubric
+
+Draw Welcome Screen (10)
+Drawn Basic Character (10)
+Draw Basic Stage (10)
+	-level ground for the character to stand on
+Move Character Left (10)
+Move Character Right (10)
+Character Jump (10) *challenging
+Format Window (10)
+	-title, number of lives
+Commenting (10)
+
+TOTAL: 90
