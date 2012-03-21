@@ -84,6 +84,9 @@ void Draw::paintEvent(QPaintEvent *) {
 	painter.setBrush(QBrush("#1ac500"));
 	painter.drawRect(10, 695, 780, 60);
 
+	painter.setBrush(QBrush("#ffff00"));
+	painter.drawEllipse(360, 655, 80, 80);
+
 	/*
 	painter.setBrush(QBrush("#4c4c4c"));
 	painter.drawRect(130, 695, 90, 60);
