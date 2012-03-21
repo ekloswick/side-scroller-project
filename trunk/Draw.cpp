@@ -20,7 +20,7 @@
 using namespace std;
 
 // Set the background to the spanning tree forest...
-MyPaint::MyPaint(QWidget *parent)
+Draw::Draw(QWidget *parent)
  : QWidget(parent) {
      setWindowTitle(tr("MyPaint"));
      resize(512, 512);
@@ -28,7 +28,7 @@ MyPaint::MyPaint(QWidget *parent)
 
 // This method is called when the widget needs to be redrawn.
 //
-void MyPaint::paintEvent(QPaintEvent *) {
+void Draw::paintEvent(QPaintEvent *) {
 
   //if (dots.size() == 0) return; 
 
@@ -105,7 +105,7 @@ void MyPaint::paintEvent(QPaintEvent *) {
 
 // The mousePressEvent() function overrides the mousePressEvent() function of the parent QWidget
 // class, and is used to capture mouse clicks (either on the button press or the button release).
-void MyPaint::mousePressEvent(QMouseEvent *e) {
+void Draw::mousePressEvent(QMouseEvent *e) {
 	/*************/
 	// MOUSE PRESS CODE GOES HERE!!!
 	// See QT Documenation to see the data members provided with the QMouseEvent class
