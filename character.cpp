@@ -13,26 +13,27 @@
 #include <iostream>
 #include <iomanip>
 #include <stdlib.h>
-#include "SDL.h"
 
 using namespace std;
 
 class character
 {
 public:
+/*
   character(); // constructor
   void moveLeft(); // function to move left
   void moveRight(); // function to move right
   void jump(); // function to jump
   void shoot(); // function to use weapon
-
+*/
 private:
+/*
   int health; // percentage of health remaining
   int lives; // number of lives remaining
   char press; // gets keyboard input
-
+*/
 };
-
+/*
 character::character()
 {
 // empty constructor
@@ -64,6 +65,6 @@ void character::shoot()
     // shoot
 }
 
-
+*/
 
 #endif

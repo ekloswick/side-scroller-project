@@ -1,14 +1,6 @@
 /*
- * MyPaint.cpp - Implementation of the MyPaint class
- * CSE 20212 - Spring 2009
- * 
- * The MyPaint class creates a paint object capable of capturing mouse clicks, 
- * and drawing dots at the point of the mouse click.
- * 
- * 
- * Author: Phil MacCart
- * 03-01-2009
- * 
+Final_Project
+Justin Bartlett 
  */
 
 
@@ -17,17 +9,17 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+
 using namespace std;
 
-// Set the background to the spanning tree forest...
+// Open Window, set title and size.
 Draw::Draw(QWidget *parent)
  : QWidget(parent) {
-     setWindowTitle(tr("MyPaint"));
-     resize(512, 512);
+     setWindowTitle(tr("2-DSide Scroller"));
+     resize(800, 800);
 }
 
-// This method is called when the widget needs to be redrawn.
-//
+// This method is called when the widget needs to be redrawn
 void Draw::paintEvent(QPaintEvent *) {
 
   //if (dots.size() == 0) return; 
