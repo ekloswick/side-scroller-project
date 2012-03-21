@@ -39,6 +39,7 @@ void Draw::paintEvent(QPaintEvent *) {
 	pen.setStyle(Qt::DashDotDotLine);
 	painter.drawLine(400, 200, 400, 200);
 
+	/*
 	QLinearGradient grad1(0, 20, 0, 110);
 
 	grad1.setColorAt(0.1, Qt::black);
@@ -54,14 +55,14 @@ void Draw::paintEvent(QPaintEvent *) {
 	grad2.setColorAt(0.8, Qt::black);
 
 	painter.fillRect(20, 140, 300, 100, grad2);
-
+	*/
 
 	/*************/
 	// DRAWING CODE GOES HERE!!!
 	
-	painter.setPen(QColor("#d4d4d4"));
-
-	painter.setBrush(QBrush("#c56c00"));
+	painter.setPen(QColor("#000000"));
+	/*
+	painter.setBrush(QBrush("#ffff00"));
 	painter.drawRect(10, 15, 90, 60);
 
 	painter.setBrush(QBrush("#1ac500"));
@@ -78,20 +79,18 @@ void Draw::paintEvent(QPaintEvent *) {
 
 	painter.setBrush(QBrush("#9e4757"));
 	painter.drawRect(250, 105, 90, 60);
+	*/
 
-	painter.setBrush(QBrush("#5f3b00"));
-	painter.drawRect(10, 195, 90, 60);
+	painter.setBrush(QBrush("#1ac500"));
+	painter.drawRect(10, 695, 780, 60);
 
+	/*
 	painter.setBrush(QBrush("#4c4c4c"));
-	painter.drawRect(130, 195, 90, 60);
+	painter.drawRect(130, 695, 90, 60);
 
 	painter.setBrush(QBrush("#785f36"));
-	painter.drawRect(250, 195, 90, 60);
-	
-	pen.setStyle(Qt::DashDotDotLine);
-  painter.setPen(pen);
-  painter.drawLine(20, 200, 250, 200);
-
+	painter.drawRect(250, 695, 90, 60);
+	*/
 
 }
 
