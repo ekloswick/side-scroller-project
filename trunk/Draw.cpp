@@ -38,48 +38,8 @@ void Draw::paintEvent(QPaintEvent *) {
 	QPen pen(Qt::black, 2, Qt::SolidLine);
 	pen.setStyle(Qt::DashDotDotLine);
 	painter.drawLine(400, 200, 400, 200);
-
-	/*
-	QLinearGradient grad1(0, 20, 0, 110);
-
-	grad1.setColorAt(0.1, Qt::black);
-	grad1.setColorAt(0.5, Qt::yellow);
-	grad1.setColorAt(0.9, Qt::black);
-
-	painter.fillRect(20, 20, 300, 90, grad1);
-
-	QLinearGradient grad2(0, 5update();5, 250, 0);
-
-	grad2.setColorAt(0.2, Qt::black);
-	grad2.setColorAt(0.5, Qt::red);
-	grad2.setColorAt(0.8, Qt::black);
-
-	painter.fillRect(20, 140, 300, 100, grad2);
-	*/
-
-	/*************/
-	// DRAWING CODE GOES HERE!!!
 	
 	painter.setPen(QColor("#000000"));
-	/*
-	painter.setBrush(QBrush("#ffff00"));
-	painter.drawRect(10, 15, 90, 60);
-
-	painter.setBrush(QBrush("#1ac500"));
-	painter.drawRect(130, 15, 90, 60);
-
-	painter.setBrush(QBrush("#539e47"));
-	painter.drawRect(250, 15, 90, 60);
-
-	painter.setBrush(QBrush("#004fc5"));
-	painter.drawRect(10, 105, 90, 60);
-
-	painter.setBrush(QBrush("#c50024"));
-	painter.drawRect(130, 105, 90, 60);
-
-	painter.setBrush(QBrush("#9e4757"));
-	painter.drawRect(250, 105, 90, 60);
-	*/
 
 //Draw test
         painter.drawText (0, 0, 300, 100,0, "Welcome to 2-D Side Scroller Project");
@@ -92,14 +52,6 @@ void Draw::paintEvent(QPaintEvent *) {
 
 	painter.setBrush(QBrush("#ffff00"));
 	painter.drawEllipse(hero.getX(), hero.getY(), 80, 80);
-
-	/*
-	painter.setBrush(QBrush("#4c4c4c"));
-	painter.drawRect(130, 695, 90, 60);
-
-	painter.setBrush(QBrush("#785f36"));
-	painter.drawRect(250, 695, 90, 60);
-	*/
 
 }
 
@@ -117,4 +69,19 @@ void Draw::mousePressEvent(QMouseEvent *e) {
 	update();
 }
 
+
+void Draw::keyPressEvent(QKeyEvent *event)
+{
+	switch (event->key())
+	{
+		case Qt::Key_A:
+			hero.moveLeft();
+			break;
+		case Qt::Key_D:
+			hero.moveRight();
+			break;
+	}
+
+	update();
+}
 

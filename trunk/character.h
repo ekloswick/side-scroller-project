@@ -25,13 +25,12 @@ public:
 
   void setX(int n);
   void setY(int n);
-/*
-  character(); // constructor
+
   void moveLeft(); // function to move left
   void moveRight(); // function to move right
-  void jump(); // function to jump
-  void shoot(); // function to use weapon
-*/
+//  void jump(); // function to jump
+//  void shoot(); // function to use weapon
+
 private:
   int xPos;
   int yPos;

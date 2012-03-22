@@ -17,25 +17,20 @@ using namespace std;
 
 character::character()
 {
-setX(300);
-setY(300);
+	setX(300);
+	setY(300);
 }
 
-/*
 void character::moveLeft()
 {
-  if (press == 'a')
-    // switch to left-facing sprite
-    // move left
+	xPos -= 20;
 }
 
 void character::moveRight()
 {
-  if (press == ' d')
-    // swtich to right-facing sprite
-    // move right
+	xPos += 20;
 }
-
+/*
 void character::jump()
 {
   if (press == 'w')
