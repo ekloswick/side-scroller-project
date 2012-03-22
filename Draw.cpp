@@ -9,6 +9,7 @@ Justin Bartlett
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <QFont>
 
 using namespace std;
 
@@ -42,10 +43,13 @@ void Draw::paintEvent(QPaintEvent *) {
 	painter.setPen(QColor("#000000"));
 
 //Draw test
-        painter.drawText (0, 0, 300, 100,0, "Welcome to 2-D Side Scroller Project");
+QFont myFont;
+myFont.setPointSizeF(20.0);
+painter.setFont(myFont);
 
 
-        painter.drawText (0, 0, 300, 100,0, "Welcome to 2-D Side Scroller Project");
+painter.drawText (0, 0,250,250,0, "Stage: Test");
+painter.drawText (250, 0,100,100,0, "Lives: 1");
 
 	painter.setBrush(QBrush("#1ac500"));
 	painter.drawRect(10, 695, 780, 60);
