@@ -7,39 +7,12 @@
  *
  */
 
-#ifndef CHARACTER_H
-#define CHARACTER_H
-
 #include <iostream>
 #include <iomanip>
 #include <stdlib.h>
+#include <character.h>
 
 using namespace std;
-
-class character
-{
-public:
-  int getX();
-  int getY();
-
-  void setX(int n);
-  void setY(int n);
-/*
-  character(); // constructor
-  void moveLeft(); // function to move left
-  void moveRight(); // function to move right
-  void jump(); // function to jump
-  void shoot(); // function to use weapon
-*/
-private:
-  int xPos;
-  int yPos;
-/*
-  int health; // percentage of health remaining
-  int lives; // number of lives remaining
-  char press; // gets keyboard input
-*/
-};
 
 
 character::character()
@@ -48,6 +21,7 @@ setX(300);
 setY(300);
 }
 
+/*
 void character::moveLeft()
 {
   if (press == 'a')
@@ -96,4 +70,3 @@ void character::setY(int n)
   yPos = n;
 }
 
-#endif

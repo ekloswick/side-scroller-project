@@ -19,6 +19,7 @@ using namespace std;
 class character
 {
 public:
+  character();
   int getX();
   int getY();
 
