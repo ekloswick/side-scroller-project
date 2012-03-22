@@ -91,7 +91,7 @@ void Draw::paintEvent(QPaintEvent *) {
 	painter.drawRect(10, 695, 780, 60);
 
 	painter.setBrush(QBrush("#ffff00"));
-	painter.drawEllipse(360, 655, 80, 80);
+	painter.drawEllipse(hero.getX(), hero.getY(), 80, 80);
 
 	/*
 	painter.setBrush(QBrush("#4c4c4c"));

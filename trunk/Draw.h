@@ -20,6 +20,8 @@
 //!
 
 #include <QWidget>
+#include "character.h"
+
 using namespace std;
 
 class Draw : public QWidget {
@@ -27,6 +29,7 @@ class Draw : public QWidget {
 
 public:
 	Draw(QWidget *parent = 0);
+        character hero;
 
 protected:
 	void paintEvent(QPaintEvent *e);
