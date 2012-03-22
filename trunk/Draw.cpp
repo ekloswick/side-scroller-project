@@ -11,6 +11,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <cmath>
 #include <QFont>
 
+
 using namespace std;
 
 int welcome = 0;		//used to display the welcome message
@@ -23,6 +24,25 @@ Draw::Draw (QWidget * parent):QWidget (parent)
   setWindowTitle (tr ("2-D Side Scroller"));
   resize (800, 800);
 }
+
+
+
+int
+Draw::msleep (unsigned long milisec)
+{
+  struct timespec req = { 0 };
+  time_t sec = (int) (milisec / 1000);
+  milisec = milisec - (sec * 1000);
+  req.tv_sec = sec;
+  req.tv_nsec = milisec * 1000000L;
+  while (nanosleep (&req, &req) == -1)
+    continue;
+  return 1;
+}
+
+
+
+
 
 // This method is called when the widget needs to be redrawn
 void
@@ -99,11 +119,36 @@ Draw::keyPressEvent (QKeyEvent * event)
     {
     case Qt::Key_A:		//A pressed to move the character to the left
       hero.moveLeft ();
+      update ();
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       hero.moveRight ();
+      update ();
+      break;
+    case Qt::Key_W:		//D pressed to move the character to the right
+     for (int j=0; j<30; j++)
+{
+	    hero.setY (hero.getY()-2);
+	    repaint(0,0,800,800);
+            cout<<"Test"<<endl;    
+   	 
+}
+   msleep (100);
+
+     for (int j=0; j<30; j++)
+{
+	    hero.setY (hero.getY()+2);
+	    repaint(0,0,800,800);
+            cout<<"Down"<<endl;    
+   	 
+}
+     /* for (int j = 0; j < 5; j++)
+	{
+	  hero.setY (hero.getY()+25);
+          repaint(0,0,800,800);
+	}*/
       break;
     }
 //  Instructs the window that the screen needs to be redrawn.
-  update ();
+  // update ();
 }
