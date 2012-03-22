@@ -15,7 +15,7 @@ using namespace std;
 // Open Window, set title and size.
 Draw::Draw(QWidget *parent)
  : QWidget(parent) {
-     setWindowTitle(tr("2-DSide Scroller"));
+     setWindowTitle(tr("2-D Side Scroller"));
      resize(800, 800);
 }
 
@@ -48,7 +48,7 @@ void Draw::paintEvent(QPaintEvent *) {
 
 	painter.fillRect(20, 20, 300, 90, grad1);
 
-	QLinearGradient grad2(0, 55, 250, 0);
+	QLinearGradient grad2(0, 5update();5, 250, 0);
 
 	grad2.setColorAt(0.2, Qt::black);
 	grad2.setColorAt(0.5, Qt::red);
@@ -80,6 +80,12 @@ void Draw::paintEvent(QPaintEvent *) {
 	painter.setBrush(QBrush("#9e4757"));
 	painter.drawRect(250, 105, 90, 60);
 	*/
+
+//Draw test
+        painter.drawText (0, 0, 300, 100,0, "Welcome to 2-D Side Scroller Project");
+
+
+        painter.drawText (0, 0, 300, 100,0, "Welcome to 2-D Side Scroller Project");
 
 	painter.setBrush(QBrush("#1ac500"));
 	painter.drawRect(10, 695, 780, 60);

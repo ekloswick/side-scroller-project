@@ -41,10 +41,11 @@ private:
 */
 };
 
-/*
+
 character::character()
 {
-// empty constructor
+setX(300);
+setY(300);
 }
 
 void character::moveLeft()
@@ -85,7 +86,7 @@ int character::getY()
   return yPos;
 }
 
-void characet::setX(int n)
+void character::setX(int n)
 {
   xPos = n;
 }
