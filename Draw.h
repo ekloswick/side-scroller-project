@@ -29,11 +29,12 @@ class Draw : public QWidget {
 
 public:
 	Draw(QWidget *parent = 0);
-        character hero;
+     character hero;
 
 protected:
 	void paintEvent(QPaintEvent *e);
 	void mousePressEvent(QMouseEvent *e);
+	void keyPressEvent(QKeyEvent *event);
 
 private:
 
