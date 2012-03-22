@@ -37,6 +37,7 @@ protected:
 	void keyPressEvent(QKeyEvent *event);
 
 private:
+        int msleep(unsigned long);
 
 };
 
