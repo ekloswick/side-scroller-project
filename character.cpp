@@ -29,14 +29,12 @@ character::character()
 
 void character::moveLeft()
 {
-	xVel += -64;
-	//xPos -= 10;
+	xVel += -16;
 }
 
 void character::moveRight()
 {
-	xVel += 64;
-	//xPos += 10;
+	xVel += 16;
 }
 
 void character::moveUp()

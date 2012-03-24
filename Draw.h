@@ -27,6 +27,7 @@ class Draw : public QWidget
 		void paintEvent(QPaintEvent *e);
 		void mousePressEvent(QMouseEvent *e);
 		void keyPressEvent(QKeyEvent *event);
+		void keyReleaseEvent(QKeyEvent *event);
 		void updatePhysics();
 		void timerEvent(QTimerEvent *event);
 
@@ -34,6 +35,9 @@ class Draw : public QWidget
 		int msleep(unsigned long);
 		int xWindowSize;
 		int yWindowSize;
+		int movingLeft;
+		int movingRight;
+		int jumping;
 		vector < int > board;
 };
 
