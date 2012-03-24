@@ -22,20 +22,19 @@ Draw::Draw (QWidget * parent) : QWidget (parent)
 {
 	setWindowTitle (tr ("2-D Side Scroller"));
 
-xWindowSize = 800;
-yWindowSize = 800;
-resize (xWindowSize, yWindowSize);
-int myints[] = {10, 695, 780, 60};
-for (int i=0;i<4;i++)
-{
-board.push_back(myints[i]);
+	xWindowSize = 800;
+	yWindowSize = 800;
+	
+	resize (xWindowSize, yWindowSize);
+	int myints[] = {10, 695, 780, 60};
+	
+	for (int i=0;i<4;i++)
+	{
+		board.push_back(myints[i]);
+	}
+
+	startTimer(50);
 }
-
-
-	startTimer(100);
-}
-
-
 
 int Draw::msleep (unsigned long milisec)
 {
@@ -81,12 +80,12 @@ void Draw::paintEvent (QPaintEvent *)
 		"Justin Bartlett\nJake Flynt\nEli Kloswick");
 		painter.drawText (200, 500, 400, 200, Qt::AlignHCenter,
 		"Press Any Key To Continue");
-msleep(1000);
+		msleep(1000);
 		//set welcome to 1 so this does not occur again
 		welcome = 1;
 	}
-else if (welcome==1)
-{
+	else if (welcome==1)
+	{
 		//set the font size to a large value for the title
 		QFont myFont1;
 		myFont1.setPointSizeF (50.0);
@@ -105,9 +104,9 @@ else if (welcome==1)
 
 
 		//set welcome to 2 so this does not occur again
-msleep(2000);
+		msleep(2000);
 		welcome = 2;
-}
+	}
 	else
 	{
 		//Set font
@@ -117,11 +116,11 @@ msleep(2000);
 
 		//Display text of basic info
 		painter.drawText (0, 0, 250, 250, 0, "Stage: Test");
-//number of lives remaining
-      char displayLives[33];
-      int trash;		//stores the length of the array; this is not used
-      trash = sprintf (displayLives, "Lives: %d", hero.getLives());
-      painter.drawText (270, 0, 100, 100, 0, displayLives);
+		//number of lives remaining
+		char displayLives[33];
+		int trash;		//stores the length of the array; this is not used
+		trash = sprintf (displayLives, "Lives: %d", hero.getLives());
+		painter.drawText (270, 0, 100, 100, 0, displayLives);
 
 
 		// Set the colors for each of the painters
@@ -149,21 +148,47 @@ void Draw::mousePressEvent (QMouseEvent * e)
 	update ();
 }
 
-//Performs actions based on key presses
+// performs actions based on key presses
 void Draw::keyPressEvent (QKeyEvent * event)
 { 
 	switch (event->key ())
 	{
 		case Qt::Key_A:		//A pressed to move the character to the left
-			hero.moveLeft();
+			movingLeft = 1;
+			//hero.moveLeft();
 			update();
 			break;
 		case Qt::Key_D:		//D pressed to move the character to the right
-			hero.moveRight();
+			movingRight = 1;
+			//hero.moveRight();
 			update();
 			break;
 		case Qt::Key_W:		//W pressed to jump
-			hero.jump();
+			jumping = 1;
+			//hero.jump();
+			update();
+			break;
+		case Qt::Key_Escape:
+			exit(1);
+			break;
+	}
+}
+
+// performs actions based on key releases
+void Draw::keyReleaseEvent(QKeyEvent *event)
+{
+	switch (event->key ())
+	{
+		case Qt::Key_A:		//A released to stop moving the character to the left
+			movingLeft = 0;
+			update();
+			break;
+		case Qt::Key_D:		//D released to stop moving the character to the right
+			movingRight = 0;
+			update();
+			break;
+		case Qt::Key_W:		//W pressed to jump
+			jumping = 0;
 			update();
 			break;
 		case Qt::Key_Escape:
@@ -175,6 +200,14 @@ void Draw::keyPressEvent (QKeyEvent * event)
 // upates the locations/velocities of the objects onscreen
 void Draw::updatePhysics()
 {
+	// checks for correct key presses
+	if (movingLeft == 1)
+		hero.moveLeft();
+	if (movingRight == 1)
+		hero.moveRight();
+	if (jumping == 1 && hero.getYPos() > 690)
+		hero.jump();
+	 
 	// updates the positions based on velocities
 	hero.setXPos(hero.getXPos() + hero.getXVel());
 	hero.setYPos(hero.getYPos() + hero.getYVel());
