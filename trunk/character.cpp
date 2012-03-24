@@ -21,7 +21,7 @@ using namespace std;
 character::character ()
 {
   setX (360);
-  setY (518);
+  setY (532);
   lives = 3;
 }
 

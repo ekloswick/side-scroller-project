@@ -18,13 +18,14 @@
 int main(int argc, char *argv[]) {
      QApplication app(argc, argv);
 
-     // import image, display
+     /* import image, display
      QGraphicsScene scene;
      QGraphicsView view(&scene);
      QGraphicsPixmapItem item(QPixmap("mariosprite.jpg"));
      scene.addItem(&item);    
      view.show();
-    
+     */
+
      Draw p;
      //p.addItem(&item);
      p.show();
