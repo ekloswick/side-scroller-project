@@ -17,52 +17,43 @@
 
 using namespace std;
 
-
-character::character ()
+character::character()
 {
-  setX (360);
-  setY (532);
-  lives = 3;
+	setXPos(360);
+	setYPos(518);
+	lives = 3;
+	setXVel(0);
+	setYVel( getGravity() );
+	gravity = 10;
 }
 
-void
-character::moveLeft ()
+void character::moveLeft()
 {
-  xPos -= 10;
+	xVel += -16;
+	//xPos -= 10;
 }
 
-void
-character::moveRight ()
+void character::moveRight()
 {
-  xPos += 10;
+	xVel += 16;
+	//xPos += 10;
 }
 
-void
-character::jump ()
+void character::moveUp()
 {
-  yPos += 50;
-  yPos -= 50;
+	//yPos -= 5;	
+}  
+
+void character::moveDown()
+{
+	//yPos += 5;
 }
 
-int
-character::getLives ()
-{
-  return lives;
-}
-
-void
-character::setLives (int n)
-{
-  lives = n;
-}
-
-/*
 void character::jump()
 {
-  if (press == 'w')
-    // jump
+	yVel = -80;
 }
-
+/*
 void character::shoot()
 {
   if (press == '')
@@ -71,26 +62,47 @@ void character::shoot()
 
 */
 
-int
-character::getX ()
+int character::getXPos()
 {
-  return xPos;
+	return xPos;
 }
 
-int
-character::getY ()
+int character::getYPos()
 {
-  return yPos;
+	return yPos;
 }
 
-void
-character::setX (int n)
+void character::setXPos(int n)
 {
-  xPos = n;
+	xPos = n;
 }
 
-void
-character::setY (int n)
+void character::setYPos(int n)
 {
-  yPos = n;
+	yPos = n;
+}
+
+int character::getXVel()
+{
+	return xVel;
+}
+
+int character::getYVel()
+{
+	return yVel;
+}
+
+void character::setXVel(int n)
+{
+	xVel = n;
+}
+
+void character::setYVel(int n)
+{
+	yVel = n;
+}
+
+int character::getGravity()
+{
+	return gravity;
 }
