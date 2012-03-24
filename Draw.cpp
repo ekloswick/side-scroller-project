@@ -7,6 +7,8 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 #include "Draw.h"
 #include <QtGui>
+#include <QPainter>
+#include "qlabel.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -23,6 +25,9 @@ Draw::Draw (QWidget * parent):QWidget (parent)
   xWindowSize = 800;
   yWindowSize = 800;
   resize (xWindowSize, yWindowSize);
+
+
+
 
   welcomeMessage = 0;		//used to display the welcome message
   int
@@ -134,7 +139,14 @@ welcomeMessage=2;
 
 //Draw the Hero
       painter.setBrush (QBrush ("#ffff00"));
-      painter.drawEllipse (hero.getX (), hero.getY (), 80, 80);
+      //painter.drawEllipse (hero.getX (), hero.getY (), 80, 80);
+
+      QRectF target(hero.getX(), hero.getY(), 56.0, 69.0);
+      QRectF source(0.0, 0.0, 56, 69);
+      QPixmap pixmap("marioRight.jpg");
+      QPainter(this);
+      painter.drawPixmap(target, pixmap, source);
+
     }
 }
 
@@ -151,7 +163,7 @@ Draw::mousePressEvent (QMouseEvent * e)
 //Performs actions based on key presses
 void
 Draw::keyPressEvent (QKeyEvent * event)
-{
+{ 
   switch (event->key ())
     {
     case Qt::Key_A:		//A pressed to move the character to the left
