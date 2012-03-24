@@ -1,26 +1,15 @@
 /*
- * MyPaint.cpp - Implementation of the MyPaint class
- * CSE 20212 - Spring 2009
- * 
- * The MyPaint class creates a paint object capable of capturing mouse clicks, drawing dots at the point of the mouse click,
- * then constructing a minimum spanning tree connecting the points.
- * 
- * Author: Phil MacCart 
- * 03-01-2009
- * 
+Final_Project
+Justin Bartlett, Jake Flynt, Eli Kloswick
  */
+
 
 #ifndef DRAW_H_
 #define DRAW_H_
  
-//!
-//! Yo: the Q_OBJECT macro tells us that this class can have
-//! slots and signals.  It also tells qmake to compile this
-//! class in a special way
-//!
-
 #include <QWidget>
 #include "character.h"
+#include <vector>
 
 using namespace std;
 
@@ -38,6 +27,11 @@ protected:
 
 private:
         int msleep(unsigned long);
+        int xWindowSize;
+        int yWindowSize;
+        int welcomeMessage;
+        vector < int > board;
+       
 
 };
 

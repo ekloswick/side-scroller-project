@@ -14,15 +14,21 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 using namespace std;
 
-int welcome = 0;		//used to display the welcome message
-		//*****SHOULD BE CHANGED FROM A GLOBAL VARIABLE??? HOWEVER I WAS GETTING COMPILER ERRORS WHEN I PUT IT IN THE .H FILE
-
-
+		
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent)
 {
   setWindowTitle (tr ("2-D Side Scroller"));
-  resize (800, 800);
+xWindowSize=800;
+yWindowSize=800;
+  resize (xWindowSize, yWindowSize);
+
+ welcomeMessage = 0; //used to display the welcome message
+ int myints[]={0,600,800,20};
+ for (int i=0;i<4;i++)
+{
+board.push_back(myints[i]);
+}
 }
 
 
@@ -53,7 +59,7 @@ Draw::paintEvent (QPaintEvent *)
 
 
 //Welcome message that is only displayed once
-  if (welcome == 0)
+  if (welcomeMessage == 0)
     {
 //set the font size to a large value for the title
       QFont myFont1;
@@ -74,7 +80,7 @@ Draw::paintEvent (QPaintEvent *)
 			"Press Any Key To Continue");
 
 //set welcome to 1 so this does not occur again
-      welcome = 1;
+      welcomeMessage = 1;
     }
   else
     {
@@ -93,7 +99,10 @@ Draw::paintEvent (QPaintEvent *)
 
 //Draw Basic Stage
       painter.setBrush (QBrush ("#1ac500"));
-      painter.drawRect (10, 695, 780, 60);
+      painter.drawRect (board[0],board[1],board[2],board[3]);  //x,y,width,height
+
+
+
 
 //Draw the Hero
       painter.setBrush (QBrush ("#ffff00"));
@@ -129,24 +138,16 @@ Draw::keyPressEvent (QKeyEvent * event)
      for (int j=0; j<30; j++)
 {
 	    hero.setY (hero.getY()-2);
-	    repaint(0,0,800,800);
-            cout<<"Test"<<endl;    
-   	 
+	    repaint(0,0,800,800); 	 
 }
    msleep (100);
 
      for (int j=0; j<30; j++)
 {
 	    hero.setY (hero.getY()+2);
-	    repaint(0,0,800,800);
-            cout<<"Down"<<endl;    
-   	 
+	    repaint(0,0,800,800);   	 
 }
-     /* for (int j = 0; j < 5; j++)
-	{
-	  hero.setY (hero.getY()+25);
-          repaint(0,0,800,800);
-	}*/
+
       break;
     }
 //  Instructs the window that the screen needs to be redrawn.
