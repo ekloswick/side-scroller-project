@@ -29,7 +29,7 @@ character::character()
 
 
 	setX(360);
-	setY(614);
+	setY(518);
 }
 
 void character::moveLeft()
