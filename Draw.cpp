@@ -21,7 +21,15 @@ using namespace std;
 Draw::Draw (QWidget * parent) : QWidget (parent)
 {
 	setWindowTitle (tr ("2-D Side Scroller"));
-	resize (800, 800);
+	xWindowSize = 800;
+        yWindowSize = 800;
+        resize (xWindowSize, yWindowSize);
+  int
+  myints[] = { 0, 600, 800, 20 };
+  for (int i = 0; i < 4; i++)
+    {
+      board.push_back (myints[i]);
+    }
 	startTimer(100);
 }
 
@@ -34,7 +42,7 @@ int Draw::msleep (unsigned long milisec)
 	time_t sec = (int) (milisec / 1000);
 	milisec = milisec - (sec * 1000);
 	req.tv_sec = sec;
-	req.tv_nsec = milisec * 1000000L;
+	req.tv_nsec = milisec * 1000000;
 	
 	while (nanosleep (&req, &req) == -1)
 		continue;
@@ -45,14 +53,14 @@ int Draw::msleep (unsigned long milisec)
 // This method is called when the widget needs to be redrawn
 void Draw::paintEvent (QPaintEvent *)
 {
-	static int welcome = 0;
+	static int welcomeMessage = 0;
 	
 	QPainter painter (this);	// get a painter object to send drawing commands to
 
 	updatePhysics();
 
 	//Welcome message that is only displayed once
-	if (welcome == 0)
+	if (welcomeMessage == 0)
 	{
 		//set the font size to a large value for the title
 		QFont myFont1;
@@ -73,8 +81,32 @@ void Draw::paintEvent (QPaintEvent *)
 		"Press Any Key To Continue");
 
 		//set welcome to 1 so this does not occur again
-		welcome = 1;
+		welcomeMessage = 1;
 	}
+       else if (welcomeMessage==1)
+       {
+		//set the font size to a large value for the title
+		QFont myFont1;
+		myFont1.setPointSizeF (50.0);
+		painter.setFont (myFont1);
+
+		painter.drawText (200, 100, 400, 300, Qt::AlignHCenter,
+		"Instructions");
+
+		//set the font size smaller for additional info
+		QFont myFont2;
+		myFont2.setPointSizeF (25.0);
+		painter.setFont (myFont2);
+
+		painter.drawText (200, 300, 400, 200, Qt::AlignHCenter,
+		"Press 'A' to move left\nPress 'D' to move Right\nPress 'W' to jump");
+		painter.drawText (200, 500, 400, 200, Qt::AlignHCenter,
+		"Press Any Key To Continue");
+
+		//set welcome to 2 so this does not occur again
+		welcomeMessage = 2;
+
+}
 	else
 	{
 		//Set font
@@ -84,15 +116,18 @@ void Draw::paintEvent (QPaintEvent *)
 
 		//Display text of basic info
 		painter.drawText (0, 0, 250, 250, 0, "Stage: Test");
-		painter.drawText (250, 0, 100, 100, 0, "Lives: 1");
-
+	//number of lives remaining
+      char displayLives[33];
+      int trash;		//stores the length of the array; this is not used
+      trash = sprintf (displayLives, "Lives: %d", hero.getLives());
+      painter.drawText (270, 0, 100, 100, 0, displayLives);
 
 		// Set the colors for each of the painters
 		// The Pen is used to draw lines and figure outlines, while the brush is used to fill in the figures
 
 		//Draw Basic Stage
 		painter.setBrush (QBrush ("#1ac500"));
-		painter.drawRect (10, 695, 780, 60);
+		      painter.drawRect (board[0], board[1], board[2], board[3]);	//x,y,width,height
 
 		//Draw the Hero
 		painter.setBrush (QBrush ("#ffff00"));

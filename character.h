@@ -29,6 +29,8 @@
 
 		int getGravity();
 
+ int getLives();
+
 		void moveLeft(); // function to move left
 		void moveRight(); // function to move right
 		void moveUp();	// function to move up
