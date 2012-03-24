@@ -9,13 +9,12 @@
  
  
 #include <QApplication>
-
 #include <QPrinter>
 #include <QtGui>
-
 #include "Draw.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
      QApplication app(argc, argv);
 
      /* import image, display
