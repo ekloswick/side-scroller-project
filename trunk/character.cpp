@@ -18,36 +18,44 @@
 using namespace std;
 
 
-character::character()
+character::character ()
 {
-       // import image, display
-     QGraphicsScene scene;
-     QGraphicsView view(&scene);
-     QGraphicsPixmapItem item(QPixmap("mariosprite.jpg"));
-     scene.addItem(&item);    
-     view.show();
-
-
-	setX(360);
-	setY(518);
+  setX (360);
+  setY (518);
+  lives = 3;
 }
 
-void character::moveLeft()
+void
+character::moveLeft ()
 {
-	xPos -= 10;
+  xPos -= 10;
 }
 
-void character::moveRight()
+void
+character::moveRight ()
 {
-	xPos += 10;
+  xPos += 10;
 }
 
-void character::jump()
+void
+character::jump ()
 {
   yPos += 50;
-  yPos -=50;
-
+  yPos -= 50;
 }
+
+int
+character::getLives ()
+{
+  return lives;
+}
+
+void
+character::setLives (int n)
+{
+  lives = n;
+}
+
 /*
 void character::jump()
 {
@@ -63,23 +71,26 @@ void character::shoot()
 
 */
 
-int character::getX()
+int
+character::getX ()
 {
   return xPos;
 }
 
-int character::getY()
+int
+character::getY ()
 {
   return yPos;
 }
 
-void character::setX(int n)
+void
+character::setX (int n)
 {
   xPos = n;
 }
 
-void character::setY(int n)
+void
+character::setY (int n)
 {
   yPos = n;
 }
-
