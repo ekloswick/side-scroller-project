@@ -20,7 +20,7 @@ using namespace std;
 character::character()
 {
 	setXPos(360);
-	setYPos(518);
+	setYPos(500);
 	lives = 3;
 	setXVel(0);
 	setYVel( getGravity() );
