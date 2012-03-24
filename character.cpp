@@ -12,23 +12,41 @@
 #include <stdlib.h>
 #include <character.h>
 
+#include <QPrinter>
+#include <QtGui>
+
 using namespace std;
 
 
 character::character()
 {
-	setX(300);
-	setY(300);
+       // import image, display
+     QGraphicsScene scene;
+     QGraphicsView view(&scene);
+     QGraphicsPixmapItem item(QPixmap("mariosprite.jpg"));
+     scene.addItem(&item);    
+     view.show();
+
+
+	setX(360);
+	setY(614);
 }
 
 void character::moveLeft()
 {
-	xPos -= 20;
+	xPos -= 10;
 }
 
 void character::moveRight()
 {
-	xPos += 20;
+	xPos += 10;
+}
+
+void character::jump()
+{
+  yPos += 50;
+  yPos -=50;
+
 }
 /*
 void character::jump()
