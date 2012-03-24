@@ -24,18 +24,18 @@ character::character()
 	lives = 3;
 	setXVel(0);
 	setYVel( getGravity() );
-	gravity = 10;
+	gravity = 25;
 }
 
 void character::moveLeft()
 {
-	xVel += -16;
+	xVel += -64;
 	//xPos -= 10;
 }
 
 void character::moveRight()
 {
-	xVel += 16;
+	xVel += 64;
 	//xPos += 10;
 }
 
