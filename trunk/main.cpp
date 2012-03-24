@@ -10,11 +10,23 @@
  
 #include <QApplication>
 
+#include <QPrinter>
+#include <QtGui>
+
 #include "Draw.h"
 
 int main(int argc, char *argv[]) {
      QApplication app(argc, argv);
+
+     // import image, display
+     QGraphicsScene scene;
+     QGraphicsView view(&scene);
+     QGraphicsPixmapItem item(QPixmap("mariosprite.jpg"));
+     scene.addItem(&item);    
+     view.show();
+    
      Draw p;
+     //p.addItem(&item);
      p.show();
      return app.exec();
  }

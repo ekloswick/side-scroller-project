@@ -28,6 +28,7 @@ public:
 
   void moveLeft(); // function to move left
   void moveRight(); // function to move right
+  void jump(); // function to jump
 //  void jump(); // function to jump
 //  void shoot(); // function to use weapon
 

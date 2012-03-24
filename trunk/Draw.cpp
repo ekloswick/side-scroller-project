@@ -1,3 +1,4 @@
+
 /*
 Final_Project
 Justin Bartlett, Jake Flynt, Eli Kloswick
@@ -55,7 +56,7 @@ void
 Draw::paintEvent (QPaintEvent *)
 {
 
-  QPainter painter (this);	// get a painter object to send drawing commands to
+  QPainter painter (this);      // get a painter object to send drawing commands to
 
 
 //Welcome message that is only displayed once
@@ -67,7 +68,7 @@ Draw::paintEvent (QPaintEvent *)
       painter.setFont (myFont1);
 
       painter.drawText (200, 100, 400, 300, Qt::AlignHCenter,
-			"WELCOME TO \nSIDE SCROLLER");
+                        "WELCOME TO \nSIDE SCROLLER");
 
 //set the font size smaller for additional info
       QFont myFont2;
@@ -75,9 +76,9 @@ Draw::paintEvent (QPaintEvent *)
       painter.setFont (myFont2);
 
       painter.drawText (200, 300, 400, 200, Qt::AlignHCenter,
-			"Justin Bartlett\nJake Flynt\nEli Kloswick");
+                        "Justin Bartlett\nJake Flynt\nEli Kloswick");
       painter.drawText (200, 500, 400, 200, Qt::AlignHCenter,
-			"Press Any Key To Continue");
+                        "Press Any Key To Continue");
 
 //set welcome to 1 so this does not occur again
       welcomeMessage = 1;
@@ -126,15 +127,15 @@ Draw::keyPressEvent (QKeyEvent * event)
 {
   switch (event->key ())
     {
-    case Qt::Key_A:		//A pressed to move the character to the left
+    case Qt::Key_A:             //A pressed to move the character to the left
       hero.moveLeft ();
       update ();
       break;
-    case Qt::Key_D:		//D pressed to move the character to the right
+    case Qt::Key_D:             //D pressed to move the character to the right
       hero.moveRight ();
       update ();
       break;
-    case Qt::Key_W:		//D pressed to move the character to the right
+    case Qt::Key_W:             //D pressed to move the character to the right
      for (int j=0; j<30; j++)
 {
 	    hero.setY (hero.getY()-2);

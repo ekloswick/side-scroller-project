@@ -14,16 +14,16 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 class Draw : public QWidget {
- 	Q_OBJECT
+        Q_OBJECT
 
 public:
-	Draw(QWidget *parent = 0);
+        Draw(QWidget *parent = 0);
      character hero;
 
 protected:
-	void paintEvent(QPaintEvent *e);
-	void mousePressEvent(QMouseEvent *e);
-	void keyPressEvent(QKeyEvent *event);
+        void paintEvent(QPaintEvent *e);
+        void mousePressEvent(QMouseEvent *e);
+        void keyPressEvent(QKeyEvent *event);
 
 private:
         int msleep(unsigned long);
@@ -36,4 +36,3 @@ private:
 };
 
 #endif
-
