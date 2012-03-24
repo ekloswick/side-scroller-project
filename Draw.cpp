@@ -84,6 +84,27 @@ Draw::paintEvent (QPaintEvent *)
 //set welcome to 1 so this does not occur again
       welcomeMessage = 1;
     }
+  else if (welcomeMessage ==1 )
+{
+//set the font size to a large value for title
+      QFont myFont1;
+      myFont1.setPointSizeF (50.0);
+      painter.setFont (myFont1);
+
+      painter.drawText (200, 100, 400, 300, Qt::AlignHCenter,
+			"INSTRUCTIONS");
+
+//set the font size smaller for additional info
+      QFont myFont2;
+      myFont2.setPointSizeF (25.0);
+      painter.setFont (myFont2);
+
+      painter.drawText (200, 300, 400, 200, Qt::AlignHCenter,
+			"Press 'A' to move left\nPress 'D' to move right\nPress 'W' to jump");
+
+welcomeMessage=2;
+}
+
   else
     {
 //Set font
