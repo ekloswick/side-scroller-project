@@ -9,6 +9,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
  
 #include <QWidget>
 #include "character.h"
+#include "enemy.h"
 #include <vector>
 
 using namespace std;
@@ -20,6 +21,7 @@ class Draw : public QWidget
 	public:
 		Draw(QWidget *parent = 0);
 		character hero;
+   //  enemy badguy(300,300,20);
 
 	protected:
 		void paintEvent(QPaintEvent *e);
@@ -32,10 +34,7 @@ class Draw : public QWidget
 		int msleep(unsigned long);
 		int xWindowSize;
 		int yWindowSize;
-		int welcomeMessage;
 		vector < int > board;
-       
-
 };
 
 #endif
