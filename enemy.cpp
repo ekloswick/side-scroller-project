@@ -13,38 +13,46 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 using namespace std;
 
-enemy::enemy (int xPosition, int yPosition, int speed)
+enemy::enemy ()
 {
-xPos=xPosition;
-yPos=yPosition;
-movementSpeed=speed;
-}
-void enemy::setX (int n)
-{
-xPos=n;
-}
-void enemy::setY (int n)
-{
-yPos=n;
+  xPos = 300;
+  yPos = 300;
+  movementSpeed = 20;
+  left = 0;
+  right = 0;
 }
 
-int enemy::getX ()
+void
+enemy::setX (int n)
 {
-return xPos;
-}int enemy::getY ()
+  xPos = n;
+}
+
+void
+enemy::setY (int n)
 {
-return yPos;
-}void enemy::moveLeft ()  // function to move left
+  yPos = n;
+}
+
+int
+enemy::getX ()
+{
+  return xPos;
+}
+
+int
+enemy::getY ()
+{
+  return yPos;
+}
+
+void
+enemy::moveLeft ()		// function to move left
 {
   xPos -= movementSpeed;
-}		
-void enemy::moveRight ()		// function to move right
+} void
+
+enemy::moveRight ()		// function to move right
 {
   xPos += movementSpeed;
 }
-
-
-
-
-
-

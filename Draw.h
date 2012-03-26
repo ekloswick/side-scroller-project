@@ -14,6 +14,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 using namespace std;
 
+
 class Draw : public QWidget
 {
      Q_OBJECT
@@ -21,7 +22,7 @@ class Draw : public QWidget
 	public:
 		Draw(QWidget *parent = 0);
 		character hero;
-   //  enemy badguy(300,300,20);
+                enemy badguy;
 
 	protected:
 		void paintEvent(QPaintEvent *e);
@@ -30,6 +31,7 @@ class Draw : public QWidget
 		void keyReleaseEvent(QKeyEvent *event);
 		void updatePhysics();
 		void timerEvent(QTimerEvent *event);
+                void updateEnemy();
 
 	private:
 		int msleep(unsigned long);
