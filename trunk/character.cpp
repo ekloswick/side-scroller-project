@@ -107,5 +107,5 @@ int character::getGravity()
 
 int character::getLives()
 {
-return lives;
+	return lives;
 }
