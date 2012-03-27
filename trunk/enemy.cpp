@@ -17,7 +17,7 @@ enemy::enemy ()
 {
   xPos = 300;
   yPos = 642;
-  movementSpeed = 10;
+  movementSpeed =5;
   left = 0;
   right = 0;
 }

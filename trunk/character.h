@@ -23,6 +23,10 @@
   		int getXVel ();
 		int getYVel ();
 
+		int leftFacing;
+		int rightFacing;
+		int isJumping;
+
 		void setXVel (int);
 		void setYVel (int);
 
