@@ -123,22 +123,53 @@ Draw::paintEvent (QPaintEvent *)
 
       //painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
 
-      // draw mario
-      QRectF target (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
-      QRectF source (0.0, 0.0, 56, 69);
-      QPixmap pixmap ("marioRight.png");
+      // right-facing hero
+      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
+      QRectF heroSourceRight (0.0, 0.0, 56, 69);
+      QPixmap heroPixmapRight ("marioRight.png");
       QPainter (this);
-      painter.drawPixmap (target, pixmap, source);
 
-      // draw goomba
-      QRectF targetE (badguy.getX(), badguy.getY(), 56.0, 69.0);
-      QRectF sourceE (0.0, 0.0, 70, 86);
-      QPixmap pixmapE ("goombaLeft.png");
+      // left-facing hero
+      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
+      QRectF heroSourceLeft (0.0, 0.0, 56, 69);
+      QPixmap heroPixmapLeft ("marioLeft.png");
+      QPainter (this);  
+
+      // update hero sprite state
+      if (hero.rightFacing==1)
+	{
+	  painter.drawPixmap (heroTargetRight, heroPixmapRight, heroSourceRight);
+	}
+ 
+      if (hero.leftFacing==1)
+	{
+	  painter.drawPixmap (heroTargetLeft, heroPixmapLeft, heroSourceLeft);
+	}
+
+      // right-facing enemy
+      QRectF enemyTargetRight (badguy.getX(), badguy.getY(), 56.0, 69.0);
+      QRectF enemySourceRight (0.0, 0.0, 70, 86);
+      QPixmap enemyPixmapRight ("goombaRight.png");
       QPainter (this);
-      painter.drawPixmap (targetE, pixmapE, sourceE);
 
+      // left-facing enemy
+      QRectF enemyTargetLeft (badguy.getX(), badguy.getY(), 56.0, 69.0);
+      QRectF enemySourceLeft (0.0, 0.0, 70, 86);
+      QPixmap enemyPixmapLeft("goombaLeft.png");
+      QPainter (this);
 
-
+      painter.drawPixmap (enemyTargetRight, enemyPixmapRight, enemySourceRight);
+      
+      // update enemy sprite state
+      if (badguy.right==1)
+	{
+	  painter.drawPixmap (enemyTargetRight, enemyPixmapRight, enemySourceRight);
+	}
+ 
+      if (badguy.left==1)
+	{
+	  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft, enemySourceLeft);
+	}
     }
 }
 
@@ -157,18 +188,32 @@ Draw::keyPressEvent (QKeyEvent * event)
     {
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
+      
+      // update sprite state
+      hero.leftFacing = 1;
+      hero.rightFacing = 0;
+
       //hero.moveLeft();
       update ();
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       movingRight = 1;
+
+      // update sprite state
+      hero.leftFacing = 0;
+      hero.rightFacing = 1;
+
       //hero.moveRight();
       update ();
       break;
     case Qt::Key_W:		//W pressed to jump
       jumping = 1;
+
+      // update sprite state
+
+
       //hero.jump();
-      update ();
+      update();
       break;
     case Qt::Key_Escape:
       exit (1);

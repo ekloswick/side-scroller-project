@@ -25,6 +25,7 @@ character::character()
 	setXVel(0);
 	setYVel( getGravity() );
 	gravity = 25;
+	rightFacing=1;
 }
 
 void character::moveLeft()
