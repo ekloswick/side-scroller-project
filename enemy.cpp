@@ -16,8 +16,8 @@ using namespace std;
 enemy::enemy ()
 {
   xPos = 300;
-  yPos = 300;
-  movementSpeed = 20;
+  yPos = 642;
+  movementSpeed = 10;
   left = 0;
   right = 0;
 }

@@ -121,13 +121,24 @@ Draw::paintEvent (QPaintEvent *)
       //Draw the Hero
       painter.setBrush (QBrush ("#ffff00"));
 
-      painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
+      //painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
 
+      // draw mario
       QRectF target (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
       QRectF source (0.0, 0.0, 56, 69);
-      QPixmap pixmap ("marioRight.jpg");
+      QPixmap pixmap ("marioRight.png");
       QPainter (this);
       painter.drawPixmap (target, pixmap, source);
+
+      // draw goomba
+      QRectF targetE (badguy.getX(), badguy.getY(), 56.0, 69.0);
+      QRectF sourceE (0.0, 0.0, 70, 86);
+      QPixmap pixmapE ("goombaLeft.png");
+      QPainter (this);
+      painter.drawPixmap (targetE, pixmapE, sourceE);
+
+
+
     }
 }
 
