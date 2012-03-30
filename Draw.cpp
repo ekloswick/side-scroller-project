@@ -93,7 +93,7 @@ Draw::paintEvent (QPaintEvent *)
     }
   else if (welcome == 1)
     {
-      msleep (2000);
+      msleep (500);  //****** Set to 500 just to test the code; for final program should be larger value
       welcome = 2;
     }
   else
@@ -257,6 +257,7 @@ Draw::keyReleaseEvent (QKeyEvent * event)
 void
 Draw::updatePhysics ()
 {
+testCollision();
   // checks for correct key presses
   if (movingLeft == 1)
     hero.moveLeft ();
@@ -325,7 +326,7 @@ Draw::updateEnemy ()
 void
 Draw::testCollision ()
 {
-  if (hero.getXPos () == badguy.getX ())
+  if ((hero.getXPos () < badguy.getX ()+5) && (hero.getXPos() > badguy.getX()-5) && (hero.getYPos() < (badguy.getY()-30)) && (hero.getYVel()>0))
     {
       badguy.setLife (0);
 cout<<"TESTTESTEETSETSETSETSETSETSETSET"<<endl;
