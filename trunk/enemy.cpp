@@ -20,6 +20,7 @@ enemy::enemy ()
   movementSpeed =5;
   left = 0;
   right = 0;
+  life=1;
 }
 
 void
@@ -50,9 +51,31 @@ enemy::getY ()
 enemy::moveLeft ()		// function to move left
 {
   xPos -= movementSpeed;
-} void
-
+} 
+void
 enemy::moveRight ()		// function to move right
 {
   xPos += movementSpeed;
 }
+
+
+int
+enemy::getLife(void)
+{
+return life;
+}
+
+
+void
+enemy::setLife(int l)
+{
+life=l;
+}
+
+
+
+
+
+
+
+

@@ -32,6 +32,7 @@ class Draw : public QWidget
 		void updatePhysics();
 		void timerEvent(QTimerEvent *event);
                 void updateEnemy();
+		void testCollision();
 
 	private:
 		int msleep(unsigned long);

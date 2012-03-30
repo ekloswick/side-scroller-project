@@ -63,6 +63,7 @@ Draw::paintEvent (QPaintEvent *)
 
   updateEnemy ();
   updatePhysics ();
+  testCollision ();
 
   //Welcome message that is only displayed once
   if (welcome == 0)
@@ -133,42 +134,49 @@ Draw::paintEvent (QPaintEvent *)
       QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
       QRectF heroSourceLeft (0.0, 0.0, 56, 69);
       QPixmap heroPixmapLeft ("marioLeft.png");
-      QPainter (this);  
+      QPainter (this);
 
       // update hero sprite state
-      if (hero.rightFacing==1)
+      if (hero.rightFacing == 1)
 	{
-	  painter.drawPixmap (heroTargetRight, heroPixmapRight, heroSourceRight);
+	  painter.drawPixmap (heroTargetRight, heroPixmapRight,
+			      heroSourceRight);
 	}
- 
-      if (hero.leftFacing==1)
+
+      if (hero.leftFacing == 1)
 	{
 	  painter.drawPixmap (heroTargetLeft, heroPixmapLeft, heroSourceLeft);
 	}
 
       // right-facing enemy
-      QRectF enemyTargetRight (badguy.getX(), badguy.getY(), 56.0, 69.0);
+      QRectF enemyTargetRight (badguy.getX (), badguy.getY (), 56.0, 69.0);
       QRectF enemySourceRight (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapRight ("goombaRight.png");
       QPainter (this);
 
       // left-facing enemy
-      QRectF enemyTargetLeft (badguy.getX(), badguy.getY(), 56.0, 69.0);
+      QRectF enemyTargetLeft (badguy.getX (), badguy.getY (), 56.0, 69.0);
       QRectF enemySourceLeft (0.0, 0.0, 70, 86);
-      QPixmap enemyPixmapLeft("goombaLeft.png");
+      QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);
 
-      painter.drawPixmap (enemyTargetRight, enemyPixmapRight, enemySourceRight);
-      
-      // update enemy sprite state
-      if (badguy.right==1)
+   if (badguy.getLife () != 0)
 	{
-	  painter.drawPixmap (enemyTargetRight, enemyPixmapRight, enemySourceRight);
-	}
- 
-      if (badguy.left==1)
-	{
-	  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft, enemySourceLeft);
+      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
+			  enemySourceRight);
+   
+	  // update enemy sprite state
+	  if (badguy.right == 1)
+	    {
+	      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
+				  enemySourceRight);
+	    }
+
+	  if (badguy.left == 1)
+	    {
+	      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
+				  enemySourceLeft);
+	    }
 	}
     }
 }
@@ -188,7 +196,7 @@ Draw::keyPressEvent (QKeyEvent * event)
     {
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
-      
+
       // update sprite state
       hero.leftFacing = 1;
       hero.rightFacing = 0;
@@ -213,7 +221,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 
 
       //hero.jump();
-      update();
+      update ();
       break;
     case Qt::Key_Escape:
       exit (1);
@@ -289,12 +297,10 @@ Draw::timerEvent (QTimerEvent * event)
 void
 Draw::updateEnemy ()
 {
-
-if (badguy.left==0 && badguy.right==0)
-{
-  badguy.moveRight ();
-}
-
+  if (badguy.left == 0 && badguy.right == 0)
+    {
+      badguy.moveRight ();
+    }
   if (badguy.getX () == 600)
     {
       badguy.left = 1;
@@ -307,15 +313,21 @@ if (badguy.left==0 && badguy.right==0)
     }
 
   if (badguy.right == 1)
-{
-    badguy.moveRight ();
-}
+    {
+      badguy.moveRight ();
+    }
   if (badguy.left == 1)
-{
-    badguy.moveLeft ();
+    {
+      badguy.moveLeft ();
+    }
 }
 
-
-
-
+void
+Draw::testCollision ()
+{
+  if (hero.getXPos () == badguy.getX ())
+    {
+      badguy.setLife (0);
+cout<<"TESTTESTEETSETSETSETSETSETSETSET"<<endl;
+    }
 }
