@@ -10,6 +10,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <QWidget>
 #include "character.h"
 #include "enemy.h"
+#include "platform.h"
 #include <vector>
 
 using namespace std;
@@ -22,7 +23,7 @@ class Draw : public QWidget
 	public:
 		Draw(QWidget *parent = 0);
 		character hero;
-                enemy badguy;
+          enemy badguy;
 
 	protected:
 		void paintEvent(QPaintEvent *e);
@@ -31,7 +32,7 @@ class Draw : public QWidget
 		void keyReleaseEvent(QKeyEvent *event);
 		void updatePhysics();
 		void timerEvent(QTimerEvent *event);
-                void updateEnemy();
+          void updateEnemy();
 		void testCollision();
 
 	private:
@@ -41,7 +42,8 @@ class Draw : public QWidget
 		int movingLeft;
 		int movingRight;
 		int jumping;
-		vector < int > board;
+		vector < platform > board;
+		//vector < enemy > enemies;
 };
 
 #endif

@@ -12,21 +12,21 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
   using namespace std;
 class enemy 
 {
-public:enemy ();
-  void setX (int);
-  void setY (int);
-  int getX ();
-  int getY ();
-  void moveLeft ();		// function to move left
-  void moveRight ();		// function to move right
-  int left;
-  int right;
+	public:		enemy ();
+		~enemy();		void setX (int);
+		void setY (int);
+		int getX ();
+		int getY ();
+		void moveLeft ();		// function to move left
+		void moveRight ();		// function to move right
+		int left;
+		int right;
 
-int getLife(void);
-void setLife(int);
+		int getLife(void);
+		void setLife(int);
 
-private:int xPos; int yPos;  int movementSpeed;
-int life;
+	private:		int xPos; 		int yPos;  		int movementSpeed;
+		int life;
 };
 
 
