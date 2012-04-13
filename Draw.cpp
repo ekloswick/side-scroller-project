@@ -26,13 +26,30 @@ Draw::Draw (QWidget * parent):QWidget (parent)
   yWindowSize = 800;
 
   resize (xWindowSize, yWindowSize);
-  int
-  myints[] = { 10, 695, 780, 60 };
+ /* int myints[] = { 10, 695, 780, 60 };
 
   for (int i = 0; i < 4; i++)
     {
       board.push_back (myints[i]);
-    }
+    }*/
+
+	// load in platforms
+	//for (int i = 0; i < 4; i++)
+	//{
+		platform temp1(10 + 0*50, 695 - 0*60, 780, 60);
+		platform temp2(10 + 1*50, 695 - 1*60, 780, 60);
+		platform temp3(10 + 2*50, 695 - 2*60, 780, 60);
+		platform temp4(10 + 3*50, 695 - 3*60, 780, 60);
+	
+		board.push_back(temp1);
+		board.push_back(temp2);
+		board.push_back(temp3);
+		board.push_back(temp4);
+		
+		
+	//}
+	
+	// load in enemies
 
   startTimer (50);
 }
@@ -117,8 +134,12 @@ Draw::paintEvent (QPaintEvent *)
 
       //Draw Basic Stage
       painter.setBrush (QBrush ("#1ac500"));
-      painter.drawRect (board[0], board[1], board[2], board[3]);
-
+      
+      for (int i = 0; i < board.size(); i++)
+      {
+      	painter.drawRect ( board[i].getX(), board[i].getY(), board[i].getWidth(), board[i].getHeight() );
+	 }
+	
       //Draw the Hero
       painter.setBrush (QBrush ("#ffff00"));
 
@@ -263,9 +284,14 @@ testCollision();
     hero.moveLeft ();
   if (movingRight == 1)
     hero.moveRight ();
-  if (jumping == 1 && hero.getYPos () > 690 - 69)
-    hero.jump ();
-
+  
+  // prevents infinity-jumping
+  for (int i = 0; i < board.size(); i++)
+  {    
+	  if (jumping == 1 && hero.getYPos () > board[i].getY() - 69)
+	    hero.jump ();
+  }
+	
   // updates the positions based on velocities
   hero.setXPos (hero.getXPos () + hero.getXVel ());
   hero.setYPos (hero.getYPos () + hero.getYVel ());
@@ -274,10 +300,13 @@ testCollision();
   hero.setXVel (hero.getXVel () / 2);
   hero.setYVel (hero.getYVel () + hero.getGravity ());
 
-  // ground collision detection
-  if (hero.getYPos () > 626)
-    hero.setYPos (626);
-
+  // platform collision detection
+  for (int i = 0; i < board.size(); i++)
+  {
+	  if (hero.getYPos () > board[i].getY() )
+	    hero.setYPos( board[i].getY() );
+  }
+  
   // wall collision detection (TEMPORARY)
   if (hero.getXPos () < 0)
     hero.setXPos (10);
@@ -331,5 +360,6 @@ Draw::testCollision ()
     {
       badguy.setLife (0);
       hero.jump();
+      badguy.~enemy();
     }
 }

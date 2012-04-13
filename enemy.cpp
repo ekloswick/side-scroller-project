@@ -23,6 +23,12 @@ enemy::enemy ()
   life=1;
 }
 
+enemy::~enemy()
+{
+	xPos = -5000;
+	yPos = -5000;
+	movementSpeed = 0;
+}
 void
 enemy::setX (int n)
 {
