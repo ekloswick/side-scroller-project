@@ -326,9 +326,10 @@ Draw::updateEnemy ()
 void
 Draw::testCollision ()
 {
-  if ((hero.getXPos () < badguy.getX ()+5) && (hero.getXPos() > badguy.getX()-5) && (hero.getYPos() < (badguy.getY()-30)) && (hero.getYVel()>0))
+//tests if the hero is above the enemy and within an appropriate position to squash it
+  if ( (hero.getXPos () < (badguy.getX ()+30)) && (hero.getXPos() > (badguy.getX()-30)) && (hero.getYPos() < (badguy.getY()-18)) && (hero.getYPos() > (badguy.getY()-100)) && (hero.getYVel()>0) )
     {
       badguy.setLife (0);
-cout<<"TESTTESTEETSETSETSETSETSETSETSET"<<endl;
+      hero.jump();
     }
 }
