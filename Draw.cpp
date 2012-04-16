@@ -6,6 +6,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 
 #include "Draw.h"
+#include "platform.h"
 #include <QtGui>
 #include <QPainter>
 #include "qlabel.h"
@@ -26,12 +27,6 @@ Draw::Draw (QWidget * parent):QWidget (parent)
   yWindowSize = 800;
 
   resize (xWindowSize, yWindowSize);
- /* int myints[] = { 10, 695, 780, 60 };
-
-  for (int i = 0; i < 4; i++)
-    {
-      board.push_back (myints[i]);
-    }*/
 
 	// load in platforms
 	//for (int i = 0; i < 4; i++)
