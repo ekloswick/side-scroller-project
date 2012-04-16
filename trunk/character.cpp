@@ -26,8 +26,8 @@ character::character()
 	setYVel( getGravity() );
 	gravity = 25;
 	rightFacing=1;
-	setXSize(98);
-	setYSize(164);
+	setXSize(15);
+	setYSize(27);
 }
 
 void character::moveLeft()

@@ -141,13 +141,14 @@ Draw::paintEvent (QPaintEvent *)
       //painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
 
       // right-facing hero
-      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
+      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()*2, hero.getYSize()*2);
       QRectF heroSourceRight (0.0, 0.0, hero.getXSize(), hero.getYSize());
-      QPixmap heroPixmapRight ("marioRight.png");
+      QPixmap heroPixmapRight1 ("right1.png");
+      QPixmap heroPixmapRight2 ("right2.png");
       QPainter (this);
 
       // left-facing hero
-      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
+      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), hero.getXSize()*2, hero.getYSize()*2);
       QRectF heroSourceLeft (0.0, 0.0, hero.getXSize(), hero.getYSize());
       QPixmap heroPixmapLeft ("marioLeft.png");
       QPainter (this);
@@ -155,8 +156,11 @@ Draw::paintEvent (QPaintEvent *)
       // update hero sprite state
       if (hero.rightFacing == 1)
 	{
-	  painter.drawPixmap (heroTargetRight, heroPixmapRight,
+	  painter.drawPixmap (heroTargetRight, heroPixmapRight1,
 			      heroSourceRight);
+	  msleep(200);
+	  painter.drawPixmap(heroTargetRight, heroPixmapRight2, heroSourceRight);
+	  msleep(200);
 	}
 
       if (hero.leftFacing == 1)
