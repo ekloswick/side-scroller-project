@@ -19,15 +19,15 @@ using namespace std;
 
 character::character()
 {
-	setXPos(360);
-	setYPos(500);
-	lives = 3;
+	setXPos(50);
+	setYPos(50);
+	setLives(5);
 	setXVel(0);
 	setYVel( getGravity() );
 	gravity = 25;
 	rightFacing=1;
-	setXSize(15);
-	setYSize(27);
+	setXSize(98);
+	setYSize(164);
 }
 
 void character::moveLeft()
@@ -40,28 +40,10 @@ void character::moveRight()
 	xVel += 16;
 }
 
-void character::moveUp()
-{
-	//yPos -= 5;	
-}  
-
-void character::moveDown()
-{
-	//yPos += 5;
-}
-
 void character::jump()
 {
 	yVel = -80;
 }
-/*
-void character::shoot()
-{
-  if (press == '')
-    // shoot
-}
-
-*/
 
 int character::getXPos()
 {
@@ -108,11 +90,6 @@ int character::getGravity()
 	return gravity;
 }
 
-int character::getLives()
-{
-	return lives;
-}
-
 int character::getXSize()
 {
 	return xsize;
@@ -132,3 +109,17 @@ void character::setYSize(int n)
 {
 	ysize = n;
 }
+
+void character::setLives(int L)
+{
+	lives=L;
+}
+
+int character::getLives()
+{
+	return lives;
+}
+
+
+
+

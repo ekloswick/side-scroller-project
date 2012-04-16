@@ -18,8 +18,7 @@
 {
 	public:
   		character ();
-  		int getXPos ();  		int getYPos ();
-  		void setXPos (int); 		void setYPos (int);
+  		int getXPos ();  		int getYPos ();		void setXPos (int); 		void setYPos (int);
   		int getXVel ();
 		int getYVel ();
 		int getXSize();
@@ -34,23 +33,16 @@
 		void setXVel (int);
 		void setYVel (int);
 
-		int getGravity ();
-		int getLives ();
-  		void moveLeft ();		// function to move left
-		void moveRight ();		// function to move right
-		void moveUp ();			// function to move up
-		void moveDown ();		// function to move down 		void jump ();			// function to jump
-  		//void shoot(); // function to use weapon
-
+		int getGravity ();		void moveLeft ();		// function to move left
+		void moveRight ();		// function to move right		void jump ();			// function to jump
+		int getLives();
+		void setLives(int);
 	private:		int xPos; 		int yPos;   		int lives;			// number of lives remaining
-  		//int health;			// percentage of health remaining
-
 		int xVel;			// acceleration in x direction
 	  	int yVel;			// acceleration in y direction
  		int gravity;
 		int xsize;
-		int ysize;
-};
+		int ysize;};
 
 
 #endif
