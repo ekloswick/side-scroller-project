@@ -22,6 +22,10 @@
   		void setXPos (int); 		void setYPos (int);
   		int getXVel ();
 		int getYVel ();
+		int getXSize();
+		int getYSize();
+		void setXSize(int);
+		void setYSize(int);
 
 		int leftFacing;
 		int rightFacing;
@@ -44,6 +48,8 @@
 		int xVel;			// acceleration in x direction
 	  	int yVel;			// acceleration in y direction
  		int gravity;
+		int xsize;
+		int ysize;
 };
 
 
