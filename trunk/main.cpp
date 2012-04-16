@@ -17,17 +17,12 @@ int main(int argc, char *argv[])
 {
      QApplication app(argc, argv);
 
-     /* import image, display
-     QGraphicsScene scene;
-     QGraphicsView view(&scene);
-     QGraphicsPixmapItem item(QPixmap("mariosprite.jpg"));
-     scene.addItem(&item);    
-     view.show();
-     */
+     //app->setStyleSheet("background-image: ./back.png");
 
      Draw p;
-     //p.addItem(&item);
+ 
      p.show();
+
      return app.exec();
  }
 

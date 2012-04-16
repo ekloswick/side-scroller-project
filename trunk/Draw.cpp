@@ -141,14 +141,14 @@ Draw::paintEvent (QPaintEvent *)
       //painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
 
       // right-facing hero
-      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
-      QRectF heroSourceRight (0.0, 0.0, 56, 69);
+      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
+      QRectF heroSourceRight (0.0, 0.0, hero.getXSize(), hero.getYSize());
       QPixmap heroPixmapRight ("marioRight.png");
       QPainter (this);
 
       // left-facing hero
-      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), 56.0, 69.0);
-      QRectF heroSourceLeft (0.0, 0.0, 56, 69);
+      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
+      QRectF heroSourceLeft (0.0, 0.0, hero.getXSize(), hero.getYSize());
       QPixmap heroPixmapLeft ("marioLeft.png");
       QPainter (this);
 
@@ -165,13 +165,13 @@ Draw::paintEvent (QPaintEvent *)
 	}
 
       // right-facing enemy
-      QRectF enemyTargetRight (badguy.getX (), badguy.getY (), 56.0, 69.0);
+      QRectF enemyTargetRight (badguy.getX (), badguy.getY (), 35.0, 43.0);
       QRectF enemySourceRight (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapRight ("goombaRight.png");
       QPainter (this);
 
       // left-facing enemy
-      QRectF enemyTargetLeft (badguy.getX (), badguy.getY (), 56.0, 69.0);
+      QRectF enemyTargetLeft (badguy.getX (), badguy.getY (), 35.0, 43.0);
       QRectF enemySourceLeft (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);

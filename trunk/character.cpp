@@ -26,6 +26,8 @@ character::character()
 	setYVel( getGravity() );
 	gravity = 25;
 	rightFacing=1;
+	setXSize(98);
+	setYSize(164);
 }
 
 void character::moveLeft()
@@ -109,4 +111,24 @@ int character::getGravity()
 int character::getLives()
 {
 	return lives;
+}
+
+int character::getXSize()
+{
+	return xsize;
+}
+
+int character::getYSize()
+{
+	return ysize;
+}
+
+void character::setXSize(int n)
+{
+	xsize = n;
+}
+
+void character::setYSize(int n)
+{
+	ysize = n;
 }
