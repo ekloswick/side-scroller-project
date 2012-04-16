@@ -21,29 +21,26 @@ using namespace std;
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent)
 {
-  setWindowTitle (tr ("2-D Side Scroller"));
+	setWindowTitle (tr ("2-D Side Scroller"));
 
-  xWindowSize = 800;
-  yWindowSize = 800;
+	xWindowSize = 1000;
+	yWindowSize = 600;
 
-  resize (xWindowSize, yWindowSize);
+	resize (xWindowSize, yWindowSize);
 
-	// load in platforms
-	//for (int i = 0; i < 4; i++)
-	//{
-		platform temp1(10 + 0*50, 695 - 0*60, 780, 60);
-		platform temp2(10 + 1*50, 695 - 1*60, 780, 60);
-		platform temp3(10 + 2*50, 695 - 2*60, 780, 60);
-		platform temp4(10 + 3*50, 695 - 3*60, 780, 60);
-	
-		board.push_back(temp1);
-		board.push_back(temp2);
-		board.push_back(temp3);
-		board.push_back(temp4);
-		
-		
-	//}
-	
+	platform temp1(0,500,250,100);
+	platform temp2(300,500,100,100);
+	platform temp3(400,400,1200,200);
+        platform temp4(1700,200,600,200);
+	platform temp5(2400,500,300,100);
+
+	board.push_back(temp1);
+	board.push_back(temp2);
+	board.push_back(temp3);
+	board.push_back(temp4);
+	board.push_back(temp5);
+
+
 	// load in enemies
 
   startTimer (50);
@@ -123,15 +120,11 @@ Draw::paintEvent (QPaintEvent *)
       trash = sprintf (displayLives, "Lives: %d", hero.getLives ());
       painter.drawText (270, 0, 100, 100, 0, displayLives);
 
-
-      // Set the colors for each of the painters
-      // The Pen is used to draw lines and figure outlines, while the brush is used to fill in the figures
-
       //Draw Basic Stage
       painter.setBrush (QBrush ("#1ac500"));
       
       for (int i = 0; i < board.size(); i++)
-      {
+         {
       	painter.drawRect ( board[i].getX(), board[i].getY(), board[i].getWidth(), board[i].getHeight() );
 	 }
 	
@@ -141,14 +134,14 @@ Draw::paintEvent (QPaintEvent *)
       //painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
 
       // right-facing hero
-      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()*2, hero.getYSize()*2);
+      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
       QRectF heroSourceRight (0.0, 0.0, hero.getXSize(), hero.getYSize());
-      QPixmap heroPixmapRight1 ("right1.png");
-      QPixmap heroPixmapRight2 ("right2.png");
+      QPixmap heroPixmapRight ("marioRight.png");
+
       QPainter (this);
 
       // left-facing hero
-      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), hero.getXSize()*2, hero.getYSize()*2);
+      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
       QRectF heroSourceLeft (0.0, 0.0, hero.getXSize(), hero.getYSize());
       QPixmap heroPixmapLeft ("marioLeft.png");
       QPainter (this);
@@ -156,11 +149,8 @@ Draw::paintEvent (QPaintEvent *)
       // update hero sprite state
       if (hero.rightFacing == 1)
 	{
-	  painter.drawPixmap (heroTargetRight, heroPixmapRight1,
+	  painter.drawPixmap (heroTargetRight, heroPixmapRight,
 			      heroSourceRight);
-	  msleep(200);
-	  painter.drawPixmap(heroTargetRight, heroPixmapRight2, heroSourceRight);
-	  msleep(200);
 	}
 
       if (hero.leftFacing == 1)
@@ -179,8 +169,8 @@ Draw::paintEvent (QPaintEvent *)
       QRectF enemySourceLeft (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);
-
-   if (badguy.getLife () != 0)
+/*
+   if (badguy.getLife () != 0) 
 	{
       painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
 			  enemySourceRight);
@@ -198,6 +188,7 @@ Draw::paintEvent (QPaintEvent *)
 				  enemySourceLeft);
 	    }
 	}
+*/
     }
 }
 
@@ -216,31 +207,21 @@ Draw::keyPressEvent (QKeyEvent * event)
     {
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
-
       // update sprite state
       hero.leftFacing = 1;
       hero.rightFacing = 0;
-
-      //hero.moveLeft();
       update ();
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       movingRight = 1;
-
       // update sprite state
       hero.leftFacing = 0;
       hero.rightFacing = 1;
-
-      //hero.moveRight();
       update ();
       break;
     case Qt::Key_W:		//W pressed to jump
       jumping = 1;
-
       // update sprite state
-
-
-      //hero.jump();
       update ();
       break;
     case Qt::Key_Escape:
@@ -299,19 +280,73 @@ testCollision();
   hero.setXVel (hero.getXVel () / 2);
   hero.setYVel (hero.getYVel () + hero.getGravity ());
 
-  // platform collision detection
+  
+
+
+
+// platform collision detection
+
   for (int i = 0; i < board.size(); i++)
   {
-	  if (hero.getYPos () > board[i].getY() )
-	    hero.setYPos( board[i].getY() );
-  }
-  
-  // wall collision detection (TEMPORARY)
-  if (hero.getXPos () < 0)
-    hero.setXPos (10);
-  else if (hero.getXPos () > 800)
-    hero.setXPos (790);
 
+/*
+if( (hero.getXPos() - board[i].getX()) >= 0 && 
+    (hero.getXPos() - board[i].getX()) <= board[i].getWidth() &&
+    (board[i].getY()- hero.getYPos()) >= 0 &&
+    (board[i].getY()- hero.getYPos()) <= (hero.getYSize()/3) )
+	{
+*/	//hero.setYPos(board[i].getY())-(hero.getYSize()/3));
+
+   
+
+  if(hero.getXPos() > board[i].getX() && hero.getXPos() < (board[i].getX() + board[i].getWidth()))
+	{	
+	if (board[i+1].getY() <	board[i].getY())
+	{
+		//prevent from walking into the wall
+		if ((board[i+1].getX()-hero.getXPos())<(hero.getXSize()/3) &&
+		(hero.getYPos() + hero.getYSize()/3) > board[i+1].getY())
+		{
+			hero.setXPos(board[i+1].getX()-hero.getXSize()/3);
+			cout<<"test..."<<endl;
+
+		}
+	}
+//check ground collision
+if (hero.getYPos () > board[i].getY() )
+hero.setYPos( board[i].getY()-(hero.getYSize()/3) );
+
+}
+}
+  
+
+
+
+// test if mario has fallen off the board
+if (hero.getYPos() >= yWindowSize)
+{
+	hero.setLives(hero.getLives() -1);
+	hero.setXPos(50);
+	hero.setYPos(50);
+}
+
+
+
+
+
+  // cause the screen to scroll once mario reaches a certain x position
+  
+
+  if (hero.getXPos ()>= (double)xWindowSize*(.75))
+	{
+	hero.setXPos ((double)xWindowSize*(.75));
+	for(int i=0; i<board.size(); i++)
+		{
+		board[i].moveLeft(hero.getXVel());
+		}
+
+}
+    
 }
 
 // constantly updates the game

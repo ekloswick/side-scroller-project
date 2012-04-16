@@ -23,7 +23,7 @@ class Draw : public QWidget
 	public:
 		Draw(QWidget *parent = 0);
 		character hero;
-          enemy badguy;
+                enemy badguy;
 
 	protected:
 		void paintEvent(QPaintEvent *e);
