@@ -35,6 +35,7 @@ class Draw : public QWidget
                 void updateEnemy();
 		void testCollision();
 
+
 	private:
 		int msleep(unsigned long);
 		int xWindowSize;
@@ -43,6 +44,8 @@ class Draw : public QWidget
 		int movingRight;
 		int jumping;
 		vector < platform > board;
+		hero mario;
+		enemy badguy;
 		//vector < enemy > enemies;
 };
 
