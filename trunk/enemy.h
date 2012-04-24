@@ -14,10 +14,12 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 class enemy : public character
 {
 	public:		enemy (int, int, int, int,int,int);
+		enemy();
 		~enemy();
 
 		void moveLeft ();		// function to move left
 		void moveRight ();		// function to move right
+		void update(int, int, int, int, int, int);
 		int  getRangeStart(void);
 		int  getRangeFinish(void);
 		int rangeStart;

@@ -19,14 +19,41 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 using namespace std;
 
-
-//mario mario (50, 50, 5);
-//enemy badguy (400, 400, 1, 10, 400, 200);
-
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5),
-		badguy(400, 400, 1, 10, 400, 200)
+Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5), badguy(1,1,1,1,1,1)
 {
+  string tempString;
+  char tempCharArray[100];
+  char *ptr;
+  vector < int > values;
+
+
+//enemy badguy;
+ifstream enemyFile ("enemy.txt");
+if (enemyFile.is_open())
+{
+	while (enemyFile.good())
+	{
+		getline(enemyFile,tempString);
+  	for (int k = 0; k < (tempString.size ()); k++)
+	    {
+	      tempCharArray[k] = tempString[k];	//converts the line to an array of characters
+	    }
+	  tempCharArray[tempString.size ()] = NULL;
+	  ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
+	  while (ptr != NULL)
+	    {
+	      values.push_back (atoi (ptr));
+	      ptr = strtok (NULL, ", ");
+	    }
+	  
+	 	badguy.update(values[0],values[1],values[2],values[3],values[4],values[5]);
+		enemies.push_back(badguy);
+	 	values.clear ();
+	}
+}
+
+
 
   setWindowTitle (tr ("2-D Side Scroller"));
 
@@ -36,13 +63,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5),
   resize (xWindowSize, yWindowSize);
 
   ifstream myfile ("level.txt");
-  string tempString;
-  char
-    tempCharArray[100];
-  char *
-    ptr;
-  vector < int >
-    values;
+
 
   platform temp (0, 0, 0, 0);
 
@@ -191,39 +212,42 @@ Draw::paintEvent (QPaintEvent *)
 	{
 	  painter.drawPixmap (marioTargetLeft, marioPixmapLeft, marioSourceLeft);
 	}
-
+//LOOP THROUGH ALL ENEMIES
+for (int z=0; z<enemies.size();z++)
+{
       // right-facing enemy
-      QRectF enemyTargetRight (badguy.getXPos (), badguy.getYPos (), 35.0,
+      QRectF enemyTargetRight (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
 			       43.0);
       QRectF enemySourceRight (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapRight ("goombaRight.png");
       QPainter (this);
 
       // left-facing enemy
-      QRectF enemyTargetLeft (badguy.getXPos (), badguy.getYPos (), 35.0,
+      QRectF enemyTargetLeft (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
 			      43.0);
       QRectF enemySourceLeft (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);
 
-      if (badguy.getLives () != 0)
+      if (enemies[z].getLives () != 0)
 	{
 	  painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
 			      enemySourceRight);
 
 	  // update enemy sprite state
-	  if (badguy.rightFacing == 1)
+	  if (enemies[z].rightFacing == 1)
 	    {
 	      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
 				  enemySourceRight);
 	    }
 
-	  if (badguy.leftFacing == 1)
+	  if (enemies[z].leftFacing == 1)
 	    {
 	      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
 				  enemySourceLeft);
 	    }
 	}
+}
     }
   else if (mario.getLives () > 0 && mario.levelComplete == 1)
     {
@@ -477,44 +501,48 @@ Draw::timerEvent (QTimerEvent * event)
 void
 Draw::updateEnemy ()
 {
-  if (badguy.leftFacing == 0 && badguy.rightFacing == 0)
+//LOOP THROUGH ALL ENEMIES
+for (int z=0; z<enemies.size();z++)
+{
+  if (enemies[z].leftFacing == 0 && enemies[z].rightFacing == 0)
     {
-      badguy.moveRight ();
+      enemies[z].moveRight ();
     }
-  if (badguy.getXPos () ==
-      (badguy.getRangeStart () + badguy.getRangeFinish ()))
+  if (enemies[z].getXPos () ==
+      (enemies[z].getRangeStart () + enemies[z].getRangeFinish ()))
     {
-      badguy.leftFacing = 1;
-      badguy.rightFacing = 0;
+      enemies[z].leftFacing = 1;
+      enemies[z].rightFacing = 0;
     }
-  if (badguy.getXPos () == badguy.getRangeStart ())
+  if (enemies[z].getXPos () == enemies[z].getRangeStart ())
     {
-      badguy.rightFacing = 1;
-      badguy.leftFacing = 0;
+      enemies[z].rightFacing = 1;
+      enemies[z].leftFacing = 0;
     }
 
-  if (badguy.rightFacing == 1)
+  if (enemies[z].rightFacing == 1)
     {
-      badguy.moveRight ();
+      enemies[z].moveRight ();
     }
-  if (badguy.leftFacing == 1)
+  if (enemies[z].leftFacing == 1)
     {
-      badguy.moveLeft ();
+      enemies[z].moveLeft ();
     }
+}
 }
 
 void
 Draw::testCollision ()
 {
 //tests if the mario is above the enemy and within an appropriate position to squash it
-  if ((mario.getXPos () < (badguy.getXPos () + 30))
-      && (mario.getXPos () > (badguy.getXPos () - 30))
-      && (mario.getYPos () < (badguy.getYPos () - 18))
-      && (mario.getYPos () > (badguy.getYPos () - 100))
+  if ((mario.getXPos () < (enemies[0].getXPos () + 30))
+      && (mario.getXPos () > (enemies[0].getXPos () - 30))
+      && (mario.getYPos () < (enemies[0].getYPos () - 18))
+      && (mario.getYPos () > (enemies[0].getYPos () - 100))
       && (mario.getYVel () > 0))
     {
-      badguy.setLives (0);
+      enemies[0].setLives (0);
       mario.jump ();
-      badguy. ~ enemy ();
+      enemies[0]. ~ enemy ();
     }
 }
