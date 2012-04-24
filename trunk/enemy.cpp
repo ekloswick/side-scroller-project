@@ -7,21 +7,20 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <iomanip>
 #include <stdlib.h>
 #include <enemy.h>
-
+#include "character.h"
 #include <QPrinter>
 #include <QtGui>
 
 using namespace std;
-
-enemy::enemy ()
+ 
+enemy::enemy (int x, int y, int lives, int mSpeed, int rstart, int rfinish) : character(x,y,lives)
 {
-  xPos = 650;
-  yPos = 357;
-  movementSpeed =5;
+  movementSpeed=mSpeed;
+  rangeStart = rstart;
+  rangeFinish= rfinish;
 
-  left = 0;
-  right = 0;
-  life=1;
+  character::leftFacing = 0;
+  character::rightFacing = 0;
 }
 
 enemy::~enemy()
@@ -30,53 +29,25 @@ enemy::~enemy()
 	yPos = -5000;
 	movementSpeed = 0;
 }
-void
-enemy::setX (int n)
+
+void enemy::moveLeft()
+	{
+	setXPos(getXPos()-movementSpeed);
+	}
+
+void enemy::moveRight()
+	{
+	setXPos(getXPos()+movementSpeed);
+	}
+
+int enemy::getRangeStart(void)
 {
-  xPos = n;
+return rangeStart;
 }
 
-void
-enemy::setY (int n)
+int enemy::getRangeFinish(void)
 {
-  yPos = n;
-}
-
-int
-enemy::getX ()
-{
-  return xPos;
-}
-
-int
-enemy::getY ()
-{
-  return yPos;
-}
-
-void
-enemy::moveLeft ()		// function to move left
-{
-  xPos -= movementSpeed;
-} 
-void
-enemy::moveRight ()		// function to move right
-{
-  xPos += movementSpeed;
-}
-
-
-int
-enemy::getLife(void)
-{
-return life;
-}
-
-
-void
-enemy::setLife(int l)
-{
-life=l;
+return rangeFinish;
 }
 
 

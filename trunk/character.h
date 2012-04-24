@@ -6,6 +6,10 @@
  *  Copyright 2012. All rights reserved.
  *
  */  
+
+/*
+Base character class
+*/
   
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -17,32 +21,21 @@
 class character 
 {
 	public:
-  		character ();
-  		int getXPos ();  		int getYPos ();		void setXPos (int); 		void setYPos (int);
-  		int getXVel ();
-		int getYVel ();
-		int getXSize();
-		int getYSize();
-		void setXSize(int);
-		void setYSize(int);
+  		character (int, int, int);
 
-		int leftFacing;
+  		//functions for the position		int getXPos ();  		int getYPos ();		void setXPos (int); 		void setYPos (int);
+  
+		//function for moving		int leftFacing;
 		int rightFacing;
-		int isJumping;
 
-		void setXVel (int);
-		void setYVel (int);
-
-		int getGravity ();		void moveLeft ();		// function to move left
-		void moveRight ();		// function to move right		void jump ();			// function to jump
+		//functions for tracking lives
 		int getLives();
 		void setLives(int);
-	private:		int xPos; 		int yPos;   		int lives;			// number of lives remaining
-		int xVel;			// acceleration in x direction
-	  	int yVel;			// acceleration in y direction
- 		int gravity;
-		int xsize;
-		int ysize;};
+	int movementSpeed;
+		int xPos; 		int yPos;   		int lives;			// number of lives remaining
+	private:
+	
+};
 
 
 #endif

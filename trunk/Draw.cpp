@@ -13,8 +13,15 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <cmath>
 #include <string>
 #include <QFont>
+#include "character.h"
+#include "enemy.h"
+#include "hero.h"
 
 using namespace std;
+
+		hero hero(50,50,5);
+                enemy badguy(400,400,1,10,400,200);
+
 
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent)
@@ -59,19 +66,6 @@ cout<<"VALUES: "<<values[0]<<" "<<values[1]<<" "<<values[2]<< " "<<values[3]<< "
 }
 }
 
-/*
-	platform temp1(0,500,250,100);
-	platform temp2(300,500,100,100);
-	platform temp3(400,400,1200,200);
-        platform temp4(1700,200,600,200);
-	platform temp5(2400,500,300,100);
-
-	board.push_back(temp1);
-	board.push_back(temp2);
-	board.push_back(temp3);
-	board.push_back(temp4);
-	board.push_back(temp5);
-*/
 	// load in enemies
 
 	startTimer (50);
@@ -189,36 +183,35 @@ if(hero.getLives()>0)
 	}
 
       // right-facing enemy
-      QRectF enemyTargetRight (badguy.getX (), badguy.getY (), 35.0, 43.0);
+      QRectF enemyTargetRight (badguy.getXPos (), badguy.getYPos (), 35.0, 43.0);
       QRectF enemySourceRight (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapRight ("goombaRight.png");
       QPainter (this);
 
       // left-facing enemy
-      QRectF enemyTargetLeft (badguy.getX (), badguy.getY (), 35.0, 43.0);
+      QRectF enemyTargetLeft (badguy.getXPos (), badguy.getYPos (), 35.0, 43.0);
       QRectF enemySourceLeft (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);
-/*
-   if (badguy.getLife () != 0) 
+
+   if (badguy.getLives () != 0) 
 	{
       painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
 			  enemySourceRight);
    
 	  // update enemy sprite state
-	  if (badguy.right == 1)
+	  if (badguy.rightFacing == 1)
 	    {
 	      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
 				  enemySourceRight);
 	    }
 
-	  if (badguy.left == 1)
+	  if (badguy.leftFacing == 1)
 	    {
 	      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
 				  enemySourceLeft);
 	    }
 	}
-*/
     }
     else //game over
     {
@@ -389,26 +382,26 @@ Draw::timerEvent (QTimerEvent * event)
 void
 Draw::updateEnemy ()
 {
-  if (badguy.left == 0 && badguy.right == 0)
+  if (badguy.leftFacing == 0 && badguy.rightFacing == 0)
     {
       badguy.moveRight ();
     }
-  if (badguy.getX () == 600)
+  if (badguy.getXPos () == (badguy.getRangeStart()+badguy.getRangeFinish()))
     {
-      badguy.left = 1;
-      badguy.right = 0;
+      badguy.leftFacing = 1;
+      badguy.rightFacing = 0;
     }
-  if (badguy.getX () == 200)
+  if (badguy.getXPos () ==badguy.getRangeStart())
     {
-      badguy.right = 1;
-      badguy.left = 0;
+      badguy.rightFacing = 1;
+      badguy.leftFacing = 0;
     }
 
-  if (badguy.right == 1)
+  if (badguy.rightFacing == 1)
     {
       badguy.moveRight ();
     }
-  if (badguy.left == 1)
+  if (badguy.leftFacing == 1)
     {
       badguy.moveLeft ();
     }
@@ -418,9 +411,9 @@ void
 Draw::testCollision ()
 {
 //tests if the hero is above the enemy and within an appropriate position to squash it
-  if ( (hero.getXPos () < (badguy.getX ()+30)) && (hero.getXPos() > (badguy.getX()-30)) && (hero.getYPos() < (badguy.getY()-18)) && (hero.getYPos() > (badguy.getY()-100)) && (hero.getYVel()>0) )
+  if ( (hero.getXPos () < (badguy.getXPos ()+30)) && (hero.getXPos() > (badguy.getXPos()-30)) && (hero.getYPos() < (badguy.getYPos()-18)) && (hero.getYPos() > (badguy.getYPos()-100)) && (hero.getYVel()>0) )
     {
-      badguy.setLife (0);
+      badguy.setLives (0);
       hero.jump();
       badguy.~enemy();
     }
