@@ -19,9 +19,9 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 using namespace std;
 
-		hero hero(50,50,5);
-                enemy badguy(400,400,1,10,400,200);
-
+		
+hero hero(50,50,5);
+enemy badguy(400,400,1,10,400,200);
 
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent)
@@ -38,6 +38,7 @@ string tempString;
 char tempCharArray[100];
 char *ptr;
 vector <int> values;
+
 platform temp(0,0,0,0);
 
 if (myfile.is_open())
@@ -339,12 +340,11 @@ if( (hero.getXPos() - board[i].getX()) >= 0 &&
 	}
 
 	//check ground collision
-	if (hero.getYPos () >= board[i].getY() )
+	if (hero.getYPos () + (hero.getYSize()/3) >= board[i].getY() )
 	{
- 	//hero.setYVel(0);
-	hero.setYPos( board[i].getY()-(hero.getYSize()/3) );
-      // cout<<"Velocity: "<<hero.getYVel();
-      
+ 	hero.setYVel(0);
+	hero.setYPos( board[i].getY()- (hero.getYSize()/3) );
+     
 	}
 
 	}
