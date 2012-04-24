@@ -32,7 +32,7 @@ class Draw : public QWidget
 		void keyReleaseEvent(QKeyEvent *event);
 		void updatePhysics();
 		void timerEvent(QTimerEvent *event);
-          void updateEnemy();
+                void updateEnemy();
 		void testCollision();
 
 	private:
