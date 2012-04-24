@@ -10,6 +10,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <QWidget>
 #include "character.h"
 #include "enemy.h"
+#include "hero.h"
 #include "platform.h"
 #include <vector>
 
@@ -22,8 +23,7 @@ class Draw : public QWidget
 
 	public:
 		Draw(QWidget *parent = 0);
-		character hero;
-                enemy badguy;
+
 
 	protected:
 		void paintEvent(QPaintEvent *e);
