@@ -1,9 +1,7 @@
-
 /*
 Final_Project
 Justin Bartlett, Jake Flynt, Eli Kloswick
- */
-
+*/
 
 #include "Draw.h"
 #include "platform.h"
@@ -13,10 +11,10 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <string>
 #include <QFont>
 
 using namespace std;
-
 
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent)
@@ -28,6 +26,40 @@ Draw::Draw (QWidget * parent):QWidget (parent)
 
 	resize (xWindowSize, yWindowSize);
 
+ifstream myfile ("level.txt");
+string tempString;
+char tempCharArray[100];
+char *ptr;
+vector <int> values;
+platform temp(0,0,0,0);
+
+if (myfile.is_open())
+{
+while (myfile.good())
+{
+	getline (myfile, tempString);
+	for (int k = 0; k < (tempString.size ()); k++)
+	{
+	  tempCharArray[k] = tempString[k];	//converts the line to an array of characters
+	}
+	tempCharArray[tempString.size ()] = NULL;
+	ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
+	while (ptr != NULL)
+	{
+	  values.push_back (atoi(ptr));	
+	  ptr = strtok (NULL, ", ");
+	}
+cout<<"VALUES: "<<values[0]<<" "<<values[1]<<" "<<values[2]<< " "<<values[3]<< " "<<endl;
+	temp.setX(values[0]);
+	temp.setY(values[1]);
+	temp.setWidth(values[2]);
+	temp.setHeight(values[3]);
+	board.push_back(temp);
+	values.clear();
+}
+}
+
+/*
 	platform temp1(0,500,250,100);
 	platform temp2(300,500,100,100);
 	platform temp3(400,400,1200,200);
@@ -39,11 +71,10 @@ Draw::Draw (QWidget * parent):QWidget (parent)
 	board.push_back(temp3);
 	board.push_back(temp4);
 	board.push_back(temp5);
-
-
+*/
 	// load in enemies
 
-  startTimer (50);
+	startTimer (50);
 }
 
 int
@@ -70,10 +101,12 @@ Draw::paintEvent (QPaintEvent *)
 
   QPainter painter (this);	// get a painter object to send drawing commands to
 
+if(hero.getLives()>0)
+{
   updateEnemy ();
   updatePhysics ();
   testCollision ();
-
+}
   //Welcome message that is only displayed once
   if (welcome == 0)
     {
@@ -82,7 +115,7 @@ Draw::paintEvent (QPaintEvent *)
       myFont1.setPointSizeF (50.0);
       painter.setFont (myFont1);
 
-      painter.drawText (200, 100, 400, 300, Qt::AlignHCenter,
+      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
 			"WELCOME TO \nSIDE SCROLLER");
 
       //set the font size smaller for additional info
@@ -90,10 +123,10 @@ Draw::paintEvent (QPaintEvent *)
       myFont2.setPointSizeF (25.0);
       painter.setFont (myFont2);
 
-      painter.drawText (200, 300, 400, 200, Qt::AlignHCenter,
+      painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
 			"Justin Bartlett\nJake Flynt\nEli Kloswick");
 
-      painter.drawText (200, 500, 400, 200, Qt::AlignHCenter,
+      painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
 			"Press 'A' to move left\nPress 'D' to move right\nPress 'W' to jump");
 
 
@@ -105,7 +138,7 @@ Draw::paintEvent (QPaintEvent *)
       msleep (500);  //****** Set to 500 just to test the code; for final program should be larger value
       welcome = 2;
     }
-  else
+  else if (hero.getLives() > 0)
     {
       //Set font
       QFont myFont;
@@ -118,7 +151,7 @@ Draw::paintEvent (QPaintEvent *)
       char displayLives[10];
       int trash;		//stores the length of the array; this is not used
       trash = sprintf (displayLives, "Lives: %d", hero.getLives ());
-      painter.drawText (270, 0, 100, 100, 0, displayLives);
+      painter.drawText (270, 0, 200, 200, 0, displayLives);
 
       //Draw Basic Stage
       painter.setBrush (QBrush ("#1ac500"));
@@ -130,8 +163,6 @@ Draw::paintEvent (QPaintEvent *)
 	
       //Draw the Hero
       painter.setBrush (QBrush ("#ffff00"));
-
-      //painter.drawEllipse (badguy.getX (), badguy.getY (), 80, 80);
 
       // right-facing hero
       QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
@@ -152,7 +183,6 @@ Draw::paintEvent (QPaintEvent *)
 	  painter.drawPixmap (heroTargetRight, heroPixmapRight,
 			      heroSourceRight);
 	}
-
       if (hero.leftFacing == 1)
 	{
 	  painter.drawPixmap (heroTargetLeft, heroPixmapLeft, heroSourceLeft);
@@ -190,6 +220,14 @@ Draw::paintEvent (QPaintEvent *)
 	}
 */
     }
+    else //game over
+    {
+      QFont myFont;
+      myFont.setPointSizeF (75.0);
+      painter.setFont (myFont);
+	      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
+			"GAME \nOVER");
+    } 
 }
 
 // Capture mouse clicks
@@ -268,7 +306,7 @@ testCollision();
   // prevents infinity-jumping
   for (int i = 0; i < board.size(); i++)
   {    
-	  if (jumping == 1 && hero.getYPos () > board[i].getY() - 69)
+	  if (jumping == 1 && hero.getYPos () > (board[i].getY() - 69))
 	    hero.jump ();
   }
 	
@@ -280,11 +318,7 @@ testCollision();
   hero.setXVel (hero.getXVel () / 2);
   hero.setYVel (hero.getYVel () + hero.getGravity ());
 
-  
-
-
-
-// platform collision detection
+  // platform collision detection
 
   for (int i = 0; i < board.size(); i++)
   {
@@ -297,8 +331,6 @@ if( (hero.getXPos() - board[i].getX()) >= 0 &&
 	{
 */	//hero.setYPos(board[i].getY())-(hero.getYSize()/3));
 
-   
-
   if(hero.getXPos() > board[i].getX() && hero.getXPos() < (board[i].getX() + board[i].getWidth()))
 	{	
 	if (board[i+1].getY() <	board[i].getY())
@@ -308,18 +340,22 @@ if( (hero.getXPos() - board[i].getX()) >= 0 &&
 		(hero.getYPos() + hero.getYSize()/3) > board[i+1].getY())
 		{
 			hero.setXPos(board[i+1].getX()-hero.getXSize()/3);
-			cout<<"test..."<<endl;
+			cout<<"test:hitting wall.."<<endl;
 
 		}
 	}
-//check ground collision
-if (hero.getYPos () > board[i].getY() )
-hero.setYPos( board[i].getY()-(hero.getYSize()/3) );
 
-}
-}
-  
+	//check ground collision
+	if (hero.getYPos () >= board[i].getY() )
+	{
+ 	//hero.setYVel(0);
+	hero.setYPos( board[i].getY()-(hero.getYSize()/3) );
+      // cout<<"Velocity: "<<hero.getYVel();
+      
+	}
 
+	}
+   }
 
 
 // test if mario has fallen off the board
@@ -330,22 +366,15 @@ if (hero.getYPos() >= yWindowSize)
 	hero.setYPos(50);
 }
 
-
-
-
-
   // cause the screen to scroll once mario reaches a certain x position
-  
-
-  if (hero.getXPos ()>= (double)xWindowSize*(.75))
+    if (hero.getXPos ()>= (double)xWindowSize*(.75))
 	{
 	hero.setXPos ((double)xWindowSize*(.75));
 	for(int i=0; i<board.size(); i++)
 		{
 		board[i].moveLeft(hero.getXVel());
 		}
-
-}
+	}
     
 }
 
@@ -357,7 +386,6 @@ Draw::timerEvent (QTimerEvent * event)
 }
 
 // updates the motion of the enemy
-
 void
 Draw::updateEnemy ()
 {
