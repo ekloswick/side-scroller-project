@@ -19,6 +19,8 @@ class platform
 		platform(int, int, int, int);
 		void setX(int);
 		void setY(int);
+		void setWidth(int);
+		void setHeight(int);
 		int getX();
 		int getY();
 		int getHeight();

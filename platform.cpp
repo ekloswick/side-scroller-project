@@ -32,6 +32,16 @@ void platform::setY (int n)
   yPos = n;
 }
 
+void platform::setWidth(int n)
+{
+  width=n;
+}
+
+void platform::setHeight(int n)
+{
+  height=n;
+}
+
 int platform::getX ()
 {
   return xPos;
