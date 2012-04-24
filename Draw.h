@@ -46,7 +46,7 @@ class Draw : public QWidget
 		vector < platform > board;
 		hero mario;
 		enemy badguy;
-		//vector < enemy > enemies;
+		vector < enemy > enemies;
 };
 
 #endif

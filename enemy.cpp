@@ -50,6 +50,19 @@ int enemy::getRangeFinish(void)
 return rangeFinish;
 }
 
+void enemy::update(int x, int y, int lives, int mSpeed, int rstart, int rfinish)
+{
+  movementSpeed=mSpeed;
+  rangeStart = rstart;
+  rangeFinish= rfinish;
+
+  character::leftFacing = 0;
+  character::rightFacing = 0;
+setXPos(x);
+	setYPos(y);
+	setLives(lives);
+
+}
 
 
 
