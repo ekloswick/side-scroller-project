@@ -15,17 +15,19 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <QFont>
 #include "character.h"
 #include "enemy.h"
-#include "hero.h"
+#include "hero.h" 
 
 using namespace std;
 
 
-hero hero (50, 50, 5);
-enemy badguy (400, 400, 1, 10, 400, 200);
+//mario mario (50, 50, 5);
+//enemy badguy (400, 400, 1, 10, 400, 200);
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent)
+Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5),
+		badguy(400, 400, 1, 10, 400, 200)
 {
+
   setWindowTitle (tr ("2-D Side Scroller"));
 
   xWindowSize = 1000;
@@ -33,10 +35,8 @@ Draw::Draw (QWidget * parent):QWidget (parent)
 
   resize (xWindowSize, yWindowSize);
 
-  ifstream
-  myfile ("level.txt");
-  string
-    tempString;
+  ifstream myfile ("level.txt");
+  string tempString;
   char
     tempCharArray[100];
   char *
@@ -44,8 +44,7 @@ Draw::Draw (QWidget * parent):QWidget (parent)
   vector < int >
     values;
 
-  platform
-  temp (0, 0, 0, 0);
+  platform temp (0, 0, 0, 0);
 
   if (myfile.is_open ())
     {
@@ -103,7 +102,7 @@ Draw::paintEvent (QPaintEvent *)
 
   QPainter painter (this);	// get a painter object to send drawing commands to
 
-  if (hero.getLives () > 0)
+  if (mario.getLives () > 0)
     {
       updateEnemy ();
       updatePhysics ();
@@ -140,7 +139,7 @@ Draw::paintEvent (QPaintEvent *)
       msleep (500);		//****** Set to 500 just to test the code; for final program should be larger value
       welcome = 2;
     }
-  else if (hero.getLives () > 0 && hero.levelComplete==0)
+  else if (mario.getLives () > 0 && mario.levelComplete == 0)
     {
       //Set font
       QFont myFont;
@@ -152,7 +151,7 @@ Draw::paintEvent (QPaintEvent *)
       //number of lives remaining
       char displayLives[10];
       int trash;		//stores the length of the array; this is not used
-      trash = sprintf (displayLives, "Lives: %d", hero.getLives ());
+      trash = sprintf (displayLives, "Lives: %d", mario.getLives ());
       painter.drawText (270, 0, 200, 200, 0, displayLives);
 
       //Draw Basic Stage
@@ -164,33 +163,33 @@ Draw::paintEvent (QPaintEvent *)
 			    board[i].getWidth (), board[i].getHeight ());
 	}
 
-      //Draw the Hero
+      //Draw the mario
       painter.setBrush (QBrush ("#ffff00"));
 
-      // right-facing hero
-      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (),
-			      hero.getXSize () / 3, hero.getYSize () / 3);
-      QRectF heroSourceRight (0.0, 0.0, hero.getXSize (), hero.getYSize ());
-      QPixmap heroPixmapRight ("marioRight.png");
+      // right-facing mario
+      QRectF marioTargetRight (mario.getXPos (), mario.getYPos (),
+			      mario.getXSize () / 3, mario.getYSize () / 3);
+      QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
+      QPixmap marioPixmapRight ("marioRight.png");
 
       QPainter (this);
 
-      // left-facing hero
-      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (),
-			     hero.getXSize () / 3, hero.getYSize () / 3);
-      QRectF heroSourceLeft (0.0, 0.0, hero.getXSize (), hero.getYSize ());
-      QPixmap heroPixmapLeft ("marioLeft.png");
+      // left-facing mario
+      QRectF marioTargetLeft (mario.getXPos (), mario.getYPos (),
+			     mario.getXSize () / 3, mario.getYSize () / 3);
+      QRectF marioSourceLeft (0.0, 0.0, mario.getXSize (), mario.getYSize ());
+      QPixmap marioPixmapLeft ("marioLeft.png");
       QPainter (this);
 
-      // update hero sprite state
-      if (hero.rightFacing == 1)
+      // update mario sprite state
+      if (mario.rightFacing == 1)
 	{
-	  painter.drawPixmap (heroTargetRight, heroPixmapRight,
-			      heroSourceRight);
+	  painter.drawPixmap (marioTargetRight, marioPixmapRight,
+			      marioSourceRight);
 	}
-      if (hero.leftFacing == 1)
+      if (mario.leftFacing == 1)
 	{
-	  painter.drawPixmap (heroTargetLeft, heroPixmapLeft, heroSourceLeft);
+	  painter.drawPixmap (marioTargetLeft, marioPixmapLeft, marioSourceLeft);
 	}
 
       // right-facing enemy
@@ -226,14 +225,17 @@ Draw::paintEvent (QPaintEvent *)
 	    }
 	}
     }
-  else if (hero.getLives () > 0 && hero.levelComplete==1)
-{
+  else if (mario.getLives () > 0 && mario.levelComplete == 1)
+    {
       QFont myFont;
-      myFont.setPointSizeF (75.0);
+      myFont.setPointSizeF (60.0);
       painter.setFont (myFont);
-      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
-			"YOU\nWIN\nPress 'P' to play Again\n");
-}	
+      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "YOU\nWIN\n");
+      myFont.setPointSizeF (40.0);
+      painter.setFont (myFont);
+      painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
+			"Press 'P' to play Again\n");
+    }
   else				//game over
     {
       QFont myFont;
@@ -242,7 +244,9 @@ Draw::paintEvent (QPaintEvent *)
       painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
 			"GAME \nOVER\n");
       myFont.setPointSizeF (40.0);
-      painter.drawText(200,350,600,600,Qt::AlignHCenter,"Press 'P' to play Again\n");
+      painter.setFont (myFont);
+      painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
+			"Press 'P' to play Again\n");
     }
 }
 
@@ -257,12 +261,12 @@ Draw::mousePressEvent (QMouseEvent * e)
 void
 Draw::keyPressEvent (QKeyEvent * event)
 {
-      ifstream myfileTwo ("level.txt");
-      string tempStringTwo;
-      char tempCharArrayTwo[100];
-      char *ptrTwo;
-      vector < int >valuesTwo;
-      platform tempTwo (0, 0, 0, 0);
+  ifstream myfileTwo ("level.txt");
+  string tempStringTwo;
+  char tempCharArrayTwo[100];
+  char *ptrTwo;
+  vector < int >valuesTwo;
+  platform tempTwo (0, 0, 0, 0);
 
 
   switch (event->key ())
@@ -270,15 +274,15 @@ Draw::keyPressEvent (QKeyEvent * event)
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
       // update sprite state
-      hero.leftFacing = 1;
-      hero.rightFacing = 0;
+      mario.leftFacing = 1;
+      mario.rightFacing = 0;
       update ();
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       movingRight = 1;
       // update sprite state
-      hero.leftFacing = 0;
-      hero.rightFacing = 1;
+      mario.leftFacing = 0;
+      mario.rightFacing = 1;
       update ();
       break;
     case Qt::Key_W:		//W pressed to jump
@@ -287,10 +291,10 @@ Draw::keyPressEvent (QKeyEvent * event)
       update ();
       break;
     case Qt::Key_P:		//P pressed to play again
-      hero.setLives (5);
-      hero.levelComplete=0;
-      hero.setXPos(50);
-      hero.setYPos(50);
+      mario.setLives (5);
+      mario.levelComplete = 0;
+      mario.setXPos (50);
+      mario.setYPos (50);
       board.clear ();
       if (myfileTwo.is_open ())
 	{
@@ -357,67 +361,84 @@ Draw::updatePhysics ()
   testCollision ();
   // checks for correct key presses
   if (movingLeft == 1)
-    hero.moveLeft ();
+    mario.moveLeft ();
   if (movingRight == 1)
-    hero.moveRight ();
+    mario.moveRight ();
 
   // prevents infinity-jumping
   for (int i = 0; i < board.size (); i++)
     {
-      if (jumping == 1 && hero.getYPos () > (board[i].getY () - 69))
-	hero.jump ();
+      if (jumping == 1 && mario.getYPos () > (board[i].getY () - 69))
+	mario.jump ();
     }
 
   // updates the positions based on velocities
-  hero.setXPos (hero.getXPos () + hero.getXVel ());
-  hero.setYPos (hero.getYPos () + hero.getYVel ());
+  mario.setXPos (mario.getXPos () + mario.getXVel ());
+  mario.setYPos (mario.getYPos () + mario.getYVel ());
 
   // updates the velocities themselves
-  hero.setXVel (hero.getXVel () / 2);
-  hero.setYVel (hero.getYVel () + hero.getGravity ());
+  mario.setXVel (mario.getXVel () / 2);
+  mario.setYVel (mario.getYVel () + mario.getGravity ());
 
   // platform collision detection
 
+/*
+if( (mario.getXPos() - board[i].getX()) >= 0 && 
+    (mario.getXPos() - board[i].getX()) <= board[i].getWidth() &&
+    (board[i].getY()- mario.getYPos()) >= 0 &&
+    (board[i].getY()- mario.getYPos()) <= (mario.getYSize()/3) )
+        	{
+*///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
+
+  //loop through the entire board
   for (int i = 0; i < board.size (); i++)
     {
-
-/*
-if( (hero.getXPos() - board[i].getX()) >= 0 && 
-    (hero.getXPos() - board[i].getX()) <= board[i].getWidth() &&
-    (board[i].getY()- hero.getYPos()) >= 0 &&
-    (board[i].getY()- hero.getYPos()) <= (hero.getYSize()/3) )
-      	{
-*///hero.setYPos(board[i].getY())-(hero.getYSize()/3));
-
-      if (hero.getXPos () > board[i].getX ()
-	  && hero.getXPos () < (board[i].getX () + board[i].getWidth ()))
+      //test to determine which board the player is on (between the beginning and the width of the board
+      if (mario.getXPos () > board[i].getX ()
+	  && mario.getXPos () < (board[i].getX () + board[i].getWidth ()))
 	{
+	  //test if the next board is higher than the players position 
 	  if (board[i + 1].getY () < board[i].getY ())
 	    {
 	      //prevent from walking into the wall
-	      if ((board[i + 1].getX () - hero.getXPos ()) <
-		  (hero.getXSize () / 3)
-		  && (hero.getYPos () + hero.getYSize () / 3) >
+	      if ((board[i + 1].getX () - mario.getXPos ()) <
+		  (mario.getXSize () / 3)
+		  && (mario.getYPos () + mario.getYSize () / 3) >
 		  board[i + 1].getY ())
 		{
-		  hero.setXPos (board[i + 1].getX () - hero.getXSize () / 3);
-		  cout << "test:hitting wall.." << endl;
+		  mario.setXPos (board[i + 1].getX () - mario.getXSize () / 3);
+		  cout << "TEST 1: hitting wall.." << endl;
 
 		}
 	    }
+	     /* //test if the previous board is higher than the players position
+	      if (board[i - 1].getY () < board[i].getY ())
+		{
+		    //prevent from walking into the wall behind them
+		  if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
+		      && (mario.getYPos () + mario.getYSize () / 3) >  board[i - 1].getY ())
+		    {
+		      mario.setXVel(0);
+		      mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
+		      cout << "TEST 2: hitting wall.." << endl;
+		    }
+		}
+*/
+	    
 
 	  //check ground collision
-	  if (hero.getYPos () + (hero.getYSize () / 3) >= board[i].getY ())
+	  if (mario.getYPos () + (mario.getYSize () / 3) >= board[i].getY ())
 	    {
-	      hero.setYVel (0);
-	      hero.setYPos (board[i].getY () - (hero.getYSize () / 3));
-		
-		//if hero is on the last platform they won
-		cout<<"Board Size "<<board.size()<< "Platform " <<i<<endl;
-		if (i==board.size()-1)
+	      mario.setYVel (0);
+	      mario.setYPos (board[i].getY () - (mario.getYSize () / 3));
+
+	      //if mario is on the last platform they won
+	      cout << "Board Size " << board.
+		size () << "Platform " << i << endl;
+	      if (i == board.size () - 1)
 		{
-		cout<<"Game Over";
-		hero.levelComplete=1;
+		  cout << "Game Over";
+		  mario.levelComplete = 1;
 		}
 	    }
 
@@ -426,20 +447,20 @@ if( (hero.getXPos() - board[i].getX()) >= 0 &&
 
 
 // test if mario has fallen off the board
-  if (hero.getYPos () >= yWindowSize)
+  if (mario.getYPos () >= yWindowSize)
     {
-      hero.setLives (hero.getLives () - 1);
-      hero.setXPos (50);
-      hero.setYPos (50);
+      mario.setLives (mario.getLives () - 1);
+      mario.setXPos (50);
+      mario.setYPos (50);
     }
 
   // cause the screen to scroll once mario reaches a certain x position
-  if (hero.getXPos () >= (double) xWindowSize * (.75))
+  if (mario.getXPos () >= (double) xWindowSize * (.75))
     {
-      hero.setXPos ((double) xWindowSize * (.75));
+      mario.setXPos ((double) xWindowSize * (.75));
       for (int i = 0; i < board.size (); i++)
 	{
-	  board[i].moveLeft (hero.getXVel ());
+	  board[i].moveLeft (mario.getXVel ());
 	}
     }
 
@@ -485,15 +506,15 @@ Draw::updateEnemy ()
 void
 Draw::testCollision ()
 {
-//tests if the hero is above the enemy and within an appropriate position to squash it
-  if ((hero.getXPos () < (badguy.getXPos () + 30))
-      && (hero.getXPos () > (badguy.getXPos () - 30))
-      && (hero.getYPos () < (badguy.getYPos () - 18))
-      && (hero.getYPos () > (badguy.getYPos () - 100))
-      && (hero.getYVel () > 0))
+//tests if the mario is above the enemy and within an appropriate position to squash it
+  if ((mario.getXPos () < (badguy.getXPos () + 30))
+      && (mario.getXPos () > (badguy.getXPos () - 30))
+      && (mario.getYPos () < (badguy.getYPos () - 18))
+      && (mario.getYPos () > (badguy.getYPos () - 100))
+      && (mario.getYVel () > 0))
     {
       badguy.setLives (0);
-      hero.jump ();
+      mario.jump ();
       badguy. ~ enemy ();
     }
 }
