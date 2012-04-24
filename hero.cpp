@@ -25,6 +25,7 @@ hero::hero(int x, int y, int lives) : character (x,y,lives)
     setXSize(98);
     setYSize(164);
     movementSpeed=16;
+levelComplete=0;
 }
 
 

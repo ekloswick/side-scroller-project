@@ -19,57 +19,64 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 
 using namespace std;
 
-		
-hero hero(50,50,5);
-enemy badguy(400,400,1,10,400,200);
+
+hero hero (50, 50, 5);
+enemy badguy (400, 400, 1, 10, 400, 200);
 
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent)
 {
-	setWindowTitle (tr ("2-D Side Scroller"));
+  setWindowTitle (tr ("2-D Side Scroller"));
 
-	xWindowSize = 1000;
-	yWindowSize = 600;
+  xWindowSize = 1000;
+  yWindowSize = 600;
 
-	resize (xWindowSize, yWindowSize);
+  resize (xWindowSize, yWindowSize);
 
-ifstream myfile ("level.txt");
-string tempString;
-char tempCharArray[100];
-char *ptr;
-vector <int> values;
+  ifstream
+  myfile ("level.txt");
+  string
+    tempString;
+  char
+    tempCharArray[100];
+  char *
+    ptr;
+  vector < int >
+    values;
 
-platform temp(0,0,0,0);
+  platform
+  temp (0, 0, 0, 0);
 
-if (myfile.is_open())
-{
-while (myfile.good())
-{
-	getline (myfile, tempString);
-	for (int k = 0; k < (tempString.size ()); k++)
+  if (myfile.is_open ())
+    {
+      while (myfile.good ())
 	{
-	  tempCharArray[k] = tempString[k];	//converts the line to an array of characters
+	  getline (myfile, tempString);
+	  for (int k = 0; k < (tempString.size ()); k++)
+	    {
+	      tempCharArray[k] = tempString[k];	//converts the line to an array of characters
+	    }
+	  tempCharArray[tempString.size ()] = NULL;
+	  ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
+	  while (ptr != NULL)
+	    {
+	      values.push_back (atoi (ptr));
+	      ptr = strtok (NULL, ", ");
+	    }
+	  cout << "VALUES: " << values[0] << " " << values[1] << " " <<
+	    values[2] << " " << values[3] << " " << endl;
+	  temp.setX (values[0]);
+	  temp.setY (values[1]);
+	  temp.setWidth (values[2]);
+	  temp.setHeight (values[3]);
+	  board.push_back (temp);
+	  values.clear ();
 	}
-	tempCharArray[tempString.size ()] = NULL;
-	ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
-	while (ptr != NULL)
-	{
-	  values.push_back (atoi(ptr));	
-	  ptr = strtok (NULL, ", ");
-	}
-cout<<"VALUES: "<<values[0]<<" "<<values[1]<<" "<<values[2]<< " "<<values[3]<< " "<<endl;
-	temp.setX(values[0]);
-	temp.setY(values[1]);
-	temp.setWidth(values[2]);
-	temp.setHeight(values[3]);
-	board.push_back(temp);
-	values.clear();
-}
-}
+    }
 
-	// load in enemies
+  // load in enemies
 
-	startTimer (50);
+  startTimer (100);
 }
 
 int
@@ -96,12 +103,12 @@ Draw::paintEvent (QPaintEvent *)
 
   QPainter painter (this);	// get a painter object to send drawing commands to
 
-if(hero.getLives()>0)
-{
-  updateEnemy ();
-  updatePhysics ();
-  testCollision ();
-}
+  if (hero.getLives () > 0)
+    {
+      updateEnemy ();
+      updatePhysics ();
+      testCollision ();
+    }
   //Welcome message that is only displayed once
   if (welcome == 0)
     {
@@ -130,10 +137,10 @@ if(hero.getLives()>0)
     }
   else if (welcome == 1)
     {
-      msleep (500);  //****** Set to 500 just to test the code; for final program should be larger value
+      msleep (500);		//****** Set to 500 just to test the code; for final program should be larger value
       welcome = 2;
     }
-  else if (hero.getLives() > 0)
+  else if (hero.getLives () > 0 && hero.levelComplete==0)
     {
       //Set font
       QFont myFont;
@@ -150,25 +157,28 @@ if(hero.getLives()>0)
 
       //Draw Basic Stage
       painter.setBrush (QBrush ("#1ac500"));
-      
-      for (int i = 0; i < board.size(); i++)
-         {
-      	painter.drawRect ( board[i].getX(), board[i].getY(), board[i].getWidth(), board[i].getHeight() );
-	 }
-	
+
+      for (int i = 0; i < board.size (); i++)
+	{
+	  painter.drawRect (board[i].getX (), board[i].getY (),
+			    board[i].getWidth (), board[i].getHeight ());
+	}
+
       //Draw the Hero
       painter.setBrush (QBrush ("#ffff00"));
 
       // right-facing hero
-      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
-      QRectF heroSourceRight (0.0, 0.0, hero.getXSize(), hero.getYSize());
+      QRectF heroTargetRight (hero.getXPos (), hero.getYPos (),
+			      hero.getXSize () / 3, hero.getYSize () / 3);
+      QRectF heroSourceRight (0.0, 0.0, hero.getXSize (), hero.getYSize ());
       QPixmap heroPixmapRight ("marioRight.png");
 
       QPainter (this);
 
       // left-facing hero
-      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (), hero.getXSize()/3, hero.getYSize()/3);
-      QRectF heroSourceLeft (0.0, 0.0, hero.getXSize(), hero.getYSize());
+      QRectF heroTargetLeft (hero.getXPos (), hero.getYPos (),
+			     hero.getXSize () / 3, hero.getYSize () / 3);
+      QRectF heroSourceLeft (0.0, 0.0, hero.getXSize (), hero.getYSize ());
       QPixmap heroPixmapLeft ("marioLeft.png");
       QPainter (this);
 
@@ -184,22 +194,24 @@ if(hero.getLives()>0)
 	}
 
       // right-facing enemy
-      QRectF enemyTargetRight (badguy.getXPos (), badguy.getYPos (), 35.0, 43.0);
+      QRectF enemyTargetRight (badguy.getXPos (), badguy.getYPos (), 35.0,
+			       43.0);
       QRectF enemySourceRight (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapRight ("goombaRight.png");
       QPainter (this);
 
       // left-facing enemy
-      QRectF enemyTargetLeft (badguy.getXPos (), badguy.getYPos (), 35.0, 43.0);
+      QRectF enemyTargetLeft (badguy.getXPos (), badguy.getYPos (), 35.0,
+			      43.0);
       QRectF enemySourceLeft (0.0, 0.0, 70, 86);
       QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);
 
-   if (badguy.getLives () != 0) 
+      if (badguy.getLives () != 0)
 	{
-      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
-			  enemySourceRight);
-   
+	  painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
+			      enemySourceRight);
+
 	  // update enemy sprite state
 	  if (badguy.rightFacing == 1)
 	    {
@@ -214,14 +226,24 @@ if(hero.getLives()>0)
 	    }
 	}
     }
-    else //game over
-    {
+  else if (hero.getLives () > 0 && hero.levelComplete==1)
+{
       QFont myFont;
       myFont.setPointSizeF (75.0);
       painter.setFont (myFont);
-	      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
-			"GAME \nOVER");
-    } 
+      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
+			"YOU\nWIN\nPress 'P' to play Again\n");
+}	
+  else				//game over
+    {
+      QFont myFont;
+      myFont.setPointSizeF (60.0);
+      painter.setFont (myFont);
+      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
+			"GAME \nOVER\n");
+      myFont.setPointSizeF (40.0);
+      painter.drawText(200,350,600,600,Qt::AlignHCenter,"Press 'P' to play Again\n");
+    }
 }
 
 // Capture mouse clicks
@@ -235,6 +257,14 @@ Draw::mousePressEvent (QMouseEvent * e)
 void
 Draw::keyPressEvent (QKeyEvent * event)
 {
+      ifstream myfileTwo ("level.txt");
+      string tempStringTwo;
+      char tempCharArrayTwo[100];
+      char *ptrTwo;
+      vector < int >valuesTwo;
+      platform tempTwo (0, 0, 0, 0);
+
+
   switch (event->key ())
     {
     case Qt::Key_A:		//A pressed to move the character to the left
@@ -253,6 +283,40 @@ Draw::keyPressEvent (QKeyEvent * event)
       break;
     case Qt::Key_W:		//W pressed to jump
       jumping = 1;
+      // update sprite state
+      update ();
+      break;
+    case Qt::Key_P:		//P pressed to play again
+      hero.setLives (5);
+      hero.levelComplete=0;
+      hero.setXPos(50);
+      hero.setYPos(50);
+      board.clear ();
+      if (myfileTwo.is_open ())
+	{
+	  while (myfileTwo.good ())
+	    {
+	      getline (myfileTwo, tempStringTwo);
+	      for (int k = 0; k < (tempStringTwo.size ()); k++)
+		{
+		  tempCharArrayTwo[k] = tempStringTwo[k];	//converts the line to an array of characters
+		}
+	      tempCharArrayTwo[tempStringTwo.size ()] = NULL;
+	      ptrTwo = strtok (tempCharArrayTwo, ", ");	//read in a row skipping commas
+	      while (ptrTwo != NULL)
+		{
+		  valuesTwo.push_back (atoi (ptrTwo));
+		  ptrTwo = strtok (NULL, ", ");
+		}
+//cout<<"VALUES: "<<values[0]<<" "<<values[1]<<" "<<values[2]<< " "<<values[3]<< " "<<endl;
+	      tempTwo.setX (valuesTwo[0]);
+	      tempTwo.setY (valuesTwo[1]);
+	      tempTwo.setWidth (valuesTwo[2]);
+	      tempTwo.setHeight (valuesTwo[3]);
+	      board.push_back (tempTwo);
+	      valuesTwo.clear ();
+	    }
+	}
       // update sprite state
       update ();
       break;
@@ -290,20 +354,20 @@ Draw::keyReleaseEvent (QKeyEvent * event)
 void
 Draw::updatePhysics ()
 {
-testCollision();
+  testCollision ();
   // checks for correct key presses
   if (movingLeft == 1)
     hero.moveLeft ();
   if (movingRight == 1)
     hero.moveRight ();
-  
+
   // prevents infinity-jumping
-  for (int i = 0; i < board.size(); i++)
-  {    
-	  if (jumping == 1 && hero.getYPos () > (board[i].getY() - 69))
-	    hero.jump ();
-  }
-	
+  for (int i = 0; i < board.size (); i++)
+    {
+      if (jumping == 1 && hero.getYPos () > (board[i].getY () - 69))
+	hero.jump ();
+    }
+
   // updates the positions based on velocities
   hero.setXPos (hero.getXPos () + hero.getXVel ());
   hero.setYPos (hero.getYPos () + hero.getYVel ());
@@ -314,61 +378,71 @@ testCollision();
 
   // platform collision detection
 
-  for (int i = 0; i < board.size(); i++)
-  {
+  for (int i = 0; i < board.size (); i++)
+    {
 
 /*
 if( (hero.getXPos() - board[i].getX()) >= 0 && 
     (hero.getXPos() - board[i].getX()) <= board[i].getWidth() &&
     (board[i].getY()- hero.getYPos()) >= 0 &&
     (board[i].getY()- hero.getYPos()) <= (hero.getYSize()/3) )
-	{
-*/	//hero.setYPos(board[i].getY())-(hero.getYSize()/3));
+      	{
+*///hero.setYPos(board[i].getY())-(hero.getYSize()/3));
 
-  if(hero.getXPos() > board[i].getX() && hero.getXPos() < (board[i].getX() + board[i].getWidth()))
-	{	
-	if (board[i+1].getY() <	board[i].getY())
+      if (hero.getXPos () > board[i].getX ()
+	  && hero.getXPos () < (board[i].getX () + board[i].getWidth ()))
 	{
-		//prevent from walking into the wall
-		if ((board[i+1].getX()-hero.getXPos())<(hero.getXSize()/3) &&
-		(hero.getYPos() + hero.getYSize()/3) > board[i+1].getY())
+	  if (board[i + 1].getY () < board[i].getY ())
+	    {
+	      //prevent from walking into the wall
+	      if ((board[i + 1].getX () - hero.getXPos ()) <
+		  (hero.getXSize () / 3)
+		  && (hero.getYPos () + hero.getYSize () / 3) >
+		  board[i + 1].getY ())
 		{
-			hero.setXPos(board[i+1].getX()-hero.getXSize()/3);
-			cout<<"test:hitting wall.."<<endl;
+		  hero.setXPos (board[i + 1].getX () - hero.getXSize () / 3);
+		  cout << "test:hitting wall.." << endl;
 
 		}
-	}
+	    }
 
-	//check ground collision
-	if (hero.getYPos () + (hero.getYSize()/3) >= board[i].getY() )
-	{
- 	hero.setYVel(0);
-	hero.setYPos( board[i].getY()- (hero.getYSize()/3) );
-     
-	}
+	  //check ground collision
+	  if (hero.getYPos () + (hero.getYSize () / 3) >= board[i].getY ())
+	    {
+	      hero.setYVel (0);
+	      hero.setYPos (board[i].getY () - (hero.getYSize () / 3));
+		
+		//if hero is on the last platform they won
+		cout<<"Board Size "<<board.size()<< "Platform " <<i<<endl;
+		if (i==board.size()-1)
+		{
+		cout<<"Game Over";
+		hero.levelComplete=1;
+		}
+	    }
 
 	}
-   }
+    }
 
 
 // test if mario has fallen off the board
-if (hero.getYPos() >= yWindowSize)
-{
-	hero.setLives(hero.getLives() -1);
-	hero.setXPos(50);
-	hero.setYPos(50);
-}
+  if (hero.getYPos () >= yWindowSize)
+    {
+      hero.setLives (hero.getLives () - 1);
+      hero.setXPos (50);
+      hero.setYPos (50);
+    }
 
   // cause the screen to scroll once mario reaches a certain x position
-    if (hero.getXPos ()>= (double)xWindowSize*(.75))
+  if (hero.getXPos () >= (double) xWindowSize * (.75))
+    {
+      hero.setXPos ((double) xWindowSize * (.75));
+      for (int i = 0; i < board.size (); i++)
 	{
-	hero.setXPos ((double)xWindowSize*(.75));
-	for(int i=0; i<board.size(); i++)
-		{
-		board[i].moveLeft(hero.getXVel());
-		}
+	  board[i].moveLeft (hero.getXVel ());
 	}
-    
+    }
+
 }
 
 // constantly updates the game
@@ -386,12 +460,13 @@ Draw::updateEnemy ()
     {
       badguy.moveRight ();
     }
-  if (badguy.getXPos () == (badguy.getRangeStart()+badguy.getRangeFinish()))
+  if (badguy.getXPos () ==
+      (badguy.getRangeStart () + badguy.getRangeFinish ()))
     {
       badguy.leftFacing = 1;
       badguy.rightFacing = 0;
     }
-  if (badguy.getXPos () ==badguy.getRangeStart())
+  if (badguy.getXPos () == badguy.getRangeStart ())
     {
       badguy.rightFacing = 1;
       badguy.leftFacing = 0;
@@ -411,10 +486,14 @@ void
 Draw::testCollision ()
 {
 //tests if the hero is above the enemy and within an appropriate position to squash it
-  if ( (hero.getXPos () < (badguy.getXPos ()+30)) && (hero.getXPos() > (badguy.getXPos()-30)) && (hero.getYPos() < (badguy.getYPos()-18)) && (hero.getYPos() > (badguy.getYPos()-100)) && (hero.getYVel()>0) )
+  if ((hero.getXPos () < (badguy.getXPos () + 30))
+      && (hero.getXPos () > (badguy.getXPos () - 30))
+      && (hero.getYPos () < (badguy.getYPos () - 18))
+      && (hero.getYPos () > (badguy.getYPos () - 100))
+      && (hero.getYVel () > 0))
     {
       badguy.setLives (0);
-      hero.jump();
-      badguy.~enemy();
+      hero.jump ();
+      badguy. ~ enemy ();
     }
 }
