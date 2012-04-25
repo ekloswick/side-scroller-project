@@ -27,11 +27,11 @@ class Draw : public QWidget
 
 	protected:
 		void paintEvent(QPaintEvent *e);
-		void mousePressEvent(QMouseEvent *e);
+		//void mousePressEvent(QMouseEvent *e);
 		void keyPressEvent(QKeyEvent *event);
 		void keyReleaseEvent(QKeyEvent *event);
 		void updatePhysics();
-		void timerEvent(QTimerEvent *event);
+		void timerEvent(QTimerEvent *);
                 void updateEnemy();
 		void testCollision();
 
@@ -47,6 +47,10 @@ class Draw : public QWidget
 		hero mario;
 		enemy badguy;
 		vector < enemy > enemies;
+
+		void loadBoard();
+		void loadEnemies();
+		int welcome;
 };
 
 #endif
