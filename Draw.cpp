@@ -22,105 +22,21 @@ using namespace std;
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5), badguy(1,1,1,1,1,1)
 {
-  string tempString;
-  char tempCharArray[100];
-  char *ptr;
-  vector < int > values;
-
-
-//enemy badguy;
-ifstream enemyFile ("enemy.txt");
-if (enemyFile.is_open())
-{
-	while (enemyFile.good())
-	{
-		getline(enemyFile,tempString);
-  	for (int k = 0; k < (tempString.size ()); k++)
-	    {
-	      tempCharArray[k] = tempString[k];	//converts the line to an array of characters
-	    }
-	  tempCharArray[tempString.size ()] = NULL;
-	  ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
-	  while (ptr != NULL)
-	    {
-	      values.push_back (atoi (ptr));
-	      ptr = strtok (NULL, ", ");
-	    }
-	  
-	 	badguy.update(values[0],values[1],values[2],values[3],values[4],values[5]);
-		enemies.push_back(badguy);
-	 	values.clear ();
-	}
+   setWindowTitle (tr ("2-D Side Scroller"));
+   xWindowSize = 1000;
+   yWindowSize = 600;
+   resize (xWindowSize, yWindowSize);
+   loadBoard();
+   loadEnemies();
+   startTimer (50);
+   welcome = 0;
 }
 
-
-
-  setWindowTitle (tr ("2-D Side Scroller"));
-
-  xWindowSize = 1000;
-  yWindowSize = 600;
-
-  resize (xWindowSize, yWindowSize);
-
-  ifstream myfile ("level.txt");
-
-
-  platform temp (0, 0, 0, 0);
-
-  if (myfile.is_open ())
-    {
-      while (myfile.good ())
-	{
-	  getline (myfile, tempString);
-	  for (int k = 0; k < (tempString.size ()); k++)
-	    {
-	      tempCharArray[k] = tempString[k];	//converts the line to an array of characters
-	    }
-	  tempCharArray[tempString.size ()] = NULL;
-	  ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
-	  while (ptr != NULL)
-	    {
-	      values.push_back (atoi (ptr));
-	      ptr = strtok (NULL, ", ");
-	    }
-	  cout << "VALUES: " << values[0] << " " << values[1] << " " <<
-	    values[2] << " " << values[3] << " " << endl;
-	  temp.setX (values[0]);
-	  temp.setY (values[1]);
-	  temp.setWidth (values[2]);
-	  temp.setHeight (values[3]);
-	  board.push_back (temp);
-	  values.clear ();
-	}
-    }
-
-  // load in enemies
-
-  startTimer (100);
-}
-
-int
-Draw::msleep (unsigned long milisec)
-{
-  struct timespec req = { 0 };
-
-  time_t sec = (int) (milisec / 1000);
-  milisec = milisec - (sec * 1000);
-  req.tv_sec = sec;
-  req.tv_nsec = milisec * 1000000L;
-
-  while (nanosleep (&req, &req) == -1)
-    continue;
-
-  return 1;
-}
 
 // This method is called when the widget needs to be redrawn
 void
 Draw::paintEvent (QPaintEvent *)
 {
-  static int welcome = 0;
-
   QPainter painter (this);	// get a painter object to send drawing commands to
 
   if (mario.getLives () > 0)
@@ -134,32 +50,25 @@ Draw::paintEvent (QPaintEvent *)
     {
       //set the font size to a large value for the title
       QFont myFont1;
-      myFont1.setPointSizeF (50.0);
+      myFont1.setPointSizeF (40.0);
       painter.setFont (myFont1);
 
-      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
+      painter.drawText (200, 25, 600, 600, Qt::AlignHCenter,
 			"WELCOME TO \nSIDE SCROLLER");
 
       //set the font size smaller for additional info
       QFont myFont2;
-      myFont2.setPointSizeF (25.0);
+      myFont2.setPointSizeF (20.0);
       painter.setFont (myFont2);
 
-      painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
+      painter.drawText (200, 200, 600, 600, Qt::AlignHCenter,
 			"Justin Bartlett\nJake Flynt\nEli Kloswick");
-
-      painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
+      painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
 			"Press 'A' to move left\nPress 'D' to move right\nPress 'W' to jump");
-
-
-      //set welcome to 1 so this does not occur again
-      welcome = 1;
+      painter.drawText (200, 500, 600, 600, Qt::AlignHCenter,
+			"Press Space Bar to Continue");
     }
-  else if (welcome == 1)
-    {
-      msleep (500);		//****** Set to 500 just to test the code; for final program should be larger value
-      welcome = 2;
-    }
+ 
   else if (mario.getLives () > 0 && mario.levelComplete == 0)
     {
       //Set font
@@ -178,7 +87,7 @@ Draw::paintEvent (QPaintEvent *)
       //Draw Basic Stage
       painter.setBrush (QBrush ("#1ac500"));
 
-      for (int i = 0; i < board.size (); i++)
+      for (unsigned int i = 0; i < board.size (); i++)
 	{
 	  painter.drawRect (board[i].getX (), board[i].getY (),
 			    board[i].getWidth (), board[i].getHeight ());
@@ -192,7 +101,6 @@ Draw::paintEvent (QPaintEvent *)
 			      mario.getXSize () / 3, mario.getYSize () / 3);
       QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
       QPixmap marioPixmapRight ("marioRight.png");
-
       QPainter (this);
 
       // left-facing mario
@@ -202,7 +110,7 @@ Draw::paintEvent (QPaintEvent *)
       QPixmap marioPixmapLeft ("marioLeft.png");
       QPainter (this);
 
-      // update mario sprite state
+      // update mario sprite state based on what direction he is moving
       if (mario.rightFacing == 1)
 	{
 	  painter.drawPixmap (marioTargetRight, marioPixmapRight,
@@ -212,43 +120,43 @@ Draw::paintEvent (QPaintEvent *)
 	{
 	  painter.drawPixmap (marioTargetLeft, marioPixmapLeft, marioSourceLeft);
 	}
-//LOOP THROUGH ALL ENEMIES
-for (int z=0; z<enemies.size();z++)
-{
-      // right-facing enemy
-      QRectF enemyTargetRight (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
-			       43.0);
-      QRectF enemySourceRight (0.0, 0.0, 70, 86);
-      QPixmap enemyPixmapRight ("goombaRight.png");
-      QPainter (this);
 
-      // left-facing enemy
-      QRectF enemyTargetLeft (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
-			      43.0);
-      QRectF enemySourceLeft (0.0, 0.0, 70, 86);
-      QPixmap enemyPixmapLeft ("goombaLeft.png");
-      QPainter (this);
-
-      if (enemies[z].getLives () != 0)
+	//loop through all enemies on the board to draw them based on their position
+	for (unsigned int z=0; z<enemies.size();z++)
 	{
-	  painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
-			      enemySourceRight);
+	      // right-facing enemy
+	      QRectF enemyTargetRight (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
+				       43.0);
+	      QRectF enemySourceRight (0.0, 0.0, 70, 86);
+	      QPixmap enemyPixmapRight ("goombaRight.png");
+	      QPainter (this);
 
-	  // update enemy sprite state
-	  if (enemies[z].rightFacing == 1)
-	    {
-	      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
-				  enemySourceRight);
-	    }
+	      // left-facing enemy
+	      QRectF enemyTargetLeft (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
+				      43.0);
+	      QRectF enemySourceLeft (0.0, 0.0, 70, 86);
+	      QPixmap enemyPixmapLeft ("goombaLeft.png");
+	      QPainter (this);
+	      
+	      //if the enemy has more than 1 life draw them on the board
+	      if (enemies[z].getLives () != 0)
+		{
+		  // update enemy sprite state based on what direction they are moving
+		  if (enemies[z].rightFacing == 1)
+		    {
+		      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
+					  enemySourceRight);
+		    }
 
-	  if (enemies[z].leftFacing == 1)
-	    {
-	      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
-				  enemySourceLeft);
-	    }
+		  if (enemies[z].leftFacing == 1)
+		    {
+		      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
+					  enemySourceLeft);
+		    }
+		}
 	}
-}
     }
+//if mario beat the level with lives remaining display to the user and ask if they would like to play again
   else if (mario.getLives () > 0 && mario.levelComplete == 1)
     {
       QFont myFont;
@@ -260,7 +168,8 @@ for (int z=0; z<enemies.size();z++)
       painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
 			"Press 'P' to play Again\n");
     }
-  else				//game over
+ //mario has run out of lives and it is game over; ask the user if they would like to play again
+ else if (mario.getLives()<1)			
     {
       QFont myFont;
       myFont.setPointSizeF (60.0);
@@ -274,80 +183,47 @@ for (int z=0; z<enemies.size();z++)
     }
 }
 
+//possible implement later..
+/*
 // Capture mouse clicks
 void
 Draw::mousePressEvent (QMouseEvent * e)
 {
   update ();
 }
+*/
 
 // performs actions based on key presses
+//**** TOOK OUT UPDATES FROM KEY PRESS AND RELEASE AS THEY DIDNT SEEM TO BE DOING ANYTHING*****
 void
 Draw::keyPressEvent (QKeyEvent * event)
 {
-  ifstream myfileTwo ("level.txt");
-  string tempStringTwo;
-  char tempCharArrayTwo[100];
-  char *ptrTwo;
-  vector < int >valuesTwo;
-  platform tempTwo (0, 0, 0, 0);
-
-
   switch (event->key ())
     {
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
-      // update sprite state
       mario.leftFacing = 1;
       mario.rightFacing = 0;
-      update ();
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       movingRight = 1;
-      // update sprite state
       mario.leftFacing = 0;
       mario.rightFacing = 1;
-      update ();
       break;
     case Qt::Key_W:		//W pressed to jump
       jumping = 1;
-      // update sprite state
-      update ();
       break;
-    case Qt::Key_P:		//P pressed to play again
+    case Qt::Key_P:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       mario.setLives (5);
       mario.levelComplete = 0;
       mario.setXPos (50);
       mario.setYPos (50);
-      board.clear ();
-      if (myfileTwo.is_open ())
-	{
-	  while (myfileTwo.good ())
-	    {
-	      getline (myfileTwo, tempStringTwo);
-	      for (int k = 0; k < (tempStringTwo.size ()); k++)
-		{
-		  tempCharArrayTwo[k] = tempStringTwo[k];	//converts the line to an array of characters
-		}
-	      tempCharArrayTwo[tempStringTwo.size ()] = NULL;
-	      ptrTwo = strtok (tempCharArrayTwo, ", ");	//read in a row skipping commas
-	      while (ptrTwo != NULL)
-		{
-		  valuesTwo.push_back (atoi (ptrTwo));
-		  ptrTwo = strtok (NULL, ", ");
-		}
-//cout<<"VALUES: "<<values[0]<<" "<<values[1]<<" "<<values[2]<< " "<<values[3]<< " "<<endl;
-	      tempTwo.setX (valuesTwo[0]);
-	      tempTwo.setY (valuesTwo[1]);
-	      tempTwo.setWidth (valuesTwo[2]);
-	      tempTwo.setHeight (valuesTwo[3]);
-	      board.push_back (tempTwo);
-	      valuesTwo.clear ();
-	    }
-	}
-      // update sprite state
-      update ();
+      loadBoard();
+      loadEnemies();
       break;
+    case Qt::Key_Space:         //Spacebar pressed to begin the game
+       welcome=1;
+       break;    
     case Qt::Key_Escape:
       exit (1);
       break;
@@ -362,15 +238,12 @@ Draw::keyReleaseEvent (QKeyEvent * event)
     {
     case Qt::Key_A:		//A released to stop moving the character to the left
       movingLeft = 0;
-      update ();
       break;
     case Qt::Key_D:		//D released to stop moving the character to the right
       movingRight = 0;
-      update ();
       break;
     case Qt::Key_W:		//W pressed to jump
       jumping = 0;
-      update ();
       break;
     case Qt::Key_Escape:
       exit (1);
@@ -390,7 +263,7 @@ Draw::updatePhysics ()
     mario.moveRight ();
 
   // prevents infinity-jumping
-  for (int i = 0; i < board.size (); i++)
+  for (unsigned int i = 0; i < board.size (); i++)
     {
       if (jumping == 1 && mario.getYPos () > (board[i].getY () - 69))
 	mario.jump ();
@@ -415,7 +288,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 *///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
 
   //loop through the entire board
-  for (int i = 0; i < board.size (); i++)
+  for (unsigned int i = 0; i < board.size (); i++)
     {
       //test to determine which board the player is on (between the beginning and the width of the board
       if (mario.getXPos () > board[i].getX ()
@@ -483,12 +356,12 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
     {
       mario.setXPos ((double) xWindowSize * (.75));
 	//move the board
-      for (int i = 0; i < board.size (); i++)
+      for (unsigned int i = 0; i < board.size (); i++)
 	{
 	  board[i].moveLeft (mario.getXVel ());
 	}
 	//move the enemies
-      for (int j = 0; j < enemies.size(); j++)
+      for (unsigned int j = 0; j < enemies.size(); j++)
 	{
 	  enemies[j].moveWithPlatform(mario.getXVel ());
 	}
@@ -498,17 +371,18 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 
 // constantly updates the game
 void
-Draw::timerEvent (QTimerEvent * event)
+Draw::timerEvent (QTimerEvent *)
 {
   update ();
 }
+
 
 // updates the motion of the enemy
 void
 Draw::updateEnemy ()
 {
 //LOOP THROUGH ALL ENEMIES
-for (int z=0; z<enemies.size();z++)
+for (unsigned int z=0; z<enemies.size();z++)
 {
   if (enemies[z].leftFacing == 0 && enemies[z].rightFacing == 0)
     {
@@ -562,4 +436,78 @@ Draw::testCollision ()
       mario.jump ();
       enemies[0]. ~ enemy ();
     }
+}
+
+void
+Draw::loadBoard()
+{
+  ifstream boardFile ("level.txt");
+  board.clear ();
+
+  platform temp (0, 0, 0, 0);
+  string tempString;
+  char tempCharArray[100];
+  char *ptr;
+  vector < int > values;
+
+      if (boardFile.is_open ())
+	{
+	  while (boardFile.good ())
+	    {
+	      getline (boardFile, tempString);
+	      for (unsigned int k = 0; k < (tempString.size ()); k++)
+		{
+		  tempCharArray[k] = tempString[k];	//converts the line to an array of characters
+		}
+	      tempCharArray[tempString.size ()] = NULL;
+	      ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
+	      while (ptr != NULL)
+		{
+		  values.push_back (atoi (ptr));
+		  ptr = strtok (NULL, ", ");
+		}
+	      temp.setX (values[0]);
+	      temp.setY (values[1]);
+	      temp.setWidth (values[2]);
+	      temp.setHeight (values[3]);
+	      board.push_back (temp);
+	      values.clear ();
+	    }
+	}
+}
+
+void
+Draw::loadEnemies()
+{
+  enemies.clear();
+ifstream enemyFile ("enemy.txt");
+
+string tempString;
+  char tempCharArray[100];
+  char *ptr;
+  vector < int > values;
+
+
+	if (enemyFile.is_open())
+	{
+		while (enemyFile.good())
+		{
+			getline(enemyFile,tempString);
+	  	for (unsigned int k = 0; k < (tempString.size ()); k++)
+		    {
+		      tempCharArray[k] = tempString[k];	//converts the line to an array of characters
+		    }
+		  tempCharArray[tempString.size ()] = NULL;
+		  ptr = strtok (tempCharArray, ", ");	//read in a row skipping commas
+		  while (ptr != NULL)
+		    {
+		      values.push_back (atoi (ptr));
+		      ptr = strtok (NULL, ", ");
+		    }		
+		 	badguy.update(values[0],values[1],values[2],values[3],values[4],values[5]);
+			enemies.push_back(badguy);
+		 	values.clear ();
+		}
+	}
+
 }
