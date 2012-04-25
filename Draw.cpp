@@ -386,9 +386,10 @@ for (unsigned int z=0; z<enemies.size();z++)
 {
   if (enemies[z].leftFacing == 0 && enemies[z].rightFacing == 0)
     {
-      enemies[z].moveRight ();
+      enemies[z].rightFacing = 1;
+      enemies[z].leftFacing = 0;
     }
-  if (enemies[z].getXPos () == (enemies[z].getRangeStart () + enemies[z].getRangeFinish ()))
+  if (enemies[z].getXPos () == enemies[z].getRangeFinish ())
     {
       enemies[z].leftFacing = 1;
       enemies[z].rightFacing = 0;
@@ -398,18 +399,17 @@ for (unsigned int z=0; z<enemies.size();z++)
       enemies[z].rightFacing = 1;
       enemies[z].leftFacing = 0;
     }
-
-//additional testing for the movement of the board
-if (enemies[z].getXPos () > (enemies[z].getRangeStart () + enemies[z].getRangeFinish ()))
+//additional testing for the movement of the board checking if ememies have escaped range
+if (enemies[z].getXPos () > (enemies[z].getRangeFinish ()))
     {
-      enemies[z].leftFacing = 1;
-      enemies[z].rightFacing = 0;
+     enemies[z].setXPos (enemies[z].getRangeFinish ()-1);
+     
     }
 if (enemies[z].getXPos () < (enemies[z].getRangeStart ()))
     {
-      enemies[z].leftFacing = 0;
-      enemies[z].rightFacing = 1;
+    enemies[z].setXPos(enemies[z].getRangeStart ()+1);
     }
+
 
   if (enemies[z].rightFacing == 1)
     {

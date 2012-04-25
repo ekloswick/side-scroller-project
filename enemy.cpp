@@ -20,7 +20,7 @@ enemy::enemy (int x, int y, int lives, int mSpeed, int rstart, int rfinish) : ch
   rangeFinish= rfinish;
 
   character::leftFacing = 0;
-  character::rightFacing = 0;
+  character::rightFacing = 1;
 }
 
 enemy::~enemy()

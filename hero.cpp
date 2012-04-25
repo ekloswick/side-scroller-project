@@ -69,25 +69,7 @@ int hero::getGravity()
     return gravity;
 }
 
-int hero::getXSize()
-{
-    return xsize;
-}
 
-int hero::getYSize()
-{
-    return ysize;
-}
-
-void hero::setXSize(int n)
-{
-    xsize = n;
-}
-
-void hero::setYSize(int n)
-{
-    ysize = n;
-}
 
 
 

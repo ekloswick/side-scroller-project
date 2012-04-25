@@ -56,6 +56,25 @@ int character::getLives()
 	return lives;
 }
 
+int character::getXSize()
+{
+    return xsize;
+}
+
+int character::getYSize()
+{
+    return ysize;
+}
+
+void character::setXSize(int n)
+{
+    xsize = n;
+}
+
+void character::setYSize(int n)
+{
+    ysize = n;
+}
 
 
 
