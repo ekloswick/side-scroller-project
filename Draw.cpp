@@ -30,6 +30,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5), badguy(1,1,1,1
    loadEnemies();
    startTimer (50);
    welcome = 0;
+   drawScalingFactor=3;
 }
 
 
@@ -98,14 +99,14 @@ Draw::paintEvent (QPaintEvent *)
 
       // right-facing mario
       QRectF marioTargetRight (mario.getXPos (), mario.getYPos (),
-			      mario.getXSize () / 3, mario.getYSize () / 3);
+			      mario.getXSize ()/drawScalingFactor, mario.getYSize () / drawScalingFactor);
       QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
       QPixmap marioPixmapRight ("marioRight.png");
       QPainter (this);
 
       // left-facing mario
       QRectF marioTargetLeft (mario.getXPos (), mario.getYPos (),
-			     mario.getXSize () / 3, mario.getYSize () / 3);
+			     mario.getXSize () / drawScalingFactor, mario.getYSize () / drawScalingFactor);
       QRectF marioSourceLeft (0.0, 0.0, mario.getXSize (), mario.getYSize ());
       QPixmap marioPixmapLeft ("marioLeft.png");
       QPainter (this);
@@ -299,11 +300,11 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	    {
 	      //prevent from walking into the wall
 	      if ((board[i + 1].getX () - mario.getXPos ()) <
-		  (mario.getXSize () / 3)
-		  && (mario.getYPos () + mario.getYSize () / 3) >
+		  (mario.getXSize () / drawScalingFactor)
+		  && (mario.getYPos () + mario.getYSize () / drawScalingFactor) >
 		  board[i + 1].getY ())
 		{
-		  mario.setXPos (board[i + 1].getX () - mario.getXSize () / 3);
+		  mario.setXPos (board[i + 1].getX () - mario.getXSize () / drawScalingFactor);
 		  cout << "TEST 1: hitting wall.." << endl;
 
 		}
@@ -313,7 +314,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 		{
 		    //prevent from walking into the wall behind them
 		  if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
-		      && (mario.getYPos () + mario.getYSize () / 3) >  board[i - 1].getY ())
+		      && (mario.getYPos () + mario.getYSize () / drawScalingFactor) >  board[i - 1].getY ())
 		    {
 		      mario.setXVel(0);
 		      mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
@@ -324,10 +325,10 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	    
 
 	  //check ground collision
-	  if (mario.getYPos () + (mario.getYSize () / 3) >= board[i].getY ())
+	  if (mario.getYPos () + (mario.getYSize () / drawScalingFactor) >= board[i].getY ())
 	    {
 	      mario.setYVel (0);
-	      mario.setYPos (board[i].getY () - (mario.getYSize () / 3));
+	      mario.setYPos (board[i].getY () - (mario.getYSize () / drawScalingFactor));
 
 	      //if mario is on the last platform they won
 	      cout << "Board Size " << board.
