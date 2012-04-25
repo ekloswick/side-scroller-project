@@ -14,8 +14,8 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 class enemy : public character
 {
 	public:		enemy (int, int, int, int,int,int);
-		enemy();
-		~enemy();
+		//enemy();
+		void destroyEnemy();
 
 		void moveLeft ();		// function to move left
 		void moveRight ();		// function to move right

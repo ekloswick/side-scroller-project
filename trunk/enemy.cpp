@@ -27,10 +27,12 @@ enemy::enemy (int x, int y, int lives, int mSpeed, int rstart, int rfinish) : ch
   character::rightFacing = 1;
 }
 
-enemy::~enemy()
+void enemy::destroyEnemy()
 {
 	xPos = -5000;
 	yPos = -5000;
+rangeStart = -5000;
+rangeFinish = -5000;
 	movementSpeed = 0;
 }
 
@@ -69,15 +71,9 @@ void enemy::update(int x, int y, int lives, int mSpeed, int rstart, int rfinish)
 
 void enemy::moveWithPlatform(int speed)
 {
-setXPos(getXPos()-speed);
- rangeStart -= speed;
-  rangeFinish -= speed;
-cout<<"RANGE START: "<<rangeStart<<endl;
-cout<<"RANGE FINISH: "<<rangeFinish<<endl;
-cout<<"X POS: "<<getXPos()<<endl;
-
-
-
+	setXPos(getXPos()-speed);
+	rangeStart -= speed;
+	rangeFinish -= speed;
 }
 
 

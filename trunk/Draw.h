@@ -51,8 +51,8 @@ class Draw : public QWidget
 		void loadBoard();
 		void loadEnemies();
 		int welcome;
-int marioScalingFactor;
-int enemyScalingFactor;
+		int marioScalingFactor;
+		int enemyScalingFactor;
 };
 
 #endif
