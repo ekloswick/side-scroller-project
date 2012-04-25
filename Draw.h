@@ -53,6 +53,7 @@ class Draw : public QWidget
 		int welcome;
 		int marioScalingFactor;
 		int enemyScalingFactor;
+		int score;
 };
 
 #endif
