@@ -111,14 +111,8 @@ Draw::paintEvent (QPaintEvent *)
       trash = sprintf (displayLives, "Lives: %d", mario.getLives ());
       painter.drawText (270, 0, 200, 200, 0, displayLives);
 
-      //Draw Basic Stage
-      painter.setBrush (QBrush ("#1ac500"));
+   
 
-      for (unsigned int i = 0; i < board.size (); i++)
-	{
-	  painter.drawRect (board[i].getX (), board[i].getY (),
-			    board[i].getWidth (), board[i].getHeight ());
-	}
 
       //Draw the mario
       // right-facing mario
@@ -149,6 +143,29 @@ Draw::paintEvent (QPaintEvent *)
 	  painter.drawPixmap (marioTargetLeft, marioPixmapLeft,
 			      marioSourceLeft);
 	}
+
+
+   //Draw The Stage
+      painter.setBrush (QBrush ("#1ac500"));
+
+      for (unsigned int i = 0; i < board.size (); i++)
+	{
+	
+		  painter.drawRect (board[i].getX (), board[i].getY (),
+					    board[i].getWidth (), board[i].getHeight ());
+			if (i==(board.size()-3))
+		{
+		      // draw a pipe
+		      QRectF pipeTarget (board[i].getX (), board[i].getY ()-60,80,64);
+		      QRectF pipeSource (0.0, 0.0, 80,64);
+		      QPixmap pipePixmap ("pipe2.png");
+		      QPainter (this);
+		      painter.drawPixmap (pipeTarget, pipePixmap, pipeSource);
+		}
+	
+	}
+
+
 
       //loop through all enemies on the board to draw them based on their position
       for (unsigned int z = 0; z < enemies.size (); z++)
@@ -374,8 +391,8 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 			     (mario.getYSize () / marioScalingFactor));
 
 	      //if mario is on the last platform they won
-	      //   cout << "Board Size " << board.
-	      //      size () << "Platform " << i << endl;
+	        cout << "Board Size " << board.
+	            size () << "Platform " << i << endl;
 	      if (i == board.size () - 3)	//something weird with board needs to be 3.. ***
 		{
 		  cout << "Game Over";
@@ -532,6 +549,10 @@ Draw::loadBoard ()
 	  values.clear ();
 	}
     }
+   else
+	{
+	cout<<"ERROR: File could not be opened"<<endl;
+	}
 }
 
 void
@@ -548,7 +569,7 @@ Draw::loadEnemies ()
 
   if (enemyFile.is_open ())
     {
-      while (enemyFile.good ())
+      while (!enemyFile.eof ())
 	{
 	  getline (enemyFile, tempString);
 	  for (unsigned int k = 0; k < (tempString.size ()); k++)
@@ -568,5 +589,9 @@ Draw::loadEnemies ()
 	  values.clear ();
 	}
     }
+   else
+	{
+	cout<<"ERROR: File could not be opened"<<endl;
+	}
 
 }
