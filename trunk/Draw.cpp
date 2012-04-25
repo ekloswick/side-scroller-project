@@ -25,7 +25,7 @@ using namespace std;
 Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1,
 					     1)
 {
-  setWindowTitle (tr ("2-D Side Scroller"));
+  setWindowTitle (tr ("Super Side Scroller"));
   xWindowSize = 1000;
   yWindowSize = 600;
   resize (xWindowSize, yWindowSize);
@@ -35,6 +35,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   welcome = 0;
   marioScalingFactor = 3;
   enemyScalingFactor = 2;
+  score=0;
 }
 
 
@@ -110,6 +111,9 @@ Draw::paintEvent (QPaintEvent *)
       int trash;		//stores the length of the array; this is not used
       trash = sprintf (displayLives, "Lives: %d", mario.getLives ());
       painter.drawText (270, 0, 200, 200, 0, displayLives);
+char displayScore[10];
+      trash = sprintf (displayScore, "Score: %d", score);
+painter.drawText(430, 0, 200, 200, 0, displayScore);
 
    
 
@@ -273,6 +277,7 @@ Draw::keyPressEvent (QKeyEvent * event)
     case Qt::Key_P:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       mario.setLives (5);
       mario.levelComplete = 0;
+      score=0;
       mario.setXPos (50);
       mario.setYPos (50);
       loadBoard ();
@@ -500,6 +505,8 @@ Draw::testCollision ()
 	  enemies[z].setLives (0);
 	  mario.jump ();
 	  enemies[z].destroyEnemy ();
+	  score+=10;
+
 	}
       else if ((mario.getXPos () < (enemies[z].getXPos () + 40))
 	       && (mario.getXPos () > (enemies[z].getXPos () - 40))
