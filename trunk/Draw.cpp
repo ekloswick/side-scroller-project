@@ -22,7 +22,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 1), badguy (1, 1, 1, 1, 1,
+Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1,
 					     1)
 {
   setWindowTitle (tr ("2-D Side Scroller"));
@@ -153,7 +153,7 @@ Draw::paintEvent (QPaintEvent *)
 	
 		  painter.drawRect (board[i].getX (), board[i].getY (),
 					    board[i].getWidth (), board[i].getHeight ());
-			if (i==(board.size()-3))
+			if (i==(board.size()-2))
 		{
 		      // draw a pipe
 		      QRectF pipeTarget (board[i].getX (), board[i].getY ()-60,80,64);
@@ -393,7 +393,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	      //if mario is on the last platform they won
 	        cout << "Board Size " << board.
 	            size () << "Platform " << i << endl;
-	      if (i == board.size () - 3)	//something weird with board needs to be 3.. ***
+if (i==board.size()-2)
 		{
 		  cout << "Game Over";
 		  mario.levelComplete = 1;
@@ -527,7 +527,10 @@ Draw::loadBoard ()
 
   if (boardFile.is_open ())
     {
-      while (!boardFile.eof ())
+int lineNums;
+boardFile>>lineNums;
+getline (boardFile, tempString);
+      for (int i=0; i<lineNums; i++)
 	{
 	  getline (boardFile, tempString);
 	  for (unsigned int k = 0; k < (tempString.size ()); k++)
@@ -569,7 +572,10 @@ Draw::loadEnemies ()
 
   if (enemyFile.is_open ())
     {
-      while (!enemyFile.eof ())
+int lineNums;
+enemyFile>>lineNums;
+getline (enemyFile, tempString);
+      for (int i=0;i<lineNums;i++)
 	{
 	  getline (enemyFile, tempString);
 	  for (unsigned int k = 0; k < (tempString.size ()); k++)
