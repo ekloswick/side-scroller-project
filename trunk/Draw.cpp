@@ -127,7 +127,7 @@ Draw::paintEvent (QPaintEvent *)
     {
       updateEnemy ();
       updatePhysics ();
-      testCollision ();
+      //testCollision (); //this already occurs in updatePhysics?
     }
   //Welcome message that is only displayed once
   if (welcome == 0)
@@ -482,9 +482,15 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
   if (mario.getXPos () >= (double) xWindowSize * (.75))
     {
       mario.setXPos ((double) xWindowSize * (.75));
+	//move the board
       for (int i = 0; i < board.size (); i++)
 	{
 	  board[i].moveLeft (mario.getXVel ());
+	}
+	//move the enemies
+      for (int j = 0; j < enemies.size(); j++)
+	{
+	  enemies[j].moveWithPlatform(mario.getXVel ());
 	}
     }
 
@@ -508,8 +514,7 @@ for (int z=0; z<enemies.size();z++)
     {
       enemies[z].moveRight ();
     }
-  if (enemies[z].getXPos () ==
-      (enemies[z].getRangeStart () + enemies[z].getRangeFinish ()))
+  if (enemies[z].getXPos () == (enemies[z].getRangeStart () + enemies[z].getRangeFinish ()))
     {
       enemies[z].leftFacing = 1;
       enemies[z].rightFacing = 0;
@@ -518,6 +523,18 @@ for (int z=0; z<enemies.size();z++)
     {
       enemies[z].rightFacing = 1;
       enemies[z].leftFacing = 0;
+    }
+
+//additional testing for the movement of the board
+if (enemies[z].getXPos () > (enemies[z].getRangeStart () + enemies[z].getRangeFinish ()))
+    {
+      enemies[z].leftFacing = 1;
+      enemies[z].rightFacing = 0;
+    }
+if (enemies[z].getXPos () < (enemies[z].getRangeStart ()))
+    {
+      enemies[z].leftFacing = 0;
+      enemies[z].rightFacing = 1;
     }
 
   if (enemies[z].rightFacing == 1)

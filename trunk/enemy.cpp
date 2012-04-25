@@ -64,6 +64,18 @@ setXPos(x);
 
 }
 
+void enemy::moveWithPlatform(int speed)
+{
+setXPos(getXPos()-speed);
+ rangeStart -= speed;
+  rangeFinish -= speed;
+cout<<"RANGE START: "<<rangeStart<<endl;
+cout<<"RANGE FINISH: "<<rangeFinish<<endl;
+cout<<"X POS: "<<getXPos()<<endl;
+
+
+
+}
 
 
 
