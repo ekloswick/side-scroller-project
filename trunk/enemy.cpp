@@ -19,6 +19,10 @@ enemy::enemy (int x, int y, int lives, int mSpeed, int rstart, int rfinish) : ch
   rangeStart = rstart;
   rangeFinish= rfinish;
 
+  setXSize(70);
+  setYSize(86);
+
+
   character::leftFacing = 0;
   character::rightFacing = 1;
 }
@@ -58,10 +62,9 @@ void enemy::update(int x, int y, int lives, int mSpeed, int rstart, int rfinish)
 
   character::leftFacing = 0;
   character::rightFacing = 0;
-setXPos(x);
-	setYPos(y);
-	setLives(lives);
-
+  setXPos(x);
+  setYPos(y-(getYSize()/2)+8); //allows it to program easily so that the goombas are on the board if the text file has same y value as board file
+  setLives(lives);
 }
 
 void enemy::moveWithPlatform(int speed)

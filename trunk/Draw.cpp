@@ -30,7 +30,8 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario(50, 50, 5), badguy(1,1,1,1
    loadEnemies();
    startTimer (50);
    welcome = 0;
-   drawScalingFactor=3;
+   marioScalingFactor=3;
+   enemyScalingFactor=2;
 }
 
 
@@ -99,14 +100,14 @@ Draw::paintEvent (QPaintEvent *)
 
       // right-facing mario
       QRectF marioTargetRight (mario.getXPos (), mario.getYPos (),
-			      mario.getXSize ()/drawScalingFactor, mario.getYSize () / drawScalingFactor);
+			      mario.getXSize ()/marioScalingFactor, mario.getYSize () / marioScalingFactor);
       QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
       QPixmap marioPixmapRight ("marioRight.png");
       QPainter (this);
 
       // left-facing mario
       QRectF marioTargetLeft (mario.getXPos (), mario.getYPos (),
-			     mario.getXSize () / drawScalingFactor, mario.getYSize () / drawScalingFactor);
+			     mario.getXSize () / marioScalingFactor, mario.getYSize () / marioScalingFactor);
       QRectF marioSourceLeft (0.0, 0.0, mario.getXSize (), mario.getYSize ());
       QPixmap marioPixmapLeft ("marioLeft.png");
       QPainter (this);
@@ -126,16 +127,14 @@ Draw::paintEvent (QPaintEvent *)
 	for (unsigned int z=0; z<enemies.size();z++)
 	{
 	      // right-facing enemy
-	      QRectF enemyTargetRight (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
-				       43.0);
-	      QRectF enemySourceRight (0.0, 0.0, 70, 86);
+	      QRectF enemyTargetRight (enemies[z].getXPos (), enemies[z].getYPos (), badguy.getXSize () / enemyScalingFactor, badguy.getYSize () / enemyScalingFactor);
+	      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (), badguy.getYSize ());
 	      QPixmap enemyPixmapRight ("goombaRight.png");
 	      QPainter (this);
 
 	      // left-facing enemy
-	      QRectF enemyTargetLeft (enemies[z].getXPos (), enemies[z].getYPos (), 35.0,
-				      43.0);
-	      QRectF enemySourceLeft (0.0, 0.0, 70, 86);
+	      QRectF enemyTargetLeft (enemies[z].getXPos (), enemies[z].getYPos (),  badguy.getXSize () / enemyScalingFactor, badguy.getYSize () / enemyScalingFactor);
+	      QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (), badguy.getYSize ());
 	      QPixmap enemyPixmapLeft ("goombaLeft.png");
 	      QPainter (this);
 	      
@@ -300,11 +299,11 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	    {
 	      //prevent from walking into the wall
 	      if ((board[i + 1].getX () - mario.getXPos ()) <
-		  (mario.getXSize () / drawScalingFactor)
-		  && (mario.getYPos () + mario.getYSize () / drawScalingFactor) >
+		  (mario.getXSize () / marioScalingFactor)
+		  && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >
 		  board[i + 1].getY ())
 		{
-		  mario.setXPos (board[i + 1].getX () - mario.getXSize () / drawScalingFactor);
+		  mario.setXPos (board[i + 1].getX () - mario.getXSize () / marioScalingFactor);
 		  cout << "TEST 1: hitting wall.." << endl;
 
 		}
@@ -314,7 +313,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 		{
 		    //prevent from walking into the wall behind them
 		  if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
-		      && (mario.getYPos () + mario.getYSize () / drawScalingFactor) >  board[i - 1].getY ())
+		      && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >  board[i - 1].getY ())
 		    {
 		      mario.setXVel(0);
 		      mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
@@ -325,10 +324,10 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	    
 
 	  //check ground collision
-	  if (mario.getYPos () + (mario.getYSize () / drawScalingFactor) >= board[i].getY ())
+	  if (mario.getYPos () + (mario.getYSize () / marioScalingFactor) >= board[i].getY ())
 	    {
 	      mario.setYVel (0);
-	      mario.setYPos (board[i].getY () - (mario.getYSize () / drawScalingFactor));
+	      mario.setYPos (board[i].getY () - (mario.getYSize () / marioScalingFactor));
 
 	      //if mario is on the last platform they won
 	      cout << "Board Size " << board.
@@ -427,16 +426,21 @@ void
 Draw::testCollision ()
 {
 //tests if the mario is above the enemy and within an appropriate position to squash it
-  if ((mario.getXPos () < (enemies[0].getXPos () + 30))
-      && (mario.getXPos () > (enemies[0].getXPos () - 30))
-      && (mario.getYPos () < (enemies[0].getYPos () - 18))
-      && (mario.getYPos () > (enemies[0].getYPos () - 100))
+for (unsigned int z=0; z<enemies.size();z++)
+{
+
+
+  if ((mario.getXPos () < (enemies[z].getXPos () + 30))
+      && (mario.getXPos () > (enemies[z].getXPos () - 30))
+      && (mario.getYPos () < (enemies[z].getYPos () - 18))
+      && (mario.getYPos () > (enemies[z].getYPos () - 100))
       && (mario.getYVel () > 0))
     {
-      enemies[0].setLives (0);
+      enemies[z].setLives (0);
       mario.jump ();
-      enemies[0]. ~ enemy ();
+      enemies[z]. ~ enemy ();
     }
+}
 }
 
 void
