@@ -330,9 +330,9 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	      mario.setYPos (board[i].getY () - (mario.getYSize () / marioScalingFactor));
 
 	      //if mario is on the last platform they won
-	      cout << "Board Size " << board.
-		size () << "Platform " << i << endl;
-	      if (i == board.size () - 1)
+	   //   cout << "Board Size " << board.
+	//	size () << "Platform " << i << endl;
+	      if (i == board.size () - 3) //something weird with board needs to be 3.. ***
 		{
 		  cout << "Game Over";
 		  mario.levelComplete = 1;
@@ -430,16 +430,25 @@ for (unsigned int z=0; z<enemies.size();z++)
 {
 
 
-  if ((mario.getXPos () < (enemies[z].getXPos () + 30))
-      && (mario.getXPos () > (enemies[z].getXPos () - 30))
+  if ((mario.getXPos () < (enemies[z].getXPos () + 40))
+      && (mario.getXPos () > (enemies[z].getXPos () - 40))
       && (mario.getYPos () < (enemies[z].getYPos () - 18))
-      && (mario.getYPos () > (enemies[z].getYPos () - 100))
+      && (mario.getYPos () > (enemies[z].getYPos () - 90))
       && (mario.getYVel () > 0))
     {
       enemies[z].setLives (0);
       mario.jump ();
-      enemies[z]. ~ enemy ();
+      enemies[z].destroyEnemy ();
     }
+  else if ((mario.getXPos () < (enemies[z].getXPos () + 40))
+      && (mario.getXPos () > (enemies[z].getXPos () - 40))
+	&& (mario.getYVel () == 0)        )
+		{
+		mario.setLives(mario.getLives()-1);
+		mario.setXPos(50);
+		mario.setYPos(50);
+		cout<<"OUCH"<<endl;
+		}
 }
 }
 
@@ -457,7 +466,7 @@ Draw::loadBoard()
 
       if (boardFile.is_open ())
 	{
-	  while (boardFile.good ())
+	  while (!boardFile.eof ())
 	    {
 	      getline (boardFile, tempString);
 	      for (unsigned int k = 0; k < (tempString.size ()); k++)
