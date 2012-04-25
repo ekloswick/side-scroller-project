@@ -23,7 +23,8 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 		int  getRangeStart(void);
 		int  getRangeFinish(void);
 		int rangeStart;
-		int rangeFinish;			private:		
+		int rangeFinish;
+		void moveWithPlatform (int);			private:		
 };
 
 #endif
