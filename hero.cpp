@@ -5,72 +5,67 @@
  *  Created by Jake Flynt on 3/4/12.
  *  Copyright 2012. All rights reserved.
  *
- */
-
+ */  
+  
 #include <iostream>
 #include <iomanip>
 #include <stdlib.h>
 #include <hero.h>
 #include <QPrinter>
 #include <QtGui>
-
-using namespace std;
-
-hero::hero(int x, int y, int lives) : character (x,y,lives)
+  using namespace std;
+hero::hero (int x, int y, int lives):
+character (x, y, lives) 
 {
-    setXVel(0);
-    setYVel(getGravity());
-    gravity = 25;
-    character::rightFacing=1;
-    setXSize(98);
-    setYSize(164);
-    movementSpeed=16;
-   
-}
+  setXVel (0);
+  setYVel (getGravity ());
+  gravity = 25;
+  character::rightFacing = 1;
+  setXSize (98);
+  setYSize (164);
+  movementSpeed = 16;
+} void
 
-
-void hero::moveLeft ()    // function to move left
+hero::moveLeft ()		// function to move left
 {
-xVel-=movementSpeed;
-}
-void hero::moveRight ()        // function to move right
+  xVel -= movementSpeed;
+} void
+
+hero::moveRight ()		// function to move right
 {
-xVel+=movementSpeed;
-}
+  xVel += movementSpeed;
+} void
 
-void hero::jump()
+hero::jump () 
 {
-    yVel = -70;
-}
+  yVel = -70;
+} int
 
-
-int hero::getXVel()
+hero::getXVel () 
 {
-    return xVel;
-}
+  return xVel;
+}
 
-int hero::getYVel()
+int
+hero::getYVel () 
 {
-    return yVel;
-}
+  return yVel;
+}
 
-void hero::setXVel(int n)
+void
+hero::setXVel (int n) 
 {
-    xVel = n;
-}
+  xVel = n;
+} void
 
-void hero::setYVel(int n)
+hero::setYVel (int n) 
 {
-    yVel = n;
-}
+  yVel = n;
+} int
 
-int hero::getGravity()
+hero::getGravity () 
 {
-    return gravity;
-}
+  return gravity;
+}
 
-
-
-
-
-
+

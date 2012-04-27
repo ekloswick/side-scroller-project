@@ -149,11 +149,16 @@ Draw::keyPressEvent (QKeyEvent * event)
 	}
       break;
     case Qt::Key_L:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
-	if(debug)
-	levelComplete=1;
+      if (debug)
+{
+	levelComplete = 1;
+        if (level == 3)
+		    {
+		      gameComplete = 1;
+			    }
+}
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
-      //levelDisplay = 1;
       break;
     case Qt::Key_Escape:
       exit (1);
@@ -215,7 +220,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
     (mario.getXPos() - board[i].getX()) <= board[i].getWidth() &&
     (board[i].getY()- mario.getYPos()) >= 0 &&
     (board[i].getY()- mario.getYPos()) <= (mario.getYSize()/3) )
-                	{
+                  	{
 *///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
 
   //loop through the entire board

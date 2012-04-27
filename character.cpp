@@ -17,64 +17,70 @@
 
 using namespace std;
 
-character::character(int x, int y, int lives)
+character::character (int x, int y, int lives)
 {
-	setXPos(x);
-	setYPos(y);
-	setLives(lives);
-	rightFacing=1;
+  setXPos (x);
+  setYPos (y);
+  setLives (lives);
+  rightFacing = 1;
 }
 
-int character::getXPos()
+int
+character::getXPos ()
 {
-	return xPos;
+  return xPos;
 }
 
-int character::getYPos()
+int
+character::getYPos ()
 {
-	return yPos;
+  return yPos;
 }
 
-void character::setXPos(int n)
+void
+character::setXPos (int n)
 {
-	xPos = n;
+  xPos = n;
 }
 
-void character::setYPos(int n)
+void
+character::setYPos (int n)
 {
-	yPos = n;
-}
-
-
-void character::setLives(int L)
-{
-	lives=L;
-}
-
-int character::getLives()
-{
-	return lives;
-}
-
-int character::getXSize()
-{
-    return xsize;
-}
-
-int character::getYSize()
-{
-    return ysize;
-}
-
-void character::setXSize(int n)
-{
-    xsize = n;
-}
-
-void character::setYSize(int n)
-{
-    ysize = n;
+  yPos = n;
 }
 
 
+void
+character::setLives (int L)
+{
+  lives = L;
+}
 
+int
+character::getLives ()
+{
+  return lives;
+}
+
+int
+character::getXSize () 
+{
+  return xsize;
+}
+
+int
+character::getYSize () 
+{
+  return ysize;
+}
+
+void
+character::setXSize (int n) 
+{
+  xsize = n;
+} void
+
+character::setYSize (int n) 
+{
+  ysize = n;
+}

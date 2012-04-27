@@ -14,41 +14,25 @@
 #include <iomanip>
 #include <stdlib.h>
 #include "character.h"
-
-
+  
 // *** CHECK TO MAKE SURE CHARACTER IS ALL GONE
-  
-using namespace std;
-
-class hero : public character
+  using namespace std;
+class hero:public character 
 {
+public:hero (int, int, int);
+  int getXVel ();
+  int getYVel ();
+  int isJumping;
+  void setXVel (int);
+  void setYVel (int);
+  void moveLeft ();		// function to move left
+  void moveRight ();		// function to move right
+  int getGravity ();
+  void jump ();		// function to jump
+private:int xVel;		// acceleration in x direction
+  int yVel;			// acceleration in y direction
+  int gravity;
+};
 
-    public:
-          hero (int, int, int);
-      
-        int getXVel ();
-        int getYVel ();
-
-        
-        int isJumping;
-
-        void setXVel (int);
-        void setYVel (int);
-        void moveLeft ();        // function to move left
-        void moveRight ();        // function to move right
-
-        int getGravity ();
-        void jump ();            // function to jump
-
-        
-    private:
-        int xVel;            // acceleration in x direction
-        int yVel;            // acceleration in y direction
-        int gravity;
-
-
-};
-
-
-
+
 #endif
