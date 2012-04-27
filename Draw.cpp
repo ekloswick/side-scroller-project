@@ -30,8 +30,8 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   yWindowSize = 600;
   resize (xWindowSize, yWindowSize);
   level = 0;			//the stage the player is one
-  loadBoard ();
-  loadEnemies ();
+//  loadBoard ();
+  //loadEnemies ();
   startTimer (50);
   welcome = 0;			// 0 for welcome screen; 1 for no welcome screen
   marioScalingFactor = 3;
@@ -40,6 +40,8 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   levelComplete = 1;		//0 for the level is not complete; 1 for the level is completed
   levelMax = 3;
   playerLost = 0;
+//**DEBUG MODE**
+debug=1;
 
 }
 
@@ -123,6 +125,11 @@ Draw::keyPressEvent (QKeyEvent * event)
 	      playerLost = 0;
 	    }
 	  level += 1;
+	  if (level==1)
+	    {
+	      mario.setLives(3);
+	    }
+
 	  if (level > 1)
 	    {
 	      score += 100;
@@ -418,19 +425,29 @@ Draw::loadBoard ()
 {
   string levelString;
   ifstream boardFile;
+
   switch (level)
     {				//open the appropriate level
     case 1:
-      boardFile.open ("level1.txt");
+      if (debug)
+           boardFile.open ("level1test.txt");
+      else
+           boardFile.open ("level1.txt");
       break;
     case 2:
-      boardFile.open ("level2.txt");
+      if (debug)
+           boardFile.open ("level2test.txt");
+      else
+      	   boardFile.open ("level2.txt");
       break;
     case 3:
-      boardFile.open ("level3.txt");
+      if (debug)
+	   boardFile.open ("level3test.txt");
+      else
+           boardFile.open ("level3.txt");
       break;
     default:
-      boardFile.open ("level1.txt");
+      cout<<"Error: Invalid Level: See load board"<<endl;
       break;
     }
 
@@ -485,16 +502,25 @@ Draw::loadEnemies ()
   switch (level)
     {				//open the appropriate level
     case 1:
-      enemyFile.open ("enemy1.txt");
+      if (debug)
+	   enemyFile.open ("enemy1test.txt");
+      else
+           enemyFile.open ("enemy1.txt");
       break;
     case 2:
-      enemyFile.open ("enemy2.txt");
+      if (debug)
+	   enemyFile.open ("enemy2test.txt");
+      else
+           enemyFile.open ("enemy2.txt");
       break;
     case 3:
-      enemyFile.open ("enemy3.txt");
+      if (debug)
+	   enemyFile.open ("enemy3test.txt");
+      else
+           enemyFile.open ("enemy3.txt");
       break;
     default:
-      enemyFile.open ("enemy1.txt");
+      cout<<"ERROR: Invalid level: See loadEnemies"<<endl;
       break;
     }
 
