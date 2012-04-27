@@ -384,13 +384,6 @@ Draw::updatePhysics ()
   if (movingRight == 1)
     mario.moveRight ();
 
-  // prevents infinity-jumping
-  for (unsigned int i = 0; i < board.size (); i++)
-    {
-      if (jumping == 1 && mario.getYPos () > (board[i].getY () - 69))
-	mario.jump ();
-    }
-
   // updates the positions based on velocities
   mario.setXPos (mario.getXPos () + mario.getXVel ());
   mario.setYPos (mario.getYPos () + mario.getYVel ());
@@ -398,6 +391,13 @@ Draw::updatePhysics ()
   // updates the velocities themselves
   mario.setXVel (mario.getXVel () / 2);
   mario.setYVel (mario.getYVel () + mario.getGravity ());
+  
+  // set caps for marios velocities
+  if (mario.getXVel() > 15)
+  	mario.setXVel(15);
+  
+  if (mario.getYVel() > 35)
+  	mario.setYVel(35);
 
   // platform collision detection
 
@@ -413,36 +413,44 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
   for (unsigned int i = 0; i < board.size (); i++)
     {
       //test to determine which board the player is on (between the beginning and the width of the board
-      if (mario.getXPos () > board[i].getX ()
-	  && mario.getXPos () < (board[i].getX () + board[i].getWidth ()))
+      if (mario.getXPos () >= board[i].getX ()
+	  && mario.getXPos () <= (board[i].getX () + board[i].getWidth ()))
 	{
 	  //test if the next board is higher than the players position 
 	  if (board[i + 1].getY () < board[i].getY ())
 	    {
 	      //prevent from walking into the wall
-	      if ((board[i + 1].getX () - mario.getXPos ()) <
-		  (mario.getXSize () / marioScalingFactor)
-		  && (mario.getYPos () +
-		      mario.getYSize () / marioScalingFactor) >
-		  board[i + 1].getY ())
-		{
-		  mario.setXPos (board[i + 1].getX () -
-				 mario.getXSize () / marioScalingFactor);
-		  cout << "TEST 1: hitting wall.." << endl;
-
-		}
+	      if ((board[i + 1].getX () - mario.getXPos ()) < (mario.getXSize () / marioScalingFactor)
+		 	&& (mario.getYPos () + mario.getYSize () / marioScalingFactor) > board[i + 1].getY ())
+			{
+			  mario.setXPos (board[i + 1].getX () - mario.getXSize () / marioScalingFactor);
+			  cout << "TEST 1: hitting wall.." << endl;
+			}
 	    }
+	    cout << "BACON" << endl;
+	   /* //test if the previous board is higher than the players position 
+	  if (i != 0 && board[i - 1].getY () < board[i].getY ())
+	    {
+	    	cout << "IS" << endl;
+	      //prevent from walking into the wall
+	      if ( ((board[i - 1].getX () + board[i - 1].getWidth () - mario.getXPos ()) <= 0)
+		 	&& ((mario.getYPos () + mario.getYSize () / marioScalingFactor) > board[i - 1].getY ()))
+			{
+			  mario.setXPos (board[i].getX () );
+			  cout << "TEST 2: hitting wall.." << endl;
+			}
+	    }*/
 	  /* //test if the previous board is higher than the players position
 	     if (board[i - 1].getY () < board[i].getY ())
 	     {
-	     //prevent from walking into the wall behind them
-	     if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
-	     && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >  board[i - 1].getY ())
-	     {
-	     mario.setXVel(0);
-	     mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
-	     cout << "TEST 2: hitting wall.." << endl;
-	     }
+			//prevent from walking into the wall behind them
+			if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
+			&& (mario.getYPos () + mario.getYSize () / marioScalingFactor) >  board[i - 1].getY ())
+			{
+				mario.setXVel(0);
+				mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
+				cout << "TEST 2: hitting wall.." << endl;
+			}
 	     }
 	   */
 
@@ -452,8 +460,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	      board[i].getY ())
 	    {
 	      mario.setYVel (0);
-	      mario.setYPos (board[i].getY () -
-			     (mario.getYSize () / marioScalingFactor));
+	      mario.setYPos (board[i].getY () - (mario.getYSize () / marioScalingFactor));
 
 	      //if mario is on the last platform they won
 	        cout << "Board Size " << board.
@@ -473,6 +480,11 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 
 		}
 	    }
+	    
+		// prevents infinity-jumping
+		if (jumping == 1 && mario.getYPos () > (board[i].getY () - (mario.getYSize() / marioScalingFactor) - 5))
+			mario.jump ();
+			
 
 	}
     }
@@ -501,7 +513,13 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	  enemies[j].moveWithPlatform (mario.getXVel ());
 	}
     }
-
+	
+	// prevent mario from going of the left side of the screen
+	if (mario.getXPos() < 0)
+	{
+		mario.setXPos(0);
+		cout << "Hitting far left border" << endl;
+	}
 }
 
 // constantly updates the game
@@ -563,8 +581,6 @@ Draw::testCollision ()
 //tests if the mario is above the enemy and within an appropriate position to squash it
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
-
-
       if ((mario.getXPos () < (enemies[z].getXPos () + 40))
 	  && (mario.getXPos () > (enemies[z].getXPos () - 40))
 	  && (mario.getYPos () < (enemies[z].getYPos () - 18))
@@ -577,9 +593,10 @@ Draw::testCollision ()
 	  score+=10;
 
 	}
-      else if ((mario.getXPos () < (enemies[z].getXPos () + 40))
+      else if ( (mario.getXPos () < (enemies[z].getXPos () + 40))
 	       && (mario.getXPos () > (enemies[z].getXPos () - 40))
-	       && (mario.getYVel () == 0))
+	       && (mario.getYVel () == 0)
+	       && (mario.getYPos() > (enemies[z].getYPos() - 90)))
 	{
 	  mario.setLives (mario.getLives () - 1);
 	  mario.setXPos (50);
