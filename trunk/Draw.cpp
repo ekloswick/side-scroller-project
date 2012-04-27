@@ -481,20 +481,20 @@ void
 Draw::loadEnemies ()
 {
 
-  ifstream boardFile;
+  ifstream enemyFile;
   switch (level)
     {				//open the appropriate level
     case 1:
-      boardFile.open ("enemy1.txt");
+      enemyFile.open ("enemy1.txt");
       break;
     case 2:
-      boardFile.open ("enemy2.txt");
+      enemyFile.open ("enemy2.txt");
       break;
     case 3:
-      boardFile.open ("enemy3.txt");
+      enemyFile.open ("enemy3.txt");
       break;
     default:
-      boardFile.open ("enemy1.txt");
+      enemyFile.open ("enemy1.txt");
       break;
     }
 
