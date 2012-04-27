@@ -41,7 +41,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   levelMax = 3;
   playerLost = 0;
 //**DEBUG MODE**
-  debug = 1;
+  debug = 0;
 
 }
 
@@ -150,13 +150,13 @@ Draw::keyPressEvent (QKeyEvent * event)
       break;
     case Qt::Key_L:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       if (debug)
-{
-	levelComplete = 1;
-        if (level == 3)
-		    {
-		      gameComplete = 1;
-			    }
-}
+	{
+	  levelComplete = 1;
+	  if (level == 3)
+	    {
+	      gameComplete = 1;
+	    }
+	}
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
       break;
@@ -187,6 +187,53 @@ Draw::keyReleaseEvent (QKeyEvent * event)
     }
 }
 
+
+void
+Draw::xChange (unsigned int i)
+{
+
+
+  //prevent from walking into the wall
+
+
+
+
+  for (int z = 0; z < abs (mario.getXVel ()); z++)
+    {
+      if (mario.getXVel () > 0)
+	{
+	  mario.setXPos (mario.getXPos () + 1);
+	  if ((board[i + 1].getX () - mario.getXPos ()) <
+	      (mario.getXSize () / marioScalingFactor)
+	      && (mario.getYPos () +
+		  mario.getYSize () / marioScalingFactor) >
+	      board[i + 1].getY ())
+	    {
+	      mario.setXPos (board[i + 1].getX () -
+			     mario.getXSize () / marioScalingFactor);
+	      cout << "TEST 1: hitting wall.." << endl;
+	      break;
+
+	    }
+	}
+      else if (mario.getXVel () < 0)
+	{
+	  mario.setXPos (mario.getXPos () - 1);
+	  if (mario.getXPos () -
+	      (board[i - 1].getX () + board[i - 1].getWidth ()) < 0
+	      && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >
+	      board[i - 1].getY ())
+	    {
+	      mario.setXPos (board[i - 1].getX () + board[i - 1].getWidth () +
+			     1);
+	      cout << "TEST 2: hitting wall.." << endl;
+	      break;
+	    }
+
+	}
+    }
+}
+
 // upates the locations/velocities of the objects onscreen
 void
 Draw::updatePhysics ()
@@ -199,7 +246,7 @@ Draw::updatePhysics ()
     mario.moveRight ();
 
   // updates the positions based on velocities
-  mario.setXPos (mario.getXPos () + mario.getXVel ());
+  // mario.setXPos (mario.getXPos () + mario.getXVel ());
   mario.setYPos (mario.getYPos () + mario.getYVel ());
 
   // updates the velocities themselves
@@ -214,65 +261,19 @@ Draw::updatePhysics ()
     mario.setYVel (35);
 
   // platform collision detection
-
-/*
-if( (mario.getXPos() - board[i].getX()) >= 0 && 
-    (mario.getXPos() - board[i].getX()) <= board[i].getWidth() &&
-    (board[i].getY()- mario.getYPos()) >= 0 &&
-    (board[i].getY()- mario.getYPos()) <= (mario.getYSize()/3) )
-                  	{
-*///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
-
   //loop through the entire board
+  int test = 0;
   for (unsigned int i = 0; i < board.size (); i++)
     {
       //test to determine which board the player is on (between the beginning and the width of the board
       if (mario.getXPos () >= board[i].getX ()
 	  && mario.getXPos () <= (board[i].getX () + board[i].getWidth ()))
 	{
-	  //test if the next board is higher than the players position 
-	  if (board[i + 1].getY () < board[i].getY ())
-	    {
-	      //prevent from walking into the wall
-	      if ((board[i + 1].getX () - mario.getXPos ()) <
-		  (mario.getXSize () / marioScalingFactor)
-		  && (mario.getYPos () +
-		      mario.getYSize () / marioScalingFactor) >
-		  board[i + 1].getY ())
-		{
-		  mario.setXPos (board[i + 1].getX () -
-				 mario.getXSize () / marioScalingFactor);
-		  cout << "TEST 1: hitting wall.." << endl;
-		}
-	    }
-	  cout << "BACON" << endl;
-	  /* //test if the previous board is higher than the players position 
-	     if (i != 0 && board[i - 1].getY () < board[i].getY ())
-	     {
-	     cout << "IS" << endl;
-	     //prevent from walking into the wall
-	     if ( ((board[i - 1].getX () + board[i - 1].getWidth () - mario.getXPos ()) <= 0)
-	     && ((mario.getYPos () + mario.getYSize () / marioScalingFactor) > board[i - 1].getY ()))
-	     {
-	     mario.setXPos (board[i].getX () );
-	     cout << "TEST 2: hitting wall.." << endl;
-	     }
-	     } */
-	  /* //test if the previous board is higher than the players position
-	     if (board[i - 1].getY () < board[i].getY ())
-	     {
-	     //prevent from walking into the wall behind them
-	     if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
-	     && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >  board[i - 1].getY ())
-	     {
-	     mario.setXVel(0);
-	     mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
-	     cout << "TEST 2: hitting wall.." << endl;
-	     }
-	     }
-	   */
-
-
+	  test = 1;
+	  if (i != 0)
+	    xChange (i);
+	//  if (i == 0)
+	  //  test = 0;
 	  //check ground collision
 	  if (mario.getYPos () + (mario.getYSize () / marioScalingFactor) >=
 	      board[i].getY ())
@@ -280,7 +281,6 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	      mario.setYVel (0);
 	      mario.setYPos (board[i].getY () -
 			     (mario.getYSize () / marioScalingFactor));
-
 	      //if mario is on the last platform they won
 	      cout << "Board Size " << board.size () << "Platform " << i <<
 		endl;
@@ -291,26 +291,35 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 		    {
 		      gameComplete = 1;
 		      levelComplete = 1;
-
 		    }
 		  else
 		    levelComplete = 1;
-
-
 		}
 	    }
-
 	  // prevents infinity-jumping
 	  if (jumping == 1
 	      && mario.getYPos () >
 	      (board[i].getY () - (mario.getYSize () / marioScalingFactor) -
 	       5))
-	    mario.jump ();
-
-
+	    {
+	      mario.jump ();
+	    }
 	}
     }
-
+  if (test == 0)
+    {
+      mario.setXPos (mario.getXPos () + mario.getXVel ());
+   /*   for (unsigned int i = 0; i < board.size () - 1; i++)
+	{
+	  //test to determine which board the player is on (between the beginning and the width of the board
+	  if (mario.getXPos () >= (board[i].getX () + board[i].getWidth ())
+	      && mario.getXPos () <= board[i + 1].getX ())
+	    {
+		if(i!=0)
+	     		 xChange (i);
+	    }
+	}*/
+    }
 
 // test if mario has fallen off the board
   if (mario.getYPos () >= yWindowSize)

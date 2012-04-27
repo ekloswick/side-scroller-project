@@ -39,6 +39,7 @@ protected:
   void playerWon ();
   void stageComplete ();
   void gameOver ();
+void xChange(unsigned int );
 
 
 private:
