@@ -22,21 +22,22 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1, 1)
+Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1,
+					     1)
 {
   setWindowTitle (tr ("Super Side Scroller"));
   xWindowSize = 1000;
   yWindowSize = 600;
   resize (xWindowSize, yWindowSize);
-  level=0;  //the stage the player is one
+  level = 0;			//the stage the player is one
   loadBoard ();
   loadEnemies ();
   startTimer (50);
-  welcome = 0;  // 0 for welcome screen; 1 for no welcome screen
+  welcome = 0;			// 0 for welcome screen; 1 for no welcome screen
   marioScalingFactor = 3;
   enemyScalingFactor = 2;
-  score=0;
-  levelComplete=1; //0 for the level is not complete; 1 for the level is completed
+  score = 0;
+  levelComplete = 1;		//0 for the level is not complete; 1 for the level is completed
 
 }
 
@@ -56,257 +57,36 @@ Draw::paintEvent (QPaintEvent *)
   //Welcome message that is displayed until the user hits the space bar
   if (welcome == 0)
     {
-      painter.setBrush (QBrush ("#000000"));
-      painter.drawRect (0, 0, xWindowSize, yWindowSize);
-      painter.setPen (QPen ("#ffffff"));
-	//image of mario
-      QRectF marioTargetRight (100, 100, 1.5 * mario.getXSize (),
-			       1.5 * mario.getYSize ());
-      QRectF marioSourceRight (0.0, 0.0, mario.getXSize (),
-			       mario.getYSize ());
-      QPixmap marioPixmapRight ("marioRight.png");
-      QPainter (this);
-      painter.drawPixmap (marioTargetRight, marioPixmapRight,
-			  marioSourceRight);
-
-	//image of goomba
-      QRectF enemyTargetLeft (800, 400, badguy.getXSize (),
-			      badguy.getYSize ());
-      QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (),
-			      badguy.getYSize ());
-      QPixmap enemyPixmapLeft ("goombaLeft.png");
-      QPainter (this);
-      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft, enemySourceLeft);
-
-      //set the font size to a large value for the title
-      QFont myFont1;
-      myFont1.setPointSizeF (40.0);
-      painter.setFont (myFont1);
-
-      painter.drawText (200, 25, 600, 600, Qt::AlignHCenter,
-			"WELCOME TO \nSIDE SCROLLER");
-
-      //set the font size smaller for additional info
-      QFont myFont2;
-      myFont2.setPointSizeF (20.0);
-      painter.setFont (myFont2);
-
-      painter.drawText (200, 200, 600, 600, Qt::AlignHCenter,
-			"Justin Bartlett\nJake Flynt\nEli Kloswick");
-      painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
-			"Press 'A' to move left\nPress 'D' to move right\nPress 'W' to jump");
-      painter.drawText (200, 500, 600, 600, Qt::AlignHCenter,
-			"Press Space Bar to Continue");
+      displayWelcomeMessage ();
     }
 
-  else if (mario.getLives () > 0 && levelComplete == 0)
+  else if (mario.getLives () > 0 && levelComplete == 0)	//while the game is running
     {
-      //Set font
-      QFont myFont;
-      myFont.setPointSizeF (20.0);
-      painter.setFont (myFont);
-
-      //Display text of basic info
-
-        int trash;		//stores the length of the array; this is not used
-	char displayStage[10];      
-	trash = sprintf (displayStage, "Stage: %d", level);
-        painter.drawText (0, 0, 250, 250, 0, displayStage);
-      //number of lives remaining
-      char displayLives[10];
-      trash = sprintf (displayLives, "Lives: %d", mario.getLives ());
-      painter.drawText (270, 0, 200, 200, 0, displayLives);
-char displayScore[15];
-      trash = sprintf (displayScore, "Score: %d", score);
-painter.drawText(430, 0, 200, 200, 0, displayScore);
-
-   
-
-
+      //display the stage info
+      displayStageInfo ();
       //Draw the mario
-      // right-facing mario
-      QRectF marioTargetRight (mario.getXPos (), mario.getYPos (),
-			       mario.getXSize () / marioScalingFactor,
-			       mario.getYSize () / marioScalingFactor);
-      QRectF marioSourceRight (0.0, 0.0, mario.getXSize (),
-			       mario.getYSize ());
-      QPixmap marioPixmapRight ("marioRight.png");
-      QPainter (this);
-
-      // left-facing mario
-      QRectF marioTargetLeft (mario.getXPos (), mario.getYPos (),
-			      mario.getXSize () / marioScalingFactor,
-			      mario.getYSize () / marioScalingFactor);
-      QRectF marioSourceLeft (0.0, 0.0, mario.getXSize (), mario.getYSize ());
-      QPixmap marioPixmapLeft ("marioLeft.png");
-      QPainter (this);
-
-      // update mario sprite state based on what direction he is moving
-      if (mario.rightFacing == 1)
-	{
-	  painter.drawPixmap (marioTargetRight, marioPixmapRight,
-			      marioSourceRight);
-	}
-      if (mario.leftFacing == 1)
-	{
-	  painter.drawPixmap (marioTargetLeft, marioPixmapLeft,
-			      marioSourceLeft);
-	}
-
-
-   //Draw The Stage
-      painter.setBrush (QBrush ("#1ac500"));
-
-      for (unsigned int i = 0; i < board.size (); i++)
-	{
-	
-		  painter.drawRect (board[i].getX (), board[i].getY (),
-					    board[i].getWidth (), board[i].getHeight ());
-			if (i==(board.size()-2))
-		{
-		      // draw a pipe
-		      QRectF pipeTarget (board[i].getX (), board[i].getY ()-60,80,64);
-		      QRectF pipeSource (0.0, 0.0, 80,64);
-		      QPixmap pipePixmap ("pipe2.png");
-		      QPainter (this);
-		      painter.drawPixmap (pipeTarget, pipePixmap, pipeSource);
-		}
-	
-	}
-
-
-
-      //loop through all enemies on the board to draw them based on their position
-      for (unsigned int z = 0; z < enemies.size (); z++)
-	{
-	  // right-facing enemy
-	  QRectF enemyTargetRight (enemies[z].getXPos (),
-				   enemies[z].getYPos (),
-				   badguy.getXSize () / enemyScalingFactor,
-				   badguy.getYSize () / enemyScalingFactor);
-	  QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
-				   badguy.getYSize ());
-	  QPixmap enemyPixmapRight ("goombaRight.png");
-	  QPainter (this);
-
-	  // left-facing enemy
-	  QRectF enemyTargetLeft (enemies[z].getXPos (),
-				  enemies[z].getYPos (),
-				  badguy.getXSize () / enemyScalingFactor,
-				  badguy.getYSize () / enemyScalingFactor);
-	  QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (),
-				  badguy.getYSize ());
-	  QPixmap enemyPixmapLeft ("goombaLeft.png");
-	  QPainter (this);
-
-	  //if the enemy has more than 1 life draw them on the board
-	  if (enemies[z].getLives () != 0)
-	    {
-	      // update enemy sprite state based on what direction they are moving
-	      if (enemies[z].rightFacing == 1)
-		{
-		  painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
-				      enemySourceRight);
-		}
-
-	      if (enemies[z].leftFacing == 1)
-		{
-		  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
-				      enemySourceLeft);
-		}
-	    }
-	}
+      drawMario ();
+      //Draw the Stage
+      drawStage ();
+      //Draw the enemies
+      drawEnemies ();
     }
 //if mario beat the level with lives remaining display to the user and ask if they would like to play again
   else if (mario.getLives () > 0 && gameComplete == 1)
     {
-      painter.setBrush (QBrush ("#000000"));
-      painter.drawRect (0, 0, xWindowSize, yWindowSize);
-      painter.setPen (QPen ("#ffffff"));
-      QFont myFont;
-      myFont.setPointSizeF (60.0);
-      painter.setFont (myFont);
-      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "YOU\nWIN\n");
-      myFont.setPointSizeF (40.0);
-      painter.setFont (myFont);
-	char displayScore[15];
-	int trash;
-	trash = sprintf (displayScore, "Score: %d", score);
-	painter.drawText(200, 300, 600, 600, Qt::AlignHCenter, displayScore);
-      painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
-			"Press 'P' to play Again\n");
+      playerWon ();  //player won screen
     }
-  else if (mario.getLives() > 0 && levelComplete==1)
-    { 
-	painter.setBrush (QBrush ("#000000"));
-	painter.drawRect (0, 0, xWindowSize, yWindowSize);
-	QFont myFont;
-	myFont.setPointSizeF (60.0);
-	painter.setFont (myFont);
-        painter.setPen (QPen ("#008000"));
-        int trash;		//stores the length of the array; this is not used
-	char displayStage[10];      
-	trash = sprintf (displayStage, "Stage: %d", level+1);
-        painter.drawText (200, 100, 600, 600,Qt::AlignHCenter, displayStage);
-
-   //   painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "Stage\nComplete\n");
-      myFont.setPointSizeF (35.0);
-      painter.setFont (myFont);
-      painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
-			"Press 'P' to advance\n");
-
-
-
-
-QRectF enemyTargetRight1 (350, 430, badguy.getXSize (),
-			      badguy.getYSize ());
-QRectF enemyTargetRight2 (450, 430, badguy.getXSize (),
-			      badguy.getYSize ());
-QRectF enemyTargetRight3 (550, 430, badguy.getXSize (),
-			      badguy.getYSize ());
-      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
-			      badguy.getYSize ());
-      QPixmap enemyPixmapRight ("goombaRight.png");
-      QPainter (this);
-      painter.drawPixmap (enemyTargetRight1, enemyPixmapRight, enemySourceRight);
-      painter.drawPixmap (enemyTargetRight2, enemyPixmapRight, enemySourceRight);
-      painter.drawPixmap (enemyTargetRight3, enemyPixmapRight, enemySourceRight);
-
-
-
-
-
+  else if (mario.getLives () > 0 && levelComplete == 1)
+    {
+      stageComplete ();  //stage complete screen
 
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
   else if (mario.getLives () < 1)
     {
-
-      painter.setBrush (QBrush ("#000000"));
-      painter.drawRect (0, 0, xWindowSize, yWindowSize);
-      painter.setPen (QPen ("#C80000"));
-
-      QFont myFont;
-      myFont.setPointSizeF (60.0);
-      painter.setFont (myFont);
-      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter,
-			"GAME \nOVER\n");
-      myFont.setPointSizeF (40.0);
-      painter.setFont (myFont);
-      painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
-			"Press 'P' to play Again\n");
+      gameOver ();  //game over screen
     }
 }
-
-//possible implement later..
-/*
-// Capture mouse clicks
-void
-Draw::mousePressEvent (QMouseEvent * e)
-{
-  update ();
-}
-*/
 
 // performs actions based on key presses
 //**** TOOK OUT UPDATES FROM KEY PRESS AND RELEASE AS THEY DIDNT SEEM TO BE DOING ANYTHING*****
@@ -330,15 +110,15 @@ Draw::keyPressEvent (QKeyEvent * event)
       break;
     case Qt::Key_P:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       mario.setLives (5);
-    level+=1;
-	if (level > 1)  
-{ 
-		score+=100;
-}
+      level += 1;
+      if (level > 1)
+	{
+	  score += 100;
+	}
       levelComplete = 0;
       mario.setXPos (50);
       mario.setYPos (50);
-  
+
       loadBoard ();
       loadEnemies ();
       break;
@@ -391,13 +171,13 @@ Draw::updatePhysics ()
   // updates the velocities themselves
   mario.setXVel (mario.getXVel () / 2);
   mario.setYVel (mario.getYVel () + mario.getGravity ());
-  
+
   // set caps for marios velocities
-  if (mario.getXVel() > 15)
-  	mario.setXVel(15);
-  
-  if (mario.getYVel() > 35)
-  	mario.setYVel(35);
+  if (mario.getXVel () > 15)
+    mario.setXVel (15);
+
+  if (mario.getYVel () > 35)
+    mario.setYVel (35);
 
   // platform collision detection
 
@@ -406,7 +186,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
     (mario.getXPos() - board[i].getX()) <= board[i].getWidth() &&
     (board[i].getY()- mario.getYPos()) >= 0 &&
     (board[i].getY()- mario.getYPos()) <= (mario.getYSize()/3) )
-          	{
+            	{
 *///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
 
   //loop through the entire board
@@ -420,37 +200,41 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	  if (board[i + 1].getY () < board[i].getY ())
 	    {
 	      //prevent from walking into the wall
-	      if ((board[i + 1].getX () - mario.getXPos ()) < (mario.getXSize () / marioScalingFactor)
-		 	&& (mario.getYPos () + mario.getYSize () / marioScalingFactor) > board[i + 1].getY ())
-			{
-			  mario.setXPos (board[i + 1].getX () - mario.getXSize () / marioScalingFactor);
-			  cout << "TEST 1: hitting wall.." << endl;
-			}
+	      if ((board[i + 1].getX () - mario.getXPos ()) <
+		  (mario.getXSize () / marioScalingFactor)
+		  && (mario.getYPos () +
+		      mario.getYSize () / marioScalingFactor) >
+		  board[i + 1].getY ())
+		{
+		  mario.setXPos (board[i + 1].getX () -
+				 mario.getXSize () / marioScalingFactor);
+		  cout << "TEST 1: hitting wall.." << endl;
+		}
 	    }
-	    cout << "BACON" << endl;
-	   /* //test if the previous board is higher than the players position 
-	  if (i != 0 && board[i - 1].getY () < board[i].getY ())
-	    {
-	    	cout << "IS" << endl;
-	      //prevent from walking into the wall
-	      if ( ((board[i - 1].getX () + board[i - 1].getWidth () - mario.getXPos ()) <= 0)
-		 	&& ((mario.getYPos () + mario.getYSize () / marioScalingFactor) > board[i - 1].getY ()))
-			{
-			  mario.setXPos (board[i].getX () );
-			  cout << "TEST 2: hitting wall.." << endl;
-			}
-	    }*/
+	  cout << "BACON" << endl;
+	  /* //test if the previous board is higher than the players position 
+	     if (i != 0 && board[i - 1].getY () < board[i].getY ())
+	     {
+	     cout << "IS" << endl;
+	     //prevent from walking into the wall
+	     if ( ((board[i - 1].getX () + board[i - 1].getWidth () - mario.getXPos ()) <= 0)
+	     && ((mario.getYPos () + mario.getYSize () / marioScalingFactor) > board[i - 1].getY ()))
+	     {
+	     mario.setXPos (board[i].getX () );
+	     cout << "TEST 2: hitting wall.." << endl;
+	     }
+	     } */
 	  /* //test if the previous board is higher than the players position
 	     if (board[i - 1].getY () < board[i].getY ())
 	     {
-			//prevent from walking into the wall behind them
-			if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
-			&& (mario.getYPos () + mario.getYSize () / marioScalingFactor) >  board[i - 1].getY ())
-			{
-				mario.setXVel(0);
-				mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
-				cout << "TEST 2: hitting wall.." << endl;
-			}
+	     //prevent from walking into the wall behind them
+	     if (mario.getXPos () -  (board[i - 1].getX () + board[i - 1].getWidth ()) < 5
+	     && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >  board[i - 1].getY ())
+	     {
+	     mario.setXVel(0);
+	     mario.setXPos (board[i - 1].getX ()+board[i-1].getWidth()+1);
+	     cout << "TEST 2: hitting wall.." << endl;
+	     }
 	     }
 	   */
 
@@ -460,31 +244,35 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	      board[i].getY ())
 	    {
 	      mario.setYVel (0);
-	      mario.setYPos (board[i].getY () - (mario.getYSize () / marioScalingFactor));
+	      mario.setYPos (board[i].getY () -
+			     (mario.getYSize () / marioScalingFactor));
 
 	      //if mario is on the last platform they won
-	        cout << "Board Size " << board.
-	            size () << "Platform " << i << endl;
-		if (i==board.size()-2)
+	      cout << "Board Size " << board.size () << "Platform " << i <<
+		endl;
+	      if (i == board.size () - 2)
 		{
 		  cout << "Game Over";
-		if (level==3)
-{
-			gameComplete=1;
-			levelComplete = 1;
-			score+=500;
-}
-		else
-		        levelComplete = 1;
-			
+		  if (level == 3)
+		    {
+		      gameComplete = 1;
+		      levelComplete = 1;
+		      score += 500;
+		    }
+		  else
+		    levelComplete = 1;
+
 
 		}
 	    }
-	    
-		// prevents infinity-jumping
-		if (jumping == 1 && mario.getYPos () > (board[i].getY () - (mario.getYSize() / marioScalingFactor) - 5))
-			mario.jump ();
-			
+
+	  // prevents infinity-jumping
+	  if (jumping == 1
+	      && mario.getYPos () >
+	      (board[i].getY () - (mario.getYSize () / marioScalingFactor) -
+	       5))
+	    mario.jump ();
+
 
 	}
     }
@@ -513,13 +301,13 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	  enemies[j].moveWithPlatform (mario.getXVel ());
 	}
     }
-	
-	// prevent mario from going of the left side of the screen
-	if (mario.getXPos() < 0)
-	{
-		mario.setXPos(0);
-		cout << "Hitting far left border" << endl;
-	}
+
+  // prevent mario from going of the left side of the screen
+  if (mario.getXPos () < 0)
+    {
+      mario.setXPos (0);
+      cout << "Hitting far left border" << endl;
+    }
 }
 
 // constantly updates the game
@@ -590,13 +378,13 @@ Draw::testCollision ()
 	  enemies[z].setLives (0);
 	  mario.jump ();
 	  enemies[z].destroyEnemy ();
-	  score+=10;
+	  score += 10;
 
 	}
-      else if ( (mario.getXPos () < (enemies[z].getXPos () + 40))
+      else if ((mario.getXPos () < (enemies[z].getXPos () + 40))
 	       && (mario.getXPos () > (enemies[z].getXPos () - 40))
 	       && (mario.getYVel () == 0)
-	       && (mario.getYPos() > (enemies[z].getYPos() - 90)))
+	       && (mario.getYPos () > (enemies[z].getYPos () - 90)))
 	{
 	  mario.setLives (mario.getLives () - 1);
 	  mario.setXPos (50);
@@ -609,22 +397,23 @@ Draw::testCollision ()
 void
 Draw::loadBoard ()
 {
-string levelString;
-ifstream boardFile;
-switch (level){ //open the appropriate level
-	case 1:
-		boardFile.open("level1.txt");
-	break;	
-	case 2:
-		boardFile.open("level2.txt");
-	break;
-	case 3:
-		boardFile.open("level3.txt");
-	break;
-	default:
-		boardFile.open("level1.txt");
-	break;
-}
+  string levelString;
+  ifstream boardFile;
+  switch (level)
+    {				//open the appropriate level
+    case 1:
+      boardFile.open ("level1.txt");
+      break;
+    case 2:
+      boardFile.open ("level2.txt");
+      break;
+    case 3:
+      boardFile.open ("level3.txt");
+      break;
+    default:
+      boardFile.open ("level1.txt");
+      break;
+    }
 
 
   board.clear ();
@@ -637,10 +426,10 @@ switch (level){ //open the appropriate level
 
   if (boardFile.is_open ())
     {
-int lineNums;
-boardFile>>lineNums;
-getline (boardFile, tempString);
-      for (int i=0; i<lineNums; i++)
+      int lineNums;
+      boardFile >> lineNums;
+      getline (boardFile, tempString);
+      for (int i = 0; i < lineNums; i++)
 	{
 	  getline (boardFile, tempString);
 	  for (unsigned int k = 0; k < (tempString.size ()); k++)
@@ -663,10 +452,10 @@ getline (boardFile, tempString);
 	}
 //boardFile.close();
     }
-   else
-	{
-	cout<<"ERROR: File could not be opened"<<endl;
-	}
+  else
+    {
+      cout << "ERROR: File could not be opened" << endl;
+    }
 }
 
 void
@@ -683,10 +472,10 @@ Draw::loadEnemies ()
 
   if (enemyFile.is_open ())
     {
-int lineNums;
-enemyFile>>lineNums;
-getline (enemyFile, tempString);
-      for (int i=0;i<lineNums;i++)
+      int lineNums;
+      enemyFile >> lineNums;
+      getline (enemyFile, tempString);
+      for (int i = 0; i < lineNums; i++)
 	{
 	  getline (enemyFile, tempString);
 	  for (unsigned int k = 0; k < (tempString.size ()); k++)
@@ -706,9 +495,256 @@ getline (enemyFile, tempString);
 	  values.clear ();
 	}
     }
-   else
-	{
-	cout<<"ERROR: File could not be opened"<<endl;
-	}
+  else
+    {
+      cout << "ERROR: File could not be opened" << endl;
+    }
 
+}
+
+void
+Draw::displayStageInfo ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+  //Set font
+  QFont myFont;
+  myFont.setPointSizeF (20.0);
+  painter.setFont (myFont);
+
+  //Display text of basic info
+  int trash;			//stores the length of the array; this is not used
+  //display the stage the player is on
+  char displayStage[10];
+  trash = sprintf (displayStage, "Stage: %d", level);
+  painter.drawText (0, 0, 250, 250, 0, displayStage);
+  //display number of lives remaining the player has
+  char displayLives[10];
+  trash = sprintf (displayLives, "Lives: %d", mario.getLives ());
+  painter.drawText (270, 0, 200, 200, 0, displayLives);
+  //display the score of the player
+  char displayScore[15];
+  trash = sprintf (displayScore, "Score: %d", score);
+  painter.drawText (430, 0, 200, 200, 0, displayScore);
+
+
+}
+
+void
+Draw::displayWelcomeMessage ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+//set the blackround back
+  painter.setBrush (QBrush ("#000000"));
+  painter.drawRect (0, 0, xWindowSize, yWindowSize);
+  //set the pen to black
+  painter.setPen (QPen ("#ffffff"));
+
+  //display image of mario
+  QRectF marioTargetRight (100, 100, 1.5 * mario.getXSize (),
+			   1.5 * mario.getYSize ());
+  QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
+  QPixmap marioPixmapRight ("marioRight.png");
+  QPainter (this);
+  painter.drawPixmap (marioTargetRight, marioPixmapRight, marioSourceRight);
+
+  //display image of goomba
+  QRectF enemyTargetLeft (800, 400, badguy.getXSize (), badguy.getYSize ());
+  QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (), badguy.getYSize ());
+  QPixmap enemyPixmapLeft ("goombaLeft.png");
+  QPainter (this);
+  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft, enemySourceLeft);
+
+  //set the font size to a large value for the title
+  QFont myFont1;
+  myFont1.setPointSizeF (40.0);
+  painter.setFont (myFont1);
+  painter.drawText (200, 25, 600, 600, Qt::AlignHCenter,
+		    "WELCOME TO \nSIDE SCROLLER");
+  //set the font size smaller for additional info
+  QFont myFont2;
+  myFont2.setPointSizeF (20.0);
+  painter.setFont (myFont2);
+  painter.drawText (200, 200, 600, 600, Qt::AlignHCenter,
+		    "Justin Bartlett\nJake Flynt\nEli Kloswick");
+  painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
+		    "Press 'A' to move left\nPress 'D' to move right\nPress 'W' to jump");
+  painter.drawText (200, 500, 600, 600, Qt::AlignHCenter,
+		    "Press Space Bar to Continue");
+
+}
+
+void
+Draw::drawMario ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+// right-facing mario
+  QRectF marioTargetRight (mario.getXPos (), mario.getYPos (),
+			   mario.getXSize () / marioScalingFactor,
+			   mario.getYSize () / marioScalingFactor);
+  QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
+  QPixmap marioPixmapRight ("marioRight.png");
+  QPainter (this);
+
+  // left-facing mario
+  QRectF marioTargetLeft (mario.getXPos (), mario.getYPos (),
+			  mario.getXSize () / marioScalingFactor,
+			  mario.getYSize () / marioScalingFactor);
+  QRectF marioSourceLeft (0.0, 0.0, mario.getXSize (), mario.getYSize ());
+  QPixmap marioPixmapLeft ("marioLeft.png");
+  QPainter (this);
+
+  // update mario sprite state based on what direction he is moving
+  if (mario.rightFacing == 1)
+    {
+      painter.drawPixmap (marioTargetRight, marioPixmapRight,
+			  marioSourceRight);
+    }
+  if (mario.leftFacing == 1)
+    {
+      painter.drawPixmap (marioTargetLeft, marioPixmapLeft, marioSourceLeft);
+    }
+
+}
+
+void
+Draw::drawStage ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+  painter.setBrush (QBrush ("#1ac500"));
+
+  for (unsigned int i = 0; i < board.size (); i++)
+    {
+
+      painter.drawRect (board[i].getX (), board[i].getY (),
+			board[i].getWidth (), board[i].getHeight ());
+      if (i == (board.size () - 2))
+	{
+	  // draw a pipe
+	  QRectF pipeTarget (board[i].getX (), board[i].getY () - 60, 80, 64);
+	  QRectF pipeSource (0.0, 0.0, 80, 64);
+	  QPixmap pipePixmap ("pipe2.png");
+	  QPainter (this);
+	  painter.drawPixmap (pipeTarget, pipePixmap, pipeSource);
+	}
+    }
+}
+
+void
+Draw::drawEnemies ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+  //loop through all enemies on the board to draw them based on their position
+  for (unsigned int z = 0; z < enemies.size (); z++)
+    {
+      // right-facing enemy
+      QRectF enemyTargetRight (enemies[z].getXPos (),
+			       enemies[z].getYPos (),
+			       badguy.getXSize () / enemyScalingFactor,
+			       badguy.getYSize () / enemyScalingFactor);
+      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
+			       badguy.getYSize ());
+      QPixmap enemyPixmapRight ("goombaRight.png");
+      QPainter (this);
+
+      // left-facing enemy
+      QRectF enemyTargetLeft (enemies[z].getXPos (),
+			      enemies[z].getYPos (),
+			      badguy.getXSize () / enemyScalingFactor,
+			      badguy.getYSize () / enemyScalingFactor);
+      QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (),
+			      badguy.getYSize ());
+      QPixmap enemyPixmapLeft ("goombaLeft.png");
+      QPainter (this);
+
+      //if the enemy has more than 1 life draw them on the board
+      if (enemies[z].getLives () != 0)
+	{
+	  // update enemy sprite state based on what direction they are moving
+	  if (enemies[z].rightFacing == 1)
+	    {
+	      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
+				  enemySourceRight);
+	    }
+
+	  if (enemies[z].leftFacing == 1)
+	    {
+	      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
+				  enemySourceLeft);
+	    }
+	}
+    }
+
+}
+
+void
+Draw::playerWon ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+  painter.setBrush (QBrush ("#000000"));
+  painter.drawRect (0, 0, xWindowSize, yWindowSize);
+  painter.setPen (QPen ("#ffffff"));
+  QFont myFont;
+  myFont.setPointSizeF (60.0);
+  painter.setFont (myFont);
+  painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "YOU\nWIN\n");
+  myFont.setPointSizeF (40.0);
+  painter.setFont (myFont);
+  char displayScore[15];
+  int trash;
+  trash = sprintf (displayScore, "Score: %d", score);
+  painter.drawText (200, 300, 600, 600, Qt::AlignHCenter, displayScore);
+  painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
+		    "Press 'P' to play Again\n");
+}
+
+void
+Draw::stageComplete ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+  painter.setBrush (QBrush ("#000000"));
+  painter.drawRect (0, 0, xWindowSize, yWindowSize);
+  QFont myFont;
+  myFont.setPointSizeF (60.0);
+  painter.setFont (myFont);
+  painter.setPen (QPen ("#008000"));
+  int trash;			//stores the length of the array; this is not used
+  char displayStage[10];
+  trash = sprintf (displayStage, "Stage: %d", level + 1);
+  painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, displayStage);
+
+  //   painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "Stage\nComplete\n");
+  myFont.setPointSizeF (35.0);
+  painter.setFont (myFont);
+  painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
+		    "Press 'P' to advance\n");
+
+  QRectF enemyTargetRight1 (350, 430, badguy.getXSize (), badguy.getYSize ());
+  QRectF enemyTargetRight2 (450, 430, badguy.getXSize (), badguy.getYSize ());
+  QRectF enemyTargetRight3 (550, 430, badguy.getXSize (), badguy.getYSize ());
+  QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (), badguy.getYSize ());
+  QPixmap enemyPixmapRight ("goombaRight.png");
+  QPainter (this);
+  painter.drawPixmap (enemyTargetRight1, enemyPixmapRight, enemySourceRight);
+  painter.drawPixmap (enemyTargetRight2, enemyPixmapRight, enemySourceRight);
+  painter.drawPixmap (enemyTargetRight3, enemyPixmapRight, enemySourceRight);
+
+}
+
+void
+Draw::gameOver ()
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+
+  painter.setBrush (QBrush ("#000000"));
+  painter.drawRect (0, 0, xWindowSize, yWindowSize);
+  painter.setPen (QPen ("#C80000"));
+
+  QFont myFont;
+  myFont.setPointSizeF (60.0);
+  painter.setFont (myFont);
+  painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "GAME \nOVER\n");
+  myFont.setPointSizeF (40.0);
+  painter.setFont (myFont);
+  painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
+		    "Press 'P' to play Again\n");
 }
