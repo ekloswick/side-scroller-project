@@ -27,37 +27,46 @@ class Draw : public QWidget
 
 	protected:
 		void paintEvent(QPaintEvent *e);
-		//void mousePressEvent(QMouseEvent *e);
 		void keyPressEvent(QKeyEvent *event);
 		void keyReleaseEvent(QKeyEvent *event);
-		void updatePhysics();
+		void updatePhysics();  //update the physics of mario
 		void timerEvent(QTimerEvent *);
-                void updateEnemy();
-		void testCollision();
+                void updateEnemy();   //update the motion of the enemies
+		void testCollision(); //test for collision between mario and enemy
+		void displayStageInfo();
+		void displayWelcomeMessage();
+		void drawMario();
+		void drawStage();
+		void drawEnemies();
+		void playerWon();
+		void stageComplete();
+		void gameOver();
 
 
 	private:
-		int msleep(unsigned long);
+		//size of board
 		int xWindowSize;
 		int yWindowSize;
+		//keep track of physics
 		int movingLeft;
 		int movingRight;
 		int jumping;
-		vector < platform > board;
-		hero mario;
-		enemy badguy;
-		vector < enemy > enemies;
 
-		void loadBoard();
-		void loadEnemies();
+		vector < platform > board;  //vector of platform to keep track of the board
+		hero mario;    //mario is an object of type hero
+		enemy badguy;  //object of type badguy
+		vector < enemy > enemies;  //vector of enemy to keep track of the enemies
 
-		int welcome;
+		void loadBoard();  //function to read in the board from a text file
+		void loadEnemies(); //function to read in the enemies from a text file
+
+		int welcome;	   // 0 for welcome message; 1 for no welcome message
 		int marioScalingFactor;
 		int enemyScalingFactor;
-		int score;
-		int level;
-		int gameComplete;
-		int levelComplete;
+		int score; 	    //used to keep track of the players score	
+		int level;          //used to keep track of the current level the player is on
+		int gameComplete;   //used to determine if the player has beat the game
+		int levelComplete;  //used to determine if the player has finished a level
 };
 
 #endif
