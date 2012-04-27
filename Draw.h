@@ -67,6 +67,8 @@ class Draw : public QWidget
 		int level;          //used to keep track of the current level the player is on
 		int gameComplete;   //used to determine if the player has beat the game
 		int levelComplete;  //used to determine if the player has finished a level
+		int levelMax;       //the number of levels in the game
+		int playerLost;       //user lost
 };
 
 #endif
