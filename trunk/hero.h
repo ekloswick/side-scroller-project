@@ -39,7 +39,7 @@ class hero : public character
 
         int getGravity ();
         void jump ();            // function to jump
-	int levelComplete;
+
         
     private:
         int xVel;            // acceleration in x direction
