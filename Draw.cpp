@@ -22,20 +22,22 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1,
-					     1)
+Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1, 1)
 {
   setWindowTitle (tr ("Super Side Scroller"));
   xWindowSize = 1000;
   yWindowSize = 600;
   resize (xWindowSize, yWindowSize);
+  level=0;  //the stage the player is one
   loadBoard ();
   loadEnemies ();
   startTimer (50);
-  welcome = 0;
+  welcome = 0;  // 0 for welcome screen; 1 for no welcome screen
   marioScalingFactor = 3;
   enemyScalingFactor = 2;
   score=0;
+  levelComplete=1; //0 for the level is not complete; 1 for the level is completed
+
 }
 
 
@@ -57,7 +59,7 @@ Draw::paintEvent (QPaintEvent *)
       painter.setBrush (QBrush ("#000000"));
       painter.drawRect (0, 0, xWindowSize, yWindowSize);
       painter.setPen (QPen ("#ffffff"));
-//image of mario
+	//image of mario
       QRectF marioTargetRight (100, 100, 1.5 * mario.getXSize (),
 			       1.5 * mario.getYSize ());
       QRectF marioSourceRight (0.0, 0.0, mario.getXSize (),
@@ -67,7 +69,7 @@ Draw::paintEvent (QPaintEvent *)
       painter.drawPixmap (marioTargetRight, marioPixmapRight,
 			  marioSourceRight);
 
-//image of goomba
+	//image of goomba
       QRectF enemyTargetLeft (800, 400, badguy.getXSize (),
 			      badguy.getYSize ());
       QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (),
@@ -97,7 +99,7 @@ Draw::paintEvent (QPaintEvent *)
 			"Press Space Bar to Continue");
     }
 
-  else if (mario.getLives () > 0 && mario.levelComplete == 0)
+  else if (mario.getLives () > 0 && levelComplete == 0)
     {
       //Set font
       QFont myFont;
@@ -105,13 +107,16 @@ Draw::paintEvent (QPaintEvent *)
       painter.setFont (myFont);
 
       //Display text of basic info
-      painter.drawText (0, 0, 250, 250, 0, "Stage: Test");
+
+        int trash;		//stores the length of the array; this is not used
+	char displayStage[10];      
+	trash = sprintf (displayStage, "Stage: %d", level);
+        painter.drawText (0, 0, 250, 250, 0, displayStage);
       //number of lives remaining
       char displayLives[10];
-      int trash;		//stores the length of the array; this is not used
       trash = sprintf (displayLives, "Lives: %d", mario.getLives ());
       painter.drawText (270, 0, 200, 200, 0, displayLives);
-char displayScore[10];
+char displayScore[15];
       trash = sprintf (displayScore, "Score: %d", score);
 painter.drawText(430, 0, 200, 200, 0, displayScore);
 
@@ -213,16 +218,65 @@ painter.drawText(430, 0, 200, 200, 0, displayScore);
 	}
     }
 //if mario beat the level with lives remaining display to the user and ask if they would like to play again
-  else if (mario.getLives () > 0 && mario.levelComplete == 1)
+  else if (mario.getLives () > 0 && gameComplete == 1)
     {
+      painter.setBrush (QBrush ("#000000"));
+      painter.drawRect (0, 0, xWindowSize, yWindowSize);
+      painter.setPen (QPen ("#ffffff"));
       QFont myFont;
       myFont.setPointSizeF (60.0);
       painter.setFont (myFont);
       painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "YOU\nWIN\n");
       myFont.setPointSizeF (40.0);
       painter.setFont (myFont);
-      painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
+	char displayScore[15];
+	int trash;
+	trash = sprintf (displayScore, "Score: %d", score);
+	painter.drawText(200, 300, 600, 600, Qt::AlignHCenter, displayScore);
+      painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
 			"Press 'P' to play Again\n");
+    }
+  else if (mario.getLives() > 0 && levelComplete==1)
+    { 
+	painter.setBrush (QBrush ("#000000"));
+	painter.drawRect (0, 0, xWindowSize, yWindowSize);
+	QFont myFont;
+	myFont.setPointSizeF (60.0);
+	painter.setFont (myFont);
+        painter.setPen (QPen ("#008000"));
+        int trash;		//stores the length of the array; this is not used
+	char displayStage[10];      
+	trash = sprintf (displayStage, "Stage: %d", level+1);
+        painter.drawText (200, 100, 600, 600,Qt::AlignHCenter, displayStage);
+
+   //   painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "Stage\nComplete\n");
+      myFont.setPointSizeF (35.0);
+      painter.setFont (myFont);
+      painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
+			"Press 'P' to advance\n");
+
+
+
+
+QRectF enemyTargetRight1 (350, 430, badguy.getXSize (),
+			      badguy.getYSize ());
+QRectF enemyTargetRight2 (450, 430, badguy.getXSize (),
+			      badguy.getYSize ());
+QRectF enemyTargetRight3 (550, 430, badguy.getXSize (),
+			      badguy.getYSize ());
+      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
+			      badguy.getYSize ());
+      QPixmap enemyPixmapRight ("goombaRight.png");
+      QPainter (this);
+      painter.drawPixmap (enemyTargetRight1, enemyPixmapRight, enemySourceRight);
+      painter.drawPixmap (enemyTargetRight2, enemyPixmapRight, enemySourceRight);
+      painter.drawPixmap (enemyTargetRight3, enemyPixmapRight, enemySourceRight);
+
+
+
+
+
+
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
   else if (mario.getLives () < 1)
@@ -276,15 +330,21 @@ Draw::keyPressEvent (QKeyEvent * event)
       break;
     case Qt::Key_P:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       mario.setLives (5);
-      mario.levelComplete = 0;
-      score=0;
+    level+=1;
+	if (level > 1)  
+{ 
+		score+=100;
+}
+      levelComplete = 0;
       mario.setXPos (50);
       mario.setYPos (50);
+  
       loadBoard ();
       loadEnemies ();
       break;
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
+      //levelDisplay = 1;
       break;
     case Qt::Key_Escape:
       exit (1);
@@ -398,10 +458,19 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 	      //if mario is on the last platform they won
 	        cout << "Board Size " << board.
 	            size () << "Platform " << i << endl;
-if (i==board.size()-2)
+		if (i==board.size()-2)
 		{
 		  cout << "Game Over";
-		  mario.levelComplete = 1;
+		if (level==3)
+{
+			gameComplete=1;
+			levelComplete = 1;
+			score+=500;
+}
+		else
+		        levelComplete = 1;
+			
+
 		}
 	    }
 
@@ -523,7 +592,24 @@ Draw::testCollision ()
 void
 Draw::loadBoard ()
 {
-  ifstream boardFile ("level.txt");
+string levelString;
+ifstream boardFile;
+switch (level){ //open the appropriate level
+	case 1:
+		boardFile.open("level1.txt");
+	break;	
+	case 2:
+		boardFile.open("level2.txt");
+	break;
+	case 3:
+		boardFile.open("level3.txt");
+	break;
+	default:
+		boardFile.open("level1.txt");
+	break;
+}
+
+
   board.clear ();
 
   platform temp (0, 0, 0, 0);
@@ -558,6 +644,7 @@ getline (boardFile, tempString);
 	  board.push_back (temp);
 	  values.clear ();
 	}
+//boardFile.close();
     }
    else
 	{
