@@ -40,7 +40,7 @@ xVel+=movementSpeed;
 
 void hero::jump()
 {
-    yVel = -80;
+    yVel = -70;
 }
 
 
