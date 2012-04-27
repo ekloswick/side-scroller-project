@@ -6,23 +6,23 @@
  * 03-01-2009
  * 
  */
- 
- 
+
+
 #include <QApplication>
 #include <QPrinter>
 #include <QtGui>
 #include "Draw.h"
 
-int main(int argc, char *argv[])
+int
+main (int argc, char *argv[])
 {
-     QApplication app(argc, argv);
+  QApplication app (argc, argv);
 
-     //app->setStyleSheet("background-image: ./back.png");
+  //app->setStyleSheet("background-image: ./back.png");
 
-     Draw p;
- 
-     p.show();
+  Draw p;
 
-     return app.exec();
- }
+  p.show ();
 
+  return app.exec ();
+}
