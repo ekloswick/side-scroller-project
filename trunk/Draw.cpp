@@ -38,6 +38,8 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   enemyScalingFactor = 2;
   score = 0;
   levelComplete = 1;		//0 for the level is not complete; 1 for the level is completed
+  levelMax = 3;
+  playerLost = 0;
 
 }
 
@@ -74,17 +76,19 @@ Draw::paintEvent (QPaintEvent *)
 //if mario beat the level with lives remaining display to the user and ask if they would like to play again
   else if (mario.getLives () > 0 && gameComplete == 1)
     {
-      playerWon ();  //player won screen
+      playerWon ();		//player won screen
     }
   else if (mario.getLives () > 0 && levelComplete == 1)
     {
-      stageComplete ();  //stage complete screen
+      stageComplete ();		//stage complete screen
 
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
   else if (mario.getLives () < 1)
     {
-      gameOver ();  //game over screen
+      gameOver ();		//game over screen
+      playerLost = 1;
+
     }
 }
 
@@ -109,18 +113,33 @@ Draw::keyPressEvent (QKeyEvent * event)
       jumping = 1;
       break;
     case Qt::Key_P:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
-      mario.setLives (5);
-      level += 1;
-      if (level > 1)
+      if (levelComplete || gameComplete || playerLost)
 	{
-	  score += 100;
+	  if (playerLost)
+	    {
+	      level = 0;
+	      score = 0;
+	      mario.setLives (5);
+	      playerLost = 0;
+	    }
+	  level += 1;
+	  if (level > 1)
+	    {
+	      score += 100;
+	    }
+	  if (level > levelMax)
+	    {
+	      level = 1;
+	      score = 0;
+	      mario.setLives (3);
+	    }
+	  levelComplete = 0;
+  	  gameComplete = 0;
+	  mario.setXPos (50);
+	  mario.setYPos (50);
+	  loadBoard ();
+	  loadEnemies ();
 	}
-      levelComplete = 0;
-      mario.setXPos (50);
-      mario.setYPos (50);
-
-      loadBoard ();
-      loadEnemies ();
       break;
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
@@ -186,7 +205,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
     (mario.getXPos() - board[i].getX()) <= board[i].getWidth() &&
     (board[i].getY()- mario.getYPos()) >= 0 &&
     (board[i].getY()- mario.getYPos()) <= (mario.getYSize()/3) )
-            	{
+              	{
 *///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
 
   //loop through the entire board
@@ -257,7 +276,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
 		    {
 		      gameComplete = 1;
 		      levelComplete = 1;
-		      score += 500;
+
 		    }
 		  else
 		    levelComplete = 1;
@@ -680,12 +699,14 @@ void
 Draw::playerWon ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
+  //set backround to black and font to white
   painter.setBrush (QBrush ("#000000"));
   painter.drawRect (0, 0, xWindowSize, yWindowSize);
   painter.setPen (QPen ("#ffffff"));
   QFont myFont;
   myFont.setPointSizeF (60.0);
   painter.setFont (myFont);
+  //display text and score to the user
   painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "YOU\nWIN\n");
   myFont.setPointSizeF (40.0);
   painter.setFont (myFont);
@@ -701,23 +722,23 @@ void
 Draw::stageComplete ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
+  //set backround to black and pen to red 
   painter.setBrush (QBrush ("#000000"));
   painter.drawRect (0, 0, xWindowSize, yWindowSize);
   QFont myFont;
   myFont.setPointSizeF (60.0);
   painter.setFont (myFont);
   painter.setPen (QPen ("#008000"));
+  //display the stage the user is on now
   int trash;			//stores the length of the array; this is not used
   char displayStage[10];
   trash = sprintf (displayStage, "Stage: %d", level + 1);
   painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, displayStage);
-
-  //   painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "Stage\nComplete\n");
   myFont.setPointSizeF (35.0);
   painter.setFont (myFont);
   painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
 		    "Press 'P' to advance\n");
-
+  //display goomba images to screen
   QRectF enemyTargetRight1 (350, 430, badguy.getXSize (), badguy.getYSize ());
   QRectF enemyTargetRight2 (450, 430, badguy.getXSize (), badguy.getYSize ());
   QRectF enemyTargetRight3 (550, 430, badguy.getXSize (), badguy.getYSize ());
@@ -727,6 +748,12 @@ Draw::stageComplete ()
   painter.drawPixmap (enemyTargetRight1, enemyPixmapRight, enemySourceRight);
   painter.drawPixmap (enemyTargetRight2, enemyPixmapRight, enemySourceRight);
   painter.drawPixmap (enemyTargetRight3, enemyPixmapRight, enemySourceRight);
+  painter.setBrush (QBrush ("#008000"));
+  painter.drawRect (180,30,660,10);
+  painter.drawRect (180,30,10,540);
+  painter.drawRect (840,30,10,540);
+  painter.drawRect (180,570,670,10);
+
 
 }
 
@@ -734,11 +761,11 @@ void
 Draw::gameOver ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
-
+  //set backround to black and pen to green
   painter.setBrush (QBrush ("#000000"));
   painter.drawRect (0, 0, xWindowSize, yWindowSize);
   painter.setPen (QPen ("#C80000"));
-
+  //print text to screen
   QFont myFont;
   myFont.setPointSizeF (60.0);
   painter.setFont (myFont);
