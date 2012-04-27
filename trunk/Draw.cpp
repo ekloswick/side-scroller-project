@@ -119,7 +119,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 	    {
 	      level = 0;
 	      score = 0;
-	      mario.setLives (5);
+	      mario.setLives (3);
 	      playerLost = 0;
 	    }
 	  level += 1;
