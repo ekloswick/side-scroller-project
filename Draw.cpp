@@ -655,12 +655,24 @@ Draw::drawStage ()
 			board[i].getWidth (), board[i].getHeight ());
       if (i == (board.size () - 2))
 	{
+	if (level == levelMax) 
+	{
+	// draw peach - not working on last level, works when tested on others
+	 QRectF peachTarget (board[i].getX (), board[i].getY () - 90, 50, 96);
+	  QRectF peachSource (0.0, 0.0, 100, 193);
+	  QPixmap peachPixmap ("peach.png");
+	  QPainter (this);
+	  painter.drawPixmap (peachTarget, peachPixmap, peachSource);
+	}
+	else 
+	{
 	  // draw a pipe
 	  QRectF pipeTarget (board[i].getX (), board[i].getY () - 60, 80, 64);
 	  QRectF pipeSource (0.0, 0.0, 80, 64);
 	  QPixmap pipePixmap ("pipe2.png");
 	  QPainter (this);
 	  painter.drawPixmap (pipeTarget, pipePixmap, pipeSource);
+	}
 	}
     }
 }
@@ -670,8 +682,54 @@ Draw::drawEnemies ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
   //loop through all enemies on the board to draw them based on their position
+
+
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
+
+	if ((level == levelMax) && (z == (enemies.size()-1)))
+	{
+	  {
+	      // right-facing enemy
+	      QRectF bowserTargetRight (enemies[z].getXPos (),
+				       enemies[z].getYPos (),
+				       badguy.getXSize ()*2,
+				       badguy.getYSize ()*2);
+	      QRectF bowserSourceRight (0.0, 0.0, 200,202);
+	      QPixmap bowserPixmapRight ("bowserRight.png");
+	      QPainter (this);
+
+	      // left-facing enemy
+	      QRectF bowserTargetLeft (enemies[z].getXPos (),
+				      enemies[z].getYPos (),
+				      badguy.getXSize ()*2,
+				      badguy.getYSize ()*2);
+	      QRectF bowserSourceLeft (0.0, 0.0, 200, 202);
+	      QPixmap bowserPixmapLeft ("bowserLeft.png");
+	      QPainter (this);
+
+
+	      //if the enemy has more than 1 life draw them on the board
+	      if (enemies[z].getLives () != 0)
+		{
+		  // update enemy sprite state based on what direction they are moving
+		  if (enemies[z].rightFacing == 1)
+		    {
+		      painter.drawPixmap (bowserTargetRight, bowserPixmapRight,
+					  bowserSourceRight);
+		    }
+
+		  if (enemies[z].leftFacing == 1)
+		    {
+		      painter.drawPixmap (bowserTargetLeft, bowserPixmapLeft,
+					  bowserSourceLeft);
+		    }
+		}
+	    }
+	}
+
+else
+{	
       // right-facing enemy
       QRectF enemyTargetRight (enemies[z].getXPos (),
 			       enemies[z].getYPos (),
@@ -692,6 +750,7 @@ Draw::drawEnemies ()
       QPixmap enemyPixmapLeft ("goombaLeft.png");
       QPainter (this);
 
+
       //if the enemy has more than 1 life draw them on the board
       if (enemies[z].getLives () != 0)
 	{
@@ -709,8 +768,9 @@ Draw::drawEnemies ()
 	    }
 	}
     }
-
 }
+}
+
 
 void
 Draw::playerWon ()
