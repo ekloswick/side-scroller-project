@@ -41,7 +41,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   levelMax = 3;
   playerLost = 0;
 //**DEBUG MODE**
-debug=1;
+  debug = 1;
 
 }
 
@@ -125,9 +125,9 @@ Draw::keyPressEvent (QKeyEvent * event)
 	      playerLost = 0;
 	    }
 	  level += 1;
-	  if (level==1)
+	  if (level == 1)
 	    {
-	      mario.setLives(3);
+	      mario.setLives (3);
 	    }
 
 	  if (level > 1)
@@ -141,7 +141,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 	      mario.setLives (3);
 	    }
 	  levelComplete = 0;
-  	  gameComplete = 0;
+	  gameComplete = 0;
 	  mario.setXPos (50);
 	  mario.setYPos (50);
 	  loadBoard ();
@@ -212,7 +212,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
     (mario.getXPos() - board[i].getX()) <= board[i].getWidth() &&
     (board[i].getY()- mario.getYPos()) >= 0 &&
     (board[i].getY()- mario.getYPos()) <= (mario.getYSize()/3) )
-              	{
+                	{
 *///mario.setYPos(board[i].getY())-(mario.getYSize()/3));
 
   //loop through the entire board
@@ -331,6 +331,7 @@ if( (mario.getXPos() - board[i].getX()) >= 0 &&
   // prevent mario from going of the left side of the screen
   if (mario.getXPos () < 0)
     {
+      mario.setXVel (0);
       mario.setXPos (0);
       cout << "Hitting far left border" << endl;
     }
@@ -401,9 +402,12 @@ Draw::testCollision ()
 	  && (mario.getYPos () > (enemies[z].getYPos () - 90))
 	  && (mario.getYVel () > 0))
 	{
-	  enemies[z].setLives (0);
+	  enemies[z].setLives (enemies[z].getLives () - 1);
 	  mario.jump ();
-	  enemies[z].destroyEnemy ();
+	  if (enemies[z].getLives () == 0)
+	    {
+	      enemies[z].destroyEnemy ();
+	    }
 	  score += 10;
 
 	}
@@ -430,24 +434,24 @@ Draw::loadBoard ()
     {				//open the appropriate level
     case 1:
       if (debug)
-           boardFile.open ("level1test.txt");
+	boardFile.open ("level1test.txt");
       else
-           boardFile.open ("level1.txt");
+	boardFile.open ("level1.txt");
       break;
     case 2:
       if (debug)
-           boardFile.open ("level2test.txt");
+	boardFile.open ("level2test.txt");
       else
-      	   boardFile.open ("level2.txt");
+	boardFile.open ("level2.txt");
       break;
     case 3:
       if (debug)
-	   boardFile.open ("level3test.txt");
+	boardFile.open ("level3test.txt");
       else
-           boardFile.open ("level3.txt");
+	boardFile.open ("level3.txt");
       break;
     default:
-      cout<<"Error: Invalid Level: See load board"<<endl;
+      cout << "Error: Invalid Level: See load board" << endl;
       break;
     }
 
@@ -503,24 +507,24 @@ Draw::loadEnemies ()
     {				//open the appropriate level
     case 1:
       if (debug)
-	   enemyFile.open ("enemy1test.txt");
+	enemyFile.open ("enemy1test.txt");
       else
-           enemyFile.open ("enemy1.txt");
+	enemyFile.open ("enemy1.txt");
       break;
     case 2:
       if (debug)
-	   enemyFile.open ("enemy2test.txt");
+	enemyFile.open ("enemy2test.txt");
       else
-           enemyFile.open ("enemy2.txt");
+	enemyFile.open ("enemy2.txt");
       break;
     case 3:
       if (debug)
-	   enemyFile.open ("enemy3test.txt");
+	enemyFile.open ("enemy3test.txt");
       else
-           enemyFile.open ("enemy3.txt");
+	enemyFile.open ("enemy3.txt");
       break;
     default:
-      cout<<"ERROR: Invalid level: See loadEnemies"<<endl;
+      cout << "ERROR: Invalid level: See loadEnemies" << endl;
       break;
     }
 
@@ -681,24 +685,26 @@ Draw::drawStage ()
 			board[i].getWidth (), board[i].getHeight ());
       if (i == (board.size () - 2))
 	{
-	if (level == levelMax) 
-	{
-	// draw peach - not working on last level, works when tested on others
-	 QRectF peachTarget (board[i].getX (), board[i].getY () - 90, 50, 96);
-	  QRectF peachSource (0.0, 0.0, 100, 193);
-	  QPixmap peachPixmap ("peach.png");
-	  QPainter (this);
-	  painter.drawPixmap (peachTarget, peachPixmap, peachSource);
-	}
-	else 
-	{
-	  // draw a pipe
-	  QRectF pipeTarget (board[i].getX (), board[i].getY () - 60, 80, 64);
-	  QRectF pipeSource (0.0, 0.0, 80, 64);
-	  QPixmap pipePixmap ("pipe2.png");
-	  QPainter (this);
-	  painter.drawPixmap (pipeTarget, pipePixmap, pipeSource);
-	}
+	  if (level == levelMax)
+	    {
+	      // draw peach - not working on last level, works when tested on others
+	      QRectF peachTarget (board[i].getX (), board[i].getY () - 90, 50,
+				  96);
+	      QRectF peachSource (0.0, 0.0, 100, 193);
+	      QPixmap peachPixmap ("peach.png");
+	      QPainter (this);
+	      painter.drawPixmap (peachTarget, peachPixmap, peachSource);
+	    }
+	  else
+	    {
+	      // draw a pipe
+	      QRectF pipeTarget (board[i].getX (), board[i].getY () - 60, 80,
+				 64);
+	      QRectF pipeSource (0.0, 0.0, 80, 64);
+	      QPixmap pipePixmap ("pipe2.png");
+	      QPainter (this);
+	      painter.drawPixmap (pipeTarget, pipePixmap, pipeSource);
+	    }
 	}
     }
 }
@@ -713,88 +719,88 @@ Draw::drawEnemies ()
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
 
-	if ((level == levelMax) && (z == (enemies.size()-1)))
+      if ((level == levelMax) && (z == (enemies.size () - 1)))
 	{
 	  {
-	      // right-facing enemy
-	      QRectF bowserTargetRight (enemies[z].getXPos (),
-				       enemies[z].getYPos (),
-				       badguy.getXSize ()*2,
-				       badguy.getYSize ()*2);
-	      QRectF bowserSourceRight (0.0, 0.0, 200,202);
-	      QPixmap bowserPixmapRight ("bowserRight.png");
-	      QPainter (this);
-
-	      // left-facing enemy
-	      QRectF bowserTargetLeft (enemies[z].getXPos (),
+	    // right-facing enemy
+	    QRectF bowserTargetRight (enemies[z].getXPos (),
 				      enemies[z].getYPos (),
-				      badguy.getXSize ()*2,
-				      badguy.getYSize ()*2);
-	      QRectF bowserSourceLeft (0.0, 0.0, 200, 202);
-	      QPixmap bowserPixmapLeft ("bowserLeft.png");
-	      QPainter (this);
+				      badguy.getXSize () * 2,
+				      badguy.getYSize () * 2);
+	    QRectF bowserSourceRight (0.0, 0.0, 200, 202);
+	    QPixmap bowserPixmapRight ("bowserRight.png");
+	    QPainter (this);
+
+	    // left-facing enemy
+	    QRectF bowserTargetLeft (enemies[z].getXPos (),
+				     enemies[z].getYPos (),
+				     badguy.getXSize () * 2,
+				     badguy.getYSize () * 2);
+	    QRectF bowserSourceLeft (0.0, 0.0, 200, 202);
+	    QPixmap bowserPixmapLeft ("bowserLeft.png");
+	    QPainter (this);
 
 
-	      //if the enemy has more than 1 life draw them on the board
-	      if (enemies[z].getLives () != 0)
+	    //if the enemy has more than 1 life draw them on the board
+	    if (enemies[z].getLives () != 0)
+	      {
+		// update enemy sprite state based on what direction they are moving
+		if (enemies[z].rightFacing == 1)
+		  {
+		    painter.drawPixmap (bowserTargetRight, bowserPixmapRight,
+					bowserSourceRight);
+		  }
+
+		if (enemies[z].leftFacing == 1)
+		  {
+		    painter.drawPixmap (bowserTargetLeft, bowserPixmapLeft,
+					bowserSourceLeft);
+		  }
+	      }
+	  }
+	}
+
+      else
+	{
+	  // right-facing enemy
+	  QRectF enemyTargetRight (enemies[z].getXPos (),
+				   enemies[z].getYPos (),
+				   badguy.getXSize () / enemyScalingFactor,
+				   badguy.getYSize () / enemyScalingFactor);
+	  QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
+				   badguy.getYSize ());
+	  QPixmap enemyPixmapRight ("goombaRight.png");
+	  QPainter (this);
+
+	  // left-facing enemy
+	  QRectF enemyTargetLeft (enemies[z].getXPos (),
+				  enemies[z].getYPos (),
+				  badguy.getXSize () / enemyScalingFactor,
+				  badguy.getYSize () / enemyScalingFactor);
+	  QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (),
+				  badguy.getYSize ());
+	  QPixmap enemyPixmapLeft ("goombaLeft.png");
+	  QPainter (this);
+
+
+	  //if the enemy has more than 1 life draw them on the board
+	  if (enemies[z].getLives () != 0)
+	    {
+	      // update enemy sprite state based on what direction they are moving
+	      if (enemies[z].rightFacing == 1)
 		{
-		  // update enemy sprite state based on what direction they are moving
-		  if (enemies[z].rightFacing == 1)
-		    {
-		      painter.drawPixmap (bowserTargetRight, bowserPixmapRight,
-					  bowserSourceRight);
-		    }
+		  painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
+				      enemySourceRight);
+		}
 
-		  if (enemies[z].leftFacing == 1)
-		    {
-		      painter.drawPixmap (bowserTargetLeft, bowserPixmapLeft,
-					  bowserSourceLeft);
-		    }
+	      if (enemies[z].leftFacing == 1)
+		{
+		  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
+				      enemySourceLeft);
 		}
 	    }
 	}
-
-else
-{	
-      // right-facing enemy
-      QRectF enemyTargetRight (enemies[z].getXPos (),
-			       enemies[z].getYPos (),
-			       badguy.getXSize () / enemyScalingFactor,
-			       badguy.getYSize () / enemyScalingFactor);
-      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
-			       badguy.getYSize ());
-      QPixmap enemyPixmapRight ("goombaRight.png");
-      QPainter (this);
-
-      // left-facing enemy
-      QRectF enemyTargetLeft (enemies[z].getXPos (),
-			      enemies[z].getYPos (),
-			      badguy.getXSize () / enemyScalingFactor,
-			      badguy.getYSize () / enemyScalingFactor);
-      QRectF enemySourceLeft (0.0, 0.0, badguy.getXSize (),
-			      badguy.getYSize ());
-      QPixmap enemyPixmapLeft ("goombaLeft.png");
-      QPainter (this);
-
-
-      //if the enemy has more than 1 life draw them on the board
-      if (enemies[z].getLives () != 0)
-	{
-	  // update enemy sprite state based on what direction they are moving
-	  if (enemies[z].rightFacing == 1)
-	    {
-	      painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
-				  enemySourceRight);
-	    }
-
-	  if (enemies[z].leftFacing == 1)
-	    {
-	      painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
-				  enemySourceLeft);
-	    }
-	}
     }
-}
 }
 
 
@@ -852,10 +858,10 @@ Draw::stageComplete ()
   painter.drawPixmap (enemyTargetRight2, enemyPixmapRight, enemySourceRight);
   painter.drawPixmap (enemyTargetRight3, enemyPixmapRight, enemySourceRight);
   painter.setBrush (QBrush ("#008000"));
-  painter.drawRect (180,30,660,10);
-  painter.drawRect (180,30,10,540);
-  painter.drawRect (840,30,10,540);
-  painter.drawRect (180,570,670,10);
+  painter.drawRect (180, 30, 660, 10);
+  painter.drawRect (180, 30, 10, 540);
+  painter.drawRect (840, 30, 10, 540);
+  painter.drawRect (180, 570, 670, 10);
 
 
 }
