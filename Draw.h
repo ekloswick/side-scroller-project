@@ -55,7 +55,7 @@ private:
   hero mario;			//mario is an object of type hero
   enemy badguy;			//object of type badguy
     vector < enemy > enemies;	//vector of enemy to keep track of the enemies
-    vector < vector < int >>clouds;
+    vector < vector < int > > clouds;
     vector < int >cloud;
 
   void loadBoard ();		//function to read in the board from a text file
