@@ -20,7 +20,7 @@ using namespace std;
 class Draw:public QWidget
 {
 Q_OBJECT public:
-  Draw (QWidget * parent = 0);
+    Draw (QWidget * parent = 0);
 
 
 protected:
@@ -39,7 +39,7 @@ protected:
   void playerWon ();
   void stageComplete ();
   void gameOver ();
-void xChange(unsigned int );
+  void xChange (unsigned int);
 
 
 private:
@@ -55,6 +55,8 @@ private:
   hero mario;			//mario is an object of type hero
   enemy badguy;			//object of type badguy
     vector < enemy > enemies;	//vector of enemy to keep track of the enemies
+    vector < vector < int >>clouds;
+    vector < int >cloud;
 
   void loadBoard ();		//function to read in the board from a text file
   void loadEnemies ();		//function to read in the enemies from a text file
