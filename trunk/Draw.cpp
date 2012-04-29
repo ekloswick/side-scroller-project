@@ -42,7 +42,21 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   playerLost = 0;
 //**DEBUG MODE**
   debug = 1;
+  setStyleSheet ("background-color: #4c6cdc");
 
+
+
+
+  for (int i = 0; i < 15; i++)
+    {
+      cloud.push_back (20 + rand () % 1000);
+      cloud.push_back (20 + rand () % 150);
+      cloud.push_back (58);
+      cloud.push_back (36);
+      clouds.push_back (cloud);
+      cloud.clear ();
+
+    }
 }
 
 
@@ -51,8 +65,25 @@ void
 Draw::paintEvent (QPaintEvent *)
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
+  if (level != levelMax)
+    {
+      for (unsigned int i = 0; i < clouds.size (); i++)
+	{
+	  QRectF cloudTarget (clouds[i][0], clouds[i][1], clouds[i][2],
+			      clouds[1][3]);
+	  QRectF cloudSource (0.0, 0.0, 58, 36);
+	  QPixmap cloudPixmap ("cloud.png");
+	  QPainter (this);
+	  painter.drawPixmap (cloudTarget, cloudPixmap, cloudSource);
+	}
+    }
 
-  if (mario.getLives () > 0 && welcome!=0 &&levelComplete !=1)
+  if (level == levelMax)
+    setStyleSheet ("background-color: #ff0000");
+  else
+    setStyleSheet ("background-color: #4c6cdc");
+
+  if (mario.getLives () > 0 && welcome != 0 && levelComplete != 1)
     {
       updateEnemy ();
       updatePhysics ();
@@ -86,7 +117,7 @@ Draw::paintEvent (QPaintEvent *)
 
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
-  else if (mario.getLives () < 1 && welcome !=0)
+  else if (mario.getLives () < 1 && welcome != 0)
     {
       gameOver ();		//game over screen
       playerLost = 1;
@@ -211,7 +242,7 @@ Draw::xChange (unsigned int i)
 	    {
 	      mario.setXPos (board[i + 1].getX () -
 			     mario.getXSize () / marioScalingFactor);
-	   //   cout << "TEST 1: hitting wall.." << endl;
+	      //   cout << "TEST 1:  wall.." << endl;
 	      break;
 
 	    }
@@ -226,7 +257,7 @@ Draw::xChange (unsigned int i)
 	    {
 	      mario.setXPos (board[i - 1].getX () + board[i - 1].getWidth () +
 			     1);
-	    //  cout << "TEST 2: hitting wall.." << endl;
+	      //  cout << "TEST 2: hitting wall.." << endl;
 	      break;
 	    }
 
@@ -272,7 +303,7 @@ Draw::updatePhysics ()
 	  test = 1;
 	  if (i != 0)
 	    xChange (i);
-	//  if (i == 0)
+	  //  if (i == 0)
 	  //  test = 0;
 	  //check ground collision
 	  if (mario.getYPos () + (mario.getYSize () / marioScalingFactor) >=
@@ -283,10 +314,10 @@ Draw::updatePhysics ()
 			     (mario.getYSize () / marioScalingFactor));
 	      //if mario is on the last platform they won
 	      //cout << "Board Size " << board.size () << "Platform " << i <<
-		//sendl;
+	      //sendl;
 	      if (i == board.size () - 2)
 		{
-		  cout << "Game Over";
+		  // cout << "Game Over";
 		  if (level == 3)
 		    {
 		      gameComplete = 1;
@@ -340,7 +371,7 @@ Draw::updatePhysics ()
     {
       mario.setXVel (0);
       mario.setXPos (0);
-      cout << "Hitting far left border" << endl;
+      //  cout << "Hitting far left border" << endl;
     }
 }
 
@@ -426,7 +457,7 @@ Draw::testCollision ()
 	  mario.setLives (mario.getLives () - 1);
 	  mario.setXPos (50);
 	  mario.setYPos (50);
-	  cout << "OUCH" << endl;
+	  //  cout << "OUCH" << endl;
 	}
     }
 }
@@ -683,7 +714,10 @@ void
 Draw::drawStage ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
-  painter.setBrush (QBrush ("#1ac500"));
+  if (level == levelMax)
+    painter.setBrush (QBrush ("#666666"));
+  else
+    painter.setBrush (QBrush ("#1ac500"));
 
   for (unsigned int i = 0; i < board.size (); i++)
     {
@@ -839,37 +873,78 @@ Draw::stageComplete ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
   //set backround to black and pen to red 
-  painter.setBrush (QBrush ("#000000"));
-  painter.drawRect (0, 0, xWindowSize, yWindowSize);
-  QFont myFont;
-  myFont.setPointSizeF (60.0);
-  painter.setFont (myFont);
-  painter.setPen (QPen ("#008000"));
-  //display the stage the user is on now
-  int trash;			//stores the length of the array; this is not used
-  char displayStage[10];
-  trash = sprintf (displayStage, "Stage: %d", level + 1);
-  painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, displayStage);
-  myFont.setPointSizeF (35.0);
-  painter.setFont (myFont);
-  painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
-		    "Press 'P' to advance\n");
-  //display goomba images to screen
-  QRectF enemyTargetRight1 (350, 430, badguy.getXSize (), badguy.getYSize ());
-  QRectF enemyTargetRight2 (450, 430, badguy.getXSize (), badguy.getYSize ());
-  QRectF enemyTargetRight3 (550, 430, badguy.getXSize (), badguy.getYSize ());
-  QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (), badguy.getYSize ());
-  QPixmap enemyPixmapRight ("goombaRight.png");
-  QPainter (this);
-  painter.drawPixmap (enemyTargetRight1, enemyPixmapRight, enemySourceRight);
-  painter.drawPixmap (enemyTargetRight2, enemyPixmapRight, enemySourceRight);
-  painter.drawPixmap (enemyTargetRight3, enemyPixmapRight, enemySourceRight);
-  painter.setBrush (QBrush ("#008000"));
-  painter.drawRect (180, 30, 660, 10);
-  painter.drawRect (180, 30, 10, 540);
-  painter.drawRect (840, 30, 10, 540);
-  painter.drawRect (180, 570, 670, 10);
 
+  if (level < levelMax - 1)
+    {
+      painter.setBrush (QBrush ("#000000"));
+      painter.drawRect (0, 0, xWindowSize, yWindowSize);
+      QFont myFont;
+      myFont.setPointSizeF (60.0);
+      painter.setFont (myFont);
+      painter.setPen (QPen ("#008000"));
+      //display the stage the user is on now
+      int trash;		//stores the length of the array; this is not used
+      char displayStage[10];
+      trash = sprintf (displayStage, "Stage: %d", level + 1);
+      painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, displayStage);
+      myFont.setPointSizeF (35.0);
+      painter.setFont (myFont);
+      painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
+			"Press 'P' to advance\n");
+      //display goomba images to screen
+      QRectF enemyTargetRight1 (350, 430, badguy.getXSize (),
+				badguy.getYSize ());
+      QRectF enemyTargetRight2 (450, 430, badguy.getXSize (),
+				badguy.getYSize ());
+      QRectF enemyTargetRight3 (550, 430, badguy.getXSize (),
+				badguy.getYSize ());
+      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
+			       badguy.getYSize ());
+      QPixmap enemyPixmapRight ("goombaRight.png");
+      QPainter (this);
+      painter.drawPixmap (enemyTargetRight1, enemyPixmapRight,
+			  enemySourceRight);
+      painter.drawPixmap (enemyTargetRight2, enemyPixmapRight,
+			  enemySourceRight);
+      painter.drawPixmap (enemyTargetRight3, enemyPixmapRight,
+			  enemySourceRight);
+      painter.setBrush (QBrush ("#008000"));
+      painter.drawRect (180, 30, 660, 10);
+      painter.drawRect (180, 30, 10, 540);
+      painter.drawRect (840, 30, 10, 540);
+      painter.drawRect (180, 570, 670, 10);
+    }
+  else
+    {
+      painter.setBrush (QBrush ("#ff0000"));
+      painter.drawRect (0, 0, xWindowSize, yWindowSize);
+      QFont myFont;
+      myFont.setPointSizeF (60.0);
+      painter.setFont (myFont);
+      painter.setPen (QPen ("#000000"));
+      //display the stage the user is on now
+
+      painter.drawText (200, 80, 600, 600, Qt::AlignHCenter,
+			"Bowser's Castle");
+      myFont.setPointSizeF (35.0);
+      painter.setFont (myFont);
+      painter.drawText (200, 150, 600, 600, Qt::AlignHCenter,
+			"Press 'P' to advance\n");
+      //display bowser logo
+      QRectF bowserLogoTarget (364, 200, 284, 331);
+      QRectF bowserLogoSource (0, 0, 355, 414);
+      QPixmap bowserLogoPixmap ("bowserLogo.png");
+      QPainter (this);
+      painter.drawPixmap (bowserLogoTarget, bowserLogoPixmap,
+			  bowserLogoSource);
+
+
+      painter.setBrush (QBrush ("#000000"));
+      painter.drawRect (180, 30, 660, 10);
+      painter.drawRect (180, 30, 10, 540);
+      painter.drawRect (840, 30, 10, 540);
+      painter.drawRect (180, 570, 670, 10);
+    }
 
 }
 
