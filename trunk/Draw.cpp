@@ -41,7 +41,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1,
   levelMax = 3;
   playerLost = 0;
 //**DEBUG MODE**
-  debug = 0;
+  debug = 1;
 
 }
 
@@ -52,7 +52,7 @@ Draw::paintEvent (QPaintEvent *)
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
 
-  if (mario.getLives () > 0)
+  if (mario.getLives () > 0 && welcome!=0 &&levelComplete !=1)
     {
       updateEnemy ();
       updatePhysics ();
@@ -86,7 +86,7 @@ Draw::paintEvent (QPaintEvent *)
 
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
-  else if (mario.getLives () < 1)
+  else if (mario.getLives () < 1 && welcome !=0)
     {
       gameOver ();		//game over screen
       playerLost = 1;
@@ -211,7 +211,7 @@ Draw::xChange (unsigned int i)
 	    {
 	      mario.setXPos (board[i + 1].getX () -
 			     mario.getXSize () / marioScalingFactor);
-	      cout << "TEST 1: hitting wall.." << endl;
+	   //   cout << "TEST 1: hitting wall.." << endl;
 	      break;
 
 	    }
@@ -220,13 +220,13 @@ Draw::xChange (unsigned int i)
 	{
 	  mario.setXPos (mario.getXPos () - 1);
 	  if (mario.getXPos () -
-	      (board[i - 1].getX () + board[i - 1].getWidth ()) < 0
+	      (board[i - 1].getX () + board[i - 1].getWidth ()) < 1
 	      && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >
 	      board[i - 1].getY ())
 	    {
 	      mario.setXPos (board[i - 1].getX () + board[i - 1].getWidth () +
 			     1);
-	      cout << "TEST 2: hitting wall.." << endl;
+	    //  cout << "TEST 2: hitting wall.." << endl;
 	      break;
 	    }
 
@@ -282,8 +282,8 @@ Draw::updatePhysics ()
 	      mario.setYPos (board[i].getY () -
 			     (mario.getYSize () / marioScalingFactor));
 	      //if mario is on the last platform they won
-	      cout << "Board Size " << board.size () << "Platform " << i <<
-		endl;
+	      //cout << "Board Size " << board.size () << "Platform " << i <<
+		//sendl;
 	      if (i == board.size () - 2)
 		{
 		  cout << "Game Over";
@@ -309,16 +309,6 @@ Draw::updatePhysics ()
   if (test == 0)
     {
       mario.setXPos (mario.getXPos () + mario.getXVel ());
-   /*   for (unsigned int i = 0; i < board.size () - 1; i++)
-	{
-	  //test to determine which board the player is on (between the beginning and the width of the board
-	  if (mario.getXPos () >= (board[i].getX () + board[i].getWidth ())
-	      && mario.getXPos () <= board[i + 1].getX ())
-	    {
-		if(i!=0)
-	     		 xChange (i);
-	    }
-	}*/
     }
 
 // test if mario has fallen off the board
@@ -451,19 +441,19 @@ Draw::loadBoard ()
     {				//open the appropriate level
     case 1:
       if (debug)
-	boardFile.open ("level1test.txt");
+	boardFile.open ("level1.txt");
       else
 	boardFile.open ("level1.txt");
       break;
     case 2:
       if (debug)
-	boardFile.open ("level2test.txt");
+	boardFile.open ("level2.txt");
       else
 	boardFile.open ("level2.txt");
       break;
     case 3:
       if (debug)
-	boardFile.open ("level3test.txt");
+	boardFile.open ("level3.txt");
       else
 	boardFile.open ("level3.txt");
       break;
@@ -524,19 +514,19 @@ Draw::loadEnemies ()
     {				//open the appropriate level
     case 1:
       if (debug)
-	enemyFile.open ("enemy1test.txt");
+	enemyFile.open ("enemy1.txt");
       else
 	enemyFile.open ("enemy1.txt");
       break;
     case 2:
       if (debug)
-	enemyFile.open ("enemy2test.txt");
+	enemyFile.open ("enemy2.txt");
       else
 	enemyFile.open ("enemy2.txt");
       break;
     case 3:
       if (debug)
-	enemyFile.open ("enemy3test.txt");
+	enemyFile.open ("enemy3.txt");
       else
 	enemyFile.open ("enemy3.txt");
       break;
