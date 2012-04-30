@@ -94,6 +94,11 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
   if (welcome == 0)
     {
       displayWelcomeMessage ();
+	  QRectF welcomeTarget(0,0,1000,600);
+	  QRectF welcomeSource (0.0, 0.0, 1000, 600);
+	  QPixmap welcomePixmap ("welcomeScreen.png");
+	  QPainter (this);
+	  painter.drawPixmap (welcomeTarget, welcomePixmap, welcomeSource);
     }
 
   else if (mario.getLives () > 0 && levelComplete == 0)	//while the game is running
@@ -729,7 +734,7 @@ Draw::drawStage ()
 	{
 	  if (level == levelMax)
 	    {
-	      // draw peach - not working on last level, works when tested on others
+	      // draw peach
 	      QRectF peachTarget (board[i].getX (), board[i].getY () - 90, 50,
 				  96);
 	      QRectF peachSource (0.0, 0.0, 100, 193);
@@ -767,8 +772,8 @@ Draw::drawEnemies ()
 	    // right-facing enemy
 	    QRectF bowserTargetRight (enemies[z].getXPos (),
 				      enemies[z].getYPos (),
-				      badguy.getXSize () * 2,
-				      badguy.getYSize () * 2);
+				      badguy.getXSize () * 1.5,
+				      badguy.getYSize () * 1.5);
 	    QRectF bowserSourceRight (0.0, 0.0, 200, 202);
 	    QPixmap bowserPixmapRight ("bowserRight.png");
 	    QPainter (this);
@@ -776,8 +781,8 @@ Draw::drawEnemies ()
 	    // left-facing enemy
 	    QRectF bowserTargetLeft (enemies[z].getXPos (),
 				     enemies[z].getYPos (),
-				     badguy.getXSize () * 2,
-				     badguy.getYSize () * 2);
+				     badguy.getXSize () * 1.5,
+				     badguy.getYSize () * 1.5);
 	    QRectF bowserSourceLeft (0.0, 0.0, 200, 202);
 	    QPixmap bowserPixmapLeft ("bowserLeft.png");
 	    QPainter (this);
