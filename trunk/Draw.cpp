@@ -65,6 +65,12 @@ void
 Draw::paintEvent (QPaintEvent *)
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
+
+  if (level == levelMax)
+{
+  painter.setBrush (QBrush ("#ff0000"));
+painter.drawRect(0,0, xWindowSize, yWindowSize);
+}
   if (level != levelMax)
     {
       for (unsigned int i = 0; i < clouds.size (); i++)
@@ -77,11 +83,6 @@ Draw::paintEvent (QPaintEvent *)
 	  painter.drawPixmap (cloudTarget, cloudPixmap, cloudSource);
 	}
     }
-
-  if (level == levelMax)
-    setStyleSheet ("background-color: #ff0000");
-  else
-    setStyleSheet ("background-color: #4c6cdc");
 
   if (mario.getLives () > 0 && welcome != 0 && levelComplete != 1)
     {
