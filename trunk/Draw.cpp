@@ -315,6 +315,8 @@ Draw::updatePhysics ()
 	  if (mario.getYPos () + (mario.getYSize () / marioScalingFactor) >=
 	      board[i].getY ())
 	    {
+cout << "Board Size " << board.size () << "Line " << i+2 <<
+	      endl;
 	      mario.setYVel (0);
 	      mario.setYPos (board[i].getY () -
 			     (mario.getYSize () / marioScalingFactor));
