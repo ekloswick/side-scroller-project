@@ -12,6 +12,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include "enemy.h"
 #include "hero.h"
 #include "platform.h"
+#include "mushroom.h"
 #include <vector>
 
 using namespace std;
@@ -40,6 +41,9 @@ protected:
   void stageComplete ();
   void gameOver ();
   void xChange (unsigned int);
+  void drawMushroom();
+  void mushroomCollect();
+  void mushroomLoad();
 
 
 private:
@@ -54,6 +58,7 @@ private:
     vector < platform > board;	//vector of platform to keep track of the board
   hero mario;			//mario is an object of type hero
   enemy badguy;			//object of type badguy
+  mushroom lifeMushroom;
     vector < enemy > enemies;	//vector of enemy to keep track of the enemies
     vector < vector < int > > clouds;
     vector < int >cloud;

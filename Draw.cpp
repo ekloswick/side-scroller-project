@@ -15,6 +15,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include <QFont>
 #include "character.h"
 #include "enemy.h"
+#include "mushroom.h"
 #include "hero.h"
 #include <QSound>
 
@@ -23,7 +24,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1, 1)
+Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1, 1), lifeMushroom(2100,450)
 {
   setWindowTitle (tr ("Super Mario Side Scroller"));
   xWindowSize = 1000;
@@ -45,6 +46,9 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1,
   setStyleSheet ("background-color: #4c6cdc");
   cloudRandomize=1;
 srand(time(NULL));
+
+
+
 }
 // This method is called when the widget needs to be redrawn
 void
@@ -129,8 +133,9 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
     {
       gameOver ();		//game over screen
       playerLost = 1;
-
     }
+drawMushroom();
+
 }
 
 // performs actions based on key presses
@@ -167,6 +172,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 	      playerLost = 0;
 	    }
 	  level += 1;
+          mushroomLoad();
 	  if (level == 1)
 	    {
 	      mario.setLives (5);
@@ -279,6 +285,7 @@ void
 Draw::updatePhysics ()
 {
   testCollision ();
+mushroomCollect();
   // checks for correct key presses
   if (movingLeft == 1)
     mario.moveLeft ();
@@ -375,6 +382,7 @@ cout << "Board Size " << board.size () << "Line " << i+2 <<
 	{
 	  enemies[j].moveWithPlatform (mario.getXVel ());
 	}
+lifeMushroom.moveWithPlatform(mario.getXVel());
     }
 
   // prevent mario from going of the left side of the screen
@@ -828,12 +836,27 @@ QRectF boardTarget (board[i].getX (), board[i].getY (),
 }
 
 void
+Draw::drawMushroom()
+{
+QPainter painter (this);	// get a painter object to send drawing commands to	  
+  QRectF mushroomTarget (lifeMushroom.getXPos (),
+				      lifeMushroom.getYPos (),
+				      lifeMushroom.getXSize ()*2,
+				      lifeMushroom.getYSize ()*2);
+	    QRectF mushroomSource (0.0, 0.0, 16, 16);
+	    QPixmap mushroomPixmap ("1up.png");
+	    QPainter (this);
+painter.drawPixmap (mushroomTarget, mushroomPixmap, mushroomSource);
+}
+
+void
 Draw::drawEnemies ()
 {
 	static int goombaTimer = 0;
 
   QPainter painter (this);	// get a painter object to send drawing commands to
   //loop through all enemies on the board to draw them based on their position
+  // right-facing enemy
 
 
   for (unsigned int z = 0; z < enemies.size (); z++)
@@ -1043,3 +1066,33 @@ QRectF overTarget(0,0,1000,600);
 	  QPainter (this);
 	  painter.drawPixmap (overTarget, overPixmap, overSource);
 }
+
+void
+Draw::mushroomCollect()
+{
+	if ((mario.getXPos() >= lifeMushroom.getXPos()-20) && (mario.getXPos() <= lifeMushroom.getXPos()+20) && (mario.getYPos() >= lifeMushroom.getYPos()-20) && (mario.getYPos() <= lifeMushroom.getYPos()+20))
+		{
+		mario.setLives(mario.getLives()+1);
+		lifeMushroom.update(-5000,-5000);
+		}
+}
+
+void
+Draw::mushroomLoad()
+{
+if (level==1)
+{
+lifeMushroom.update(2100,450);
+}
+else if (level==2)
+{
+lifeMushroom.update(2600,350);
+}
+else if (level==3)
+{
+lifeMushroom.update(5350,150);
+}
+
+}
+
+
