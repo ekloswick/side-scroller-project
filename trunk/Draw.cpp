@@ -22,8 +22,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1,
-					     1)
+Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1, 1)
 {
   setWindowTitle (tr ("Super Side Scroller"));
   xWindowSize = 1000;
@@ -34,7 +33,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1,
   //loadEnemies ();
   startTimer (50);
   welcome = 0;			// 0 for welcome screen; 1 for no welcome screen
-  marioScalingFactor = 3;
+  marioScalingFactor = 2;
   enemyScalingFactor = 2;
   score = 0;
   levelComplete = 1;		//0 for the level is not complete; 1 for the level is completed
@@ -140,11 +139,13 @@ Draw::keyPressEvent (QKeyEvent * event)
     {
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
+      movingRight = 0;
       mario.leftFacing = 1;
       mario.rightFacing = 0;
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       movingRight = 1;
+      movingLeft = 0;
       mario.leftFacing = 0;
       mario.rightFacing = 1;
       break;
@@ -231,23 +232,19 @@ Draw::xChange (unsigned int i)
 
 
   //prevent from walking into the wall
-
-
-
-
   for (int z = 0; z < abs (mario.getXVel ()); z++)
     {
       if (mario.getXVel () > 0)
 	{
 	  mario.setXPos (mario.getXPos () + 1);
 	  if ((board[i + 1].getX () - mario.getXPos ()) <
-	      (mario.getXSize () / marioScalingFactor)
+	      (mario.getXSize () * marioScalingFactor)
 	      && (mario.getYPos () +
-		  mario.getYSize () / marioScalingFactor) >
+		  mario.getYSize () * marioScalingFactor) >
 	      board[i + 1].getY ())
 	    {
 	      mario.setXPos (board[i + 1].getX () -
-			     mario.getXSize () / marioScalingFactor);
+			     mario.getXSize () * marioScalingFactor);
 	      //   cout << "TEST 1:  wall.." << endl;
 	      break;
 
@@ -258,7 +255,7 @@ Draw::xChange (unsigned int i)
 	  mario.setXPos (mario.getXPos () - 1);
 	  if (mario.getXPos () -
 	      (board[i - 1].getX () + board[i - 1].getWidth ()) < 1
-	      && (mario.getYPos () + mario.getYSize () / marioScalingFactor) >
+	      && (mario.getYPos () + mario.getYSize () * marioScalingFactor) >
 	      board[i - 1].getY ())
 	    {
 	      mario.setXPos (board[i - 1].getX () + board[i - 1].getWidth () +
@@ -312,14 +309,14 @@ Draw::updatePhysics ()
 	  //  if (i == 0)
 	  //  test = 0;
 	  //check ground collision
-	  if (mario.getYPos () + (mario.getYSize () / marioScalingFactor) >=
+	  if (mario.getYPos () + (mario.getYSize () * marioScalingFactor) >=
 	      board[i].getY ())
 	    {
 cout << "Board Size " << board.size () << "Line " << i+2 <<
 	      endl;
 	      mario.setYVel (0);
 	      mario.setYPos (board[i].getY () -
-			     (mario.getYSize () / marioScalingFactor));
+			     (mario.getYSize () * marioScalingFactor));
 	      //if mario is on the last platform they won
 	      //cout << "Board Size " << board.size () << "Platform " << i <<
 	      //sendl;
@@ -338,7 +335,7 @@ cout << "Board Size " << board.size () << "Line " << i+2 <<
 	  // prevents infinity-jumping
 	  if (jumping == 1
 	      && mario.getYPos () >
-	      (board[i].getY () - (mario.getYSize () / marioScalingFactor) -
+	      (board[i].getY () - (mario.getYSize () * marioScalingFactor) -
 	       5))
 	    {
 	      mario.jump ();
@@ -445,7 +442,7 @@ Draw::testCollision ()
       if ((mario.getXPos () < (enemies[z].getXPos () + 40))
 	  && (mario.getXPos () > (enemies[z].getXPos () - 40))
 	  && (mario.getYPos () < (enemies[z].getYPos () - 18))
-	  && (mario.getYPos () > (enemies[z].getYPos () - 90))
+	  && (mario.getYPos () > (enemies[z].getYPos () - 65))
 	  && (mario.getYVel () > 0))
 	{
 	  enemies[z].setLives (enemies[z].getLives () - 1);
@@ -460,12 +457,11 @@ Draw::testCollision ()
       else if ((mario.getXPos () < (enemies[z].getXPos () + 40))
 	       && (mario.getXPos () > (enemies[z].getXPos () - 40))
 	       && (mario.getYVel () == 0)
-	       && (mario.getYPos () > (enemies[z].getYPos () - 90)))
+	       && (mario.getYPos () > (enemies[z].getYPos () - 65)))
 	{
 	  mario.setLives (mario.getLives () - 1);
 	  mario.setXPos (50);
 	  mario.setYPos (50);
-	  //  cout << "OUCH" << endl;
 	}
     }
 }
@@ -688,34 +684,80 @@ Draw::displayWelcomeMessage ()
 void
 Draw::drawMario ()
 {
+	static int animationTimer = 0;
+
   QPainter painter (this);	// get a painter object to send drawing commands to
 // right-facing mario
   QRectF marioTargetRight (mario.getXPos (), mario.getYPos (),
-			   mario.getXSize () / marioScalingFactor,
-			   mario.getYSize () / marioScalingFactor);
+			   mario.getXSize () * marioScalingFactor,
+			   mario.getYSize () * marioScalingFactor);
   QRectF marioSourceRight (0.0, 0.0, mario.getXSize (), mario.getYSize ());
   QPixmap marioPixmapRight ("marioRight.png");
+  QPainter (this);	
+  QPixmap marioPixmapRightOne ("right1.png");
+  QPainter (this);
+  QPixmap marioPixmapRightTwo ("right2.png");
+  QPainter (this);
+  QPixmap marioPixmapRightThree ("right3.png");
   QPainter (this);
 
   // left-facing mario
   QRectF marioTargetLeft (mario.getXPos (), mario.getYPos (),
-			  mario.getXSize () / marioScalingFactor,
-			  mario.getYSize () / marioScalingFactor);
+			  mario.getXSize () * marioScalingFactor,
+			  mario.getYSize () * marioScalingFactor);
   QRectF marioSourceLeft (0.0, 0.0, mario.getXSize (), mario.getYSize ());
   QPixmap marioPixmapLeft ("marioLeft.png");
+  QPainter (this);
+  QPixmap marioPixmapLeftOne ("left1.png");
+  QPainter (this);
+  QPixmap marioPixmapLeftTwo ("left2.png");
+  QPainter (this);
+  QPixmap marioPixmapLeftThree ("left3.png");
   QPainter (this);
 
   // update mario sprite state based on what direction he is moving
   if (mario.rightFacing == 1)
     {
-      painter.drawPixmap (marioTargetRight, marioPixmapRight,
-			  marioSourceRight);
+		if (mario.getXVel() != 0)
+		{
+			if (animationTimer >= 0 && animationTimer < 2)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
+			else if (animationTimer >= 2 && animationTimer < 4)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightTwo, marioSourceRight);
+			else if (animationTimer >= 4 && animationTimer < 6)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
+			else if (animationTimer >= 6 && animationTimer < 8)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightThree, marioSourceRight);
+			
+			if (animationTimer >= 7)
+				animationTimer = 0;
+			else
+				animationTimer++;
+		}
+		else
+			painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
     }
   if (mario.leftFacing == 1)
     {
-      painter.drawPixmap (marioTargetLeft, marioPixmapLeft, marioSourceLeft);
+      if (mario.getXVel() != 0)
+		{
+			if (animationTimer >= 0 && animationTimer < 2)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
+			else if (animationTimer >= 2 && animationTimer < 4)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftTwo, marioSourceLeft);
+			else if (animationTimer >= 4 && animationTimer < 6)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
+			else if (animationTimer >= 6 && animationTimer < 8)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftThree, marioSourceLeft);
+			
+			if (animationTimer >= 7)
+				animationTimer = 0;
+			else
+				animationTimer++;
+		}
+		else
+			painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
     }
-
 }
 
 void
