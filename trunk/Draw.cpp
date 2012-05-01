@@ -777,23 +777,38 @@ Draw::drawStage ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
   if (level == levelMax)
-    painter.setBrush (QBrush ("#666666"));
+  {
+     painter.setBrush (QBrush ("#666666"));
+     painter.setPen("#666666");
+  }
   else
-    painter.setBrush (QBrush ("#1ac500"));
+  {
+     painter.setBrush (QBrush ("#1ac500"));
+     painter.setPen("#1ac500");
+  }
 
   for (unsigned int i = 0; i < board.size (); i++)
     {
 
       painter.drawRect (board[i].getX (), board[i].getY (),
 			board[i].getWidth (), board[i].getHeight ());
+/*
+QRectF boardTarget (board[i].getX (), board[i].getY (),
+			board[i].getWidth (), board[i].getHeight ());
+  QRectF boardSource (0.0, 0.0, 1024, 819);
+  QPixmap boardPixmap ("gradient.png");
+  QPainter (this);
+  painter.drawPixmap (boardTarget, boardPixmap, boardSource);
+*/
+
       if (i == (board.size () - 2))
 	{
 	  if (level == levelMax)
 	    {
 	      // draw peach
-	      QRectF peachTarget (board[i].getX (), board[i].getY () - 90, 50,
-				  96);
-	      QRectF peachSource (0.0, 0.0, 100, 193);
+	      QRectF peachTarget (board[i].getX ()+9, board[i].getY () - 62, 32,
+				  62);
+	      QRectF peachSource (0.0, 0.0, 16, 31);
 	      QPixmap peachPixmap ("peach.png");
 	      QPainter (this);
 	      painter.drawPixmap (peachTarget, peachPixmap, peachSource);
