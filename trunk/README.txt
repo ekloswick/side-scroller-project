@@ -150,7 +150,7 @@ face Bowser in a final battle to save the princess.
 4. Characters
 --------------
    A. Mario...
-	is depicted as a short, pudgy, Italian-American plumber who lives in the Mushroom Kingdom. He repeatedly stops the turtle-like villain Bowser's numerous plans to kidnap Princess Peach, destroy 		him and take over the kingdom. Mario also has other enemies and rivals, including Donkey Kong and Wario.
+	is depicted as a short, pudgy, Italian-American plumber who lives in the Mushroom Kingdom. He repeatedly stops the turtle-like villain Bowser's numerous plans to kidnap Princess Peach, destroy him and take over the kingdom. Mario also has other enemies and rivals, including Donkey Kong and Wario.
 
    B. Princess Peach...
 	is the Princess of the fictional Mushroom Kingdom and often plays the damsel in distress role within the series and is the lead female for the entire series
@@ -167,6 +167,9 @@ face Bowser in a final battle to save the princess.
 A - move left
 D - move right
 W - jump
+ENTER - move to next stage
+SPACEBAR - begin the game
+L - skip a level (debug mode only)
 
 
 6. About/Credits
