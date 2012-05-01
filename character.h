@@ -31,7 +31,7 @@ int rightFacing;
 int getLives ();
 void setLives (int);
 
-int setMovementSpeed(int);
+void setMovementSpeed(int);
 int movementSpeed;
 int xPos;int yPos;int lives;			// number of lives remaining
 

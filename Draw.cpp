@@ -17,9 +17,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include "enemy.h"
 #include "mushroom.h"
 #include "hero.h"
-#include <QSound>
-
-
+#include <stdio.h>
 
 using namespace std;
 
@@ -50,6 +48,7 @@ srand(time(NULL));
 
 
 }
+
 // This method is called when the widget needs to be redrawn
 void
 Draw::paintEvent (QPaintEvent *)
@@ -121,16 +120,18 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
 //if mario beat the level with lives remaining display to the user and ask if they would like to play again
   else if (mario.getLives () > 0 && gameComplete == 1)
     {
+      system("play sounds/gameComplete.wav &");
       playerWon ();		//player won screen
     }
   else if (mario.getLives () > 0 && levelComplete == 1)
     {
+      system("play sounds/levelComplete.wav &");
       stageComplete ();		//stage complete screen
-
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
   else if (mario.getLives () < 1 && welcome != 0)
     {
+      system("play sounds/gameOver.wav &");
       gameOver ();		//game over screen
       playerLost = 1;
     }
@@ -143,7 +144,6 @@ drawMushroom();
 void
 Draw::keyPressEvent (QKeyEvent * event)
 {
-	QSound song("./theme.wav");
   switch (event->key ())
     {
     case Qt::Key_A:		//A pressed to move the character to the left
@@ -208,7 +208,6 @@ Draw::keyPressEvent (QKeyEvent * event)
 	}
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
-QSound::play("/theme.wav");
       break;
     case Qt::Key_Escape:
       exit (1);
@@ -325,8 +324,7 @@ mushroomCollect();
 	  if (mario.getYPos () + (mario.getYSize () * marioScalingFactor) >=
 	      board[i].getY ())
 	    {
-cout << "Board Size " << board.size () << "Line " << i+2 <<
-	      endl;
+//cout << "Board Size " << board.size () << "Line " << i+2 << endl;
 	      mario.setYVel (0);
 	      mario.setYPos (board[i].getY () -
 			     (mario.getYSize () * marioScalingFactor));
@@ -342,7 +340,10 @@ cout << "Board Size " << board.size () << "Line " << i+2 <<
 		      levelComplete = 1;
 		    }
 		  else
+		  {
+      		system("play sounds/pipeWarp.wav");
 		    levelComplete = 1;
+		   }
 		}
 	    }
 	  // prevents infinity-jumping
@@ -352,6 +353,7 @@ cout << "Board Size " << board.size () << "Line " << i+2 <<
 	       5))
 	    {
 	      mario.jump ();
+		system("play sounds/jump.wav &");
 	    }
 	}
     }
@@ -364,6 +366,7 @@ cout << "Board Size " << board.size () << "Line " << i+2 <<
   if (mario.getYPos () >= yWindowSize)
     {
       mario.setLives (mario.getLives () - 1);
+      system("play sounds/death.wav");
       mario.setXPos (50);
       mario.setYPos (50);
     }
@@ -459,23 +462,25 @@ Draw::testCollision ()
 //tests if the mario is above the enemy and within an appropriate position to squash it
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
-      if ((mario.getXPos () < (enemies[z].getXPos () + 40))
-	  && (mario.getXPos () > (enemies[z].getXPos () - 40))
+      if ((mario.getXPos () < (enemies[z].getXPos () + 32))
+	  && (mario.getXPos () > (enemies[z].getXPos () - 32))
 	  && (mario.getYPos () < (enemies[z].getYPos () - 18))
 	  && (mario.getYPos () > (enemies[z].getYPos () - 65))
 	  && (mario.getYVel () > 0))
 	{
 	  enemies[z].setLives (enemies[z].getLives () - 2);
 	  mario.jump ();
+	  system("play sounds/stomp.wav &");
 	  score += 10;
 
 	}
-      else if ((mario.getXPos () < (enemies[z].getXPos () + 40))
-	       && (mario.getXPos () > (enemies[z].getXPos () - 40))
+      else if ((mario.getXPos () < (enemies[z].getXPos () + 32))
+	       && (mario.getXPos () > (enemies[z].getXPos () - 32))
 	       && (mario.getYVel () == 0)
 	       && (mario.getYPos () > (enemies[z].getYPos () - 65)))
 	{
 	  mario.setLives (mario.getLives () - 1);
+	  system("play sounds/death.wav");
 	  mario.setXPos (50);
 	  mario.setYPos (50);
 	}

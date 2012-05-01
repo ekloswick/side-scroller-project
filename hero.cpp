@@ -11,6 +11,7 @@ Copyright 2012. All rights reserved.
 #include <iostream>
 #include <iomanip>
 #include <stdlib.h>
+#include <stdio.h>
 #include <hero.h>
 #include <QPrinter>
 #include <QtGui>

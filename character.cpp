@@ -77,7 +77,7 @@ character::setXSize (int n)
 character::setYSize (int n) 
 { ysize = n;}
 
-int character::setMovementSpeed(int speed)
+void character::setMovementSpeed(int speed)
 {
 	movementSpeed = speed;
 }
