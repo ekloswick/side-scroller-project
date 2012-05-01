@@ -435,6 +435,12 @@ Draw::updateEnemy ()
 	{
 	  enemies[z].moveLeft ();
 	}
+	
+	if (enemies[z].getLives() <= 0)
+	{
+		enemies[z].setMovementSpeed(0);
+	}
+	
     }
 }
 
@@ -451,12 +457,8 @@ Draw::testCollision ()
 	  && (mario.getYPos () > (enemies[z].getYPos () - 65))
 	  && (mario.getYVel () > 0))
 	{
-	  enemies[z].setLives (enemies[z].getLives () - 1);
+	  enemies[z].setLives (enemies[z].getLives () - 2);
 	  mario.jump ();
-	  if (enemies[z].getLives () == 0)
-	    {
-	      enemies[z].destroyEnemy ();
-	    }
 	  score += 10;
 
 	}
@@ -469,6 +471,10 @@ Draw::testCollision ()
 	  mario.setXPos (50);
 	  mario.setYPos (50);
 	}
+	 if (enemies[z].getLives () == 0)
+	    {
+	      enemies[z].destroyEnemy ();
+	    }
     }
 }
 
@@ -809,6 +815,8 @@ Draw::drawStage ()
 void
 Draw::drawEnemies ()
 {
+	static int goombaTimer = 0;
+
   QPainter painter (this);	// get a painter object to send drawing commands to
   //loop through all enemies on the board to draw them based on their position
 
@@ -880,8 +888,18 @@ Draw::drawEnemies ()
 	  QPainter (this);
 
 
+		// squished enemy
+	  QRectF enemyTargetSquish (enemies[z].getXPos (),
+				  enemies[z].getYPos (),
+				  badguy.getXSize () / enemyScalingFactor,
+				  badguy.getYSize () / enemyScalingFactor);
+	  QRectF enemySourceSquish (0.0, 0.0, badguy.getXSize (),
+				  badguy.getYSize ());
+	  QPixmap enemyPixmapSquish ("goombaDead.png");
+	  QPainter (this);
+
 	  //if the enemy has more than 1 life draw them on the board
-	  if (enemies[z].getLives () != 0)
+	  if (enemies[z].getLives () > 0)
 	    {
 	      // update enemy sprite state based on what direction they are moving
 	      if (enemies[z].rightFacing == 1)
@@ -895,6 +913,18 @@ Draw::drawEnemies ()
 		  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
 				      enemySourceLeft);
 		}
+	    }
+	    else if (enemies[z].getLives() == -1)
+	    {
+	    		painter.drawPixmap(enemyTargetSquish, enemyPixmapSquish, enemySourceSquish);
+	    		
+	    		if (goombaTimer == 1)
+	    		{
+	    			enemies[z].setLives(0);
+	    			goombaTimer = 0;
+	    		}
+	    		else
+	    			goombaTimer++;
 	    }
 	}
     }

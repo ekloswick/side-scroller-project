@@ -76,3 +76,10 @@ character::setXSize (int n)
 {xsize = n;} void
 character::setYSize (int n) 
 { ysize = n;}
+
+int character::setMovementSpeed(int speed)
+{
+	movementSpeed = speed;
+}
+
+
