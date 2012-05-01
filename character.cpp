@@ -1,11 +1,12 @@
 /*
- *  character.cpp
- *  Final_Project
- *
- *  Created by Jake Flynt on 3/4/12.
- *  Copyright 2012. All rights reserved.
- *
- */
+CSE 20212
+Final Project: Super Mario Side Scroller 
+
+Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
+Copyright 2012. All rights reserved.
+
+"character.cpp"
+ */ 
 
 #include <iostream>
 #include <iomanip>
@@ -64,23 +65,14 @@ character::getLives ()
 
 int
 character::getXSize () 
-{
-  return xsize;
-}
+{  return xsize;}
 
 int
 character::getYSize () 
-{
-  return ysize;
-}
+{return ysize;}
 
 void
 character::setXSize (int n) 
-{
-  xsize = n;
-} void
-
+{xsize = n;} void
 character::setYSize (int n) 
-{
-  ysize = n;
-}
+{ ysize = n;}

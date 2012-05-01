@@ -1,15 +1,14 @@
 /*
- *  character.cpp
- *  Final_Project
- *
- *  Created by Jake Flynt on 3/4/12.
- *  Copyright 2012. All rights reserved.
- *
- */
+CSE 20212
+Final Project: Super Mario Side Scroller 
 
-/*
-Base character class
-*/  
+Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
+Copyright 2012. All rights reserved.
+
+"character.h"
+ */ 
+
+// Base character class  
   
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -20,7 +19,7 @@ Base character class
   using namespace std;
 class character 
 {
-public:
+public:
 character (int, int, int);
 
 //functions for the positionint getXPos ();  int getYPos ();void setXPos (int); void setYPos (int);
