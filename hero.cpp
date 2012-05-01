@@ -18,7 +18,7 @@ Copyright 2012. All rights reserved.
 hero::hero (int x, int y, int lives):
 character (x, y, lives) 
 { setXVel (0);setYVel (getGravity ()); gravity = 25; 
-rightFacing = 1; setXSize (98);setYSize (164);movementSpeed = 16;} void
+rightFacing = 1; setXSize (15);setYSize (27);movementSpeed = 16;} void
 hero::moveLeft ()		// function to move left
 {  xVel -= movementSpeed;} void
 hero::moveRight ()		// function to move right
