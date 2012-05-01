@@ -5,7 +5,7 @@ Final Project: Super Mario Side Scroller
 Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
-"enemy.cpp"
+enemy.cpp
  */ 
 
 #include <iostream>

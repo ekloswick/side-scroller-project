@@ -1,10 +1,11 @@
 /*
- * main.cpp - Driver for the MyPaint class
- * CSE 20212 - Spring 2009
- * 
- * Author: Phil MacCart 
- * 03-01-2009
- * 
+CSE 20212
+Final Project: Super Mario Side Scroller 
+
+Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
+Copyright 2012. All rights reserved.
+
+"main.cpp"
  */
 
 

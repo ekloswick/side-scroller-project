@@ -150,16 +150,16 @@ face Bowser in a final battle to save the princess.
 4. Characters
 --------------
    A. Mario...
-	is depicted as a short, pudgy, Italian-American plumber who lives in the Mushroom Kingdom. He repeatedly stops the turtle-like villain Bowser's numerous plans to kidnap Princess Peach, destroy him and take over the kingdom. Mario also has other enemies and rivals, including Donkey Kong and Wario.
+	is depicted as a short, pudgy, Italian-American plumber who lives in the Mushroom Kingdom. He repeatedly stops the turtle-like villain Bowser's 	numerous plans to kidnap Princess Peach, destroy him and take over the kingdom. Mario also has other enemies and rivals, including Donkey Kong 		and Wario.  Mario can destroy goombas by jumping on them, and earn extra lives by collecting 1UP mushrooms.
 
    B. Princess Peach...
-	is the Princess of the fictional Mushroom Kingdom and often plays the damsel in distress role within the series and is the lead female for the entire series
+	is the Princess of the fictional Mushroom Kingdom and often plays the damsel in distress role within the series and is the lead female for the 		entire series.
 
    C. Bowser...
-	is the leader and most powerful of the Turtle-like Koopa race and is Mario's greedy archnemesis.
+	is the leader and most powerful of the Turtle-like Koopa race and is Mario's greedy archnemesis.  Bowser is stronger than other enemies, and 		will take multiple hits to destroy.
 
    D. Goombas...
-	look like shiitake, with bushy eyebrows and a pair of fangs sprouting from their lower jaw.  There are most often found walking about aimlessly, only causing Mario harm.
+	look like shiitake, with bushy eyebrows and a pair of fangs sprouting from their lower jaw.  There are most often found walking about 		  aimlessly, only causing Mario harm.
 
 
 5. Controls

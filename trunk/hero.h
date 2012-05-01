@@ -6,7 +6,7 @@ Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
 "hero.h"
- */  
+*/  
   
 #ifndef HERO_H
 #define HERO_H  

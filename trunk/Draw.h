@@ -1,7 +1,12 @@
 /*
-Final_Project
-Justin Bartlett, Jake Flynt, Eli Kloswick
- */
+CSE 20212
+Final Project: Super Mario Side Scroller 
+
+Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
+Copyright 2012. All rights reserved.
+
+"Draw.h"
+*/
 
 
 #ifndef DRAW_H_
