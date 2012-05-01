@@ -43,9 +43,18 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1,
 //**DEBUG MODE**
   debug = 1;
   setStyleSheet ("background-color: #4c6cdc");
-
-
-
+  cloudRandomize=1;
+srand(time(NULL));
+}
+// This method is called when the widget needs to be redrawn
+void
+Draw::paintEvent (QPaintEvent *)
+{
+  QPainter painter (this);	// get a painter object to send drawing commands to
+if (cloudRandomize==1)
+{
+      clouds.clear();
+      cloud.clear ();
   for (int i = 0; i < 15; i++)
     {
       cloud.push_back (20 + rand () % 1000);
@@ -54,16 +63,10 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1,
       cloud.push_back (36);
       clouds.push_back (cloud);
       cloud.clear ();
-
     }
+ cloudRandomize=0;
 }
 
-
-// This method is called when the widget needs to be redrawn
-void
-Draw::paintEvent (QPaintEvent *)
-{
-  QPainter painter (this);	// get a painter object to send drawing commands to
 
   if (level == levelMax)
 {
@@ -180,6 +183,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 	      mario.setLives (3);
 	    }
 	  levelComplete = 0;
+	 cloudRandomize=1;
 	  gameComplete = 0;
 	  mario.setXPos (50);
 	  mario.setYPos (50);
