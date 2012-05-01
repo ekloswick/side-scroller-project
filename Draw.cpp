@@ -16,6 +16,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 #include "character.h"
 #include "enemy.h"
 #include "hero.h"
+#include <QSound>
 
 
 
@@ -24,7 +25,7 @@ using namespace std;
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1, 1)
 {
-  setWindowTitle (tr ("Super Side Scroller"));
+  setWindowTitle (tr ("Super Mario Side Scroller"));
   xWindowSize = 1000;
   yWindowSize = 600;
   resize (xWindowSize, yWindowSize);
@@ -42,7 +43,6 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1,
 //**DEBUG MODE**
   debug = 1;
   setStyleSheet ("background-color: #4c6cdc");
-
 
 
 
@@ -135,6 +135,7 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
 void
 Draw::keyPressEvent (QKeyEvent * event)
 {
+	QSound song("./theme.wav");
   switch (event->key ())
     {
     case Qt::Key_A:		//A pressed to move the character to the left
@@ -152,7 +153,7 @@ Draw::keyPressEvent (QKeyEvent * event)
     case Qt::Key_W:		//W pressed to jump
       jumping = 1;
       break;
-    case Qt::Key_P:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
+    case Qt::Key_Return:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       if (levelComplete || gameComplete || playerLost)
 	{
 	  if (playerLost)
@@ -197,6 +198,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 	}
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
+QSound::play("/theme.wav");
       break;
     case Qt::Key_Escape:
       exit (1);
@@ -916,6 +918,11 @@ Draw::playerWon ()
   painter.drawText (200, 300, 600, 600, Qt::AlignHCenter, displayScore);
   painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
 		    "Press 'P' to play Again\n");
+QRectF winTarget(0,0,1000,600);
+	  QRectF winSource (0.0, 0.0, 1000, 600);
+	  QPixmap winPixmap ("winScreen.png");
+	  QPainter (this);
+	  painter.drawPixmap (winTarget, winPixmap, winSource);
 }
 
 void
@@ -931,38 +938,18 @@ Draw::stageComplete ()
       QFont myFont;
       myFont.setPointSizeF (60.0);
       painter.setFont (myFont);
-      painter.setPen (QPen ("#008000"));
+      painter.setPen (QPen ("#ffffff"));
       //display the stage the user is on now
       int trash;		//stores the length of the array; this is not used
       char displayStage[10];
       trash = sprintf (displayStage, "Stage: %d", level + 1);
       painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, displayStage);
-      myFont.setPointSizeF (35.0);
-      painter.setFont (myFont);
-      painter.drawText (200, 300, 600, 600, Qt::AlignHCenter,
-			"Press 'P' to advance\n");
-      //display goomba images to screen
-      QRectF enemyTargetRight1 (350, 430, badguy.getXSize (),
-				badguy.getYSize ());
-      QRectF enemyTargetRight2 (450, 430, badguy.getXSize (),
-				badguy.getYSize ());
-      QRectF enemyTargetRight3 (550, 430, badguy.getXSize (),
-				badguy.getYSize ());
-      QRectF enemySourceRight (0.0, 0.0, badguy.getXSize (),
-			       badguy.getYSize ());
-      QPixmap enemyPixmapRight ("goombaRight.png");
-      QPainter (this);
-      painter.drawPixmap (enemyTargetRight1, enemyPixmapRight,
-			  enemySourceRight);
-      painter.drawPixmap (enemyTargetRight2, enemyPixmapRight,
-			  enemySourceRight);
-      painter.drawPixmap (enemyTargetRight3, enemyPixmapRight,
-			  enemySourceRight);
-      painter.setBrush (QBrush ("#008000"));
-      painter.drawRect (180, 30, 660, 10);
-      painter.drawRect (180, 30, 10, 540);
-      painter.drawRect (840, 30, 10, 540);
-      painter.drawRect (180, 570, 670, 10);
+
+	QRectF stageTarget(0,200,1000,600);
+	  QRectF stageSource (0.0, 0.0, 1000, 600);
+	  QPixmap stagePixmap ("stageScreen.png");
+	  QPainter (this);
+	  painter.drawPixmap (stageTarget, stagePixmap, stageSource);
     }
   else
     {
@@ -973,27 +960,12 @@ Draw::stageComplete ()
       painter.setFont (myFont);
       painter.setPen (QPen ("#000000"));
       //display the stage the user is on now
-
-      painter.drawText (200, 80, 600, 600, Qt::AlignHCenter,
-			"Bowser's Castle");
-      myFont.setPointSizeF (35.0);
-      painter.setFont (myFont);
-      painter.drawText (200, 150, 600, 600, Qt::AlignHCenter,
-			"Press 'P' to advance\n");
-      //display bowser logo
-      QRectF bowserLogoTarget (364, 200, 284, 331);
-      QRectF bowserLogoSource (0, 0, 355, 414);
-      QPixmap bowserLogoPixmap ("bowserLogo.png");
+      QRectF finalStageTarget(0,0,1000,600);
+      QRectF finalStageSource (0.0, 0.0, 1000, 600);
+      QPixmap finalStagePixmap ("bowserScreen.png");
       QPainter (this);
-      painter.drawPixmap (bowserLogoTarget, bowserLogoPixmap,
-			  bowserLogoSource);
+      painter.drawPixmap (finalStageTarget, finalStagePixmap, finalStageSource);
 
-
-      painter.setBrush (QBrush ("#000000"));
-      painter.drawRect (180, 30, 660, 10);
-      painter.drawRect (180, 30, 10, 540);
-      painter.drawRect (840, 30, 10, 540);
-      painter.drawRect (180, 570, 670, 10);
     }
 
 }
@@ -1015,4 +987,10 @@ Draw::gameOver ()
   painter.setFont (myFont);
   painter.drawText (200, 350, 600, 600, Qt::AlignHCenter,
 		    "Press 'P' to play Again\n");
+
+QRectF overTarget(0,0,1000,600);
+	  QRectF overSource (0.0, 0.0, 1000, 600);
+	  QPixmap overPixmap ("gameOverScreen.png");
+	  QPainter (this);
+	  painter.drawPixmap (overTarget, overPixmap, overSource);
 }
