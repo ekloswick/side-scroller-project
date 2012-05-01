@@ -22,7 +22,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 using namespace std;
 
 // Open Window, set title and size.
-Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 3), badguy (1, 1, 1, 1, 1,
+Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1,
 					     1)
 {
   setWindowTitle (tr ("Super Side Scroller"));
@@ -164,7 +164,7 @@ Draw::keyPressEvent (QKeyEvent * event)
 	  level += 1;
 	  if (level == 1)
 	    {
-	      mario.setLives (3);
+	      mario.setLives (5);
 	    }
 
 	  if (level > 1)
@@ -927,7 +927,7 @@ Draw::stageComplete ()
       painter.setBrush (QBrush ("#ff0000"));
       painter.drawRect (0, 0, xWindowSize, yWindowSize);
       QFont myFont;
-      myFont.setPointSizeF (60.0);
+      myFont.setPointSizeF (50.0);
       painter.setFont (myFont);
       painter.setPen (QPen ("#000000"));
       //display the stage the user is on now
