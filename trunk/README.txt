@@ -40,50 +40,56 @@
                                                   
 ===============================================================================================================================
 
-
-                   .M.                             DMMMMMM.                     
-             MMM  MM=NM.M                       .MMMI777IMMMMM.                 
-             MI++M==MM~MM.                     DMMII777777777MMM.               
-             MIN7ZZM+:IZMDN                   .MMI7.  .N7777777MMM.             
-             M$?INM$M=M+M+M                   MM7..O.OZ..7$$$$777MM,            
-           ?MM=+====++M==+=MM              . .MMM.O.OOO..M$$$$$$$7MMM           
-  .M.   .ZM~=================MM  .M    .MMMMMMMMMMM...O..$$$$$$$$$$DMM          
-  .MMMMMM=========+============MMMM   MMM$$$$$$$$$$$$$ZMM$$$$$$$$$$$DMN         
-   8M+++++=======++=========+=====M   MMMMMMMMM$$$$$$$ZZZZZMD$$$$$$$$MM         
-    MM?+++++=====Z+=========+====OM    MMMMMMMMM~~MM$$ZZZZOOO8M$$$$$$$MM        
-   .MMM++++++++==+=+++====++M===MMM        $MMM~M~~~~:MM7$OOOOOOM$$$$$$MMMM     
-    M+????+++++++M=M?++++++O?+====M        ..MMMM?~~~~~M~~8MMMMMMM$$$$$M$$MM7   
-    +M????????+?M=:==M???+M:??+++M      .MMMMMMMM:~~~~MM~~~~~~~~M8MM$$$$$$ZMM.  
-     .MNII?MM?MM~:::M7::::M:MMDMM       MM~~~~~~~::~~~MM~~~~~~~NO88DMOMM$ZO$M   
-       M?+M~M==M~:::M::::$M:M=M        MM~=~~~~~~~~~~~MN~~~~~~MO888M~~==~MMMM   
-    . :M++M~$~+=~~::M:::::M:+=MN .     MM==~~~~~~~~~~~~~~MM~~M8888M~~~DO=+$M,   
-  .MMMM=++O7Z.M+=M~::::::::,Z+++M      MM~+=~~~~~~~~~~~MMDM=~~M8OM~~M~~~~=~MM   
-  .M=?????M?$$N=N~~~~~??:~:N8MMM        MM~+===~~~~MMMDDDDM+~~~~~~~~M~~~~=~MM   
-   MM8?????=MM+++MM,=~~~,M?I==M          MMMZ::?MMDDDDDDDMM+~~~~~~~~~M=~~~MM.   
-   DN+=???M,:::,M~:~MMMO,M::::MM          .MMMD888DDDDDDM+=~~~~~~~~~~~~~MMM.    
-    MM=??::::::::M:::=M$MM,,:::,M           MMDDDDDDMDDMM?====~~~MONMMMMM.      
-    MM??M~::::::::7::+7Z$M,M::~~M            MMMMMMM8++++++=~~MMMMMMMMN         
-    =MI?M:~:::::M:N~~M+=++:M:~~=M.                MMM7M$ZOZMM7MMMMM.            
-     M=IIM=~~~~MDM~~~~M++N,+M8~:M               .MM7M$$$ZMI7$NM$$$MM            
-     $MII?M+:~M~::M:,:::MM~::MM7               DMO7M$$$ON777MOM$$$OMM           
-      NMIIIII?IM=M..?$$$7M,..M.              MMMD7$NMMMZ7777DZD7$$ZZMM..        
-      ,M?IIIIM~:M,....D::M,..M.             MM==M7777MM=M777MZOMMM~.?MMM        
-   M88=IIIIM:~:::M.....MM,,.MMM           NMMM==M777M~===~87MZM.......: M       
-    MM+7IIM~~~:::::M,.....M.M:DM         .MN,M=M7777M+++?=M77MM........MM.      
-      MMM?~~~~:::::::M,...N ?::NM        MM..MZ77777OM?I=M77M ,..........M      
-       M~~~~~~~:::::::.:,,,M::::MM       MM...M77777777D777DM:.....M..M..MM     
-      M$~~7~~~~:~::::::MMNM::I:::M        MMMMM7777777777778M:O....M..M~.MM     
-     MM++==~~~~:M::::::::::::::::=M        MM..M777777$$$$$$MMMM.........MM     
-    .M+++N++======:::::::::::~N===M.       .MMMMMM7$$$$$$ZZZZM.O,,....,.MM      
-   .M~++D+++===M=======~=======~==OM         ,MMMMMMM77OOOOONMM..::,..MMM       
-   IM+++M++++==M=======~=======M==~M        IMNZZZOOOOMMMMMMZZZO8MMMMMM.        
-  .M=++I++++++~================M===M.       MM$ZZOOOO8M7$$$ZZOZZOOOMMM          
-  .M?++M++++++M================$===MM       MM$ZZOOOOM$$$ZZZZZZZZZO8ZM.         
-  MN?++$++++++M+===============~~==+M       MMNZZOOOOM$$ZZZZZZZZZZO8ZMM         
- .M~++?+++++++M=+===============~=~~M.       MMMMMMMMM$ZZZZZZZZZZZO8ZM          
-  .MMNM+++++++N+++===============~MMM        .MMM8:,?MMMZZZZZZZZZZZMMM.         
-     .,MMM8=+ND~=+++==========+MMM.              +DNI.M.~::::::::~~~M+          
-.         . . .NMMMMMMMMMMMMMM.                       :MMMMMMMMMMMMM?.                                               
+                                                     .,...,                     
+                                                   ...~I?.I.                    
+                 ............                      .~Z7Z=+??....                
+                 ..+O=OOOOO8..                     ++===~=+?+?I.                
+                 .Z~$Z..ZO88O8...                .=+==~:+??$7IIIO.              
+              . .O=??.$.ZO88888,..            ...++I?+?+7$ZO7777II+.            
+          ......+O:..,.ZOO888888=.            ..8II7DOZZO8Z$8OOOOZ..            
+           .+MMNNNMM8OOOOO8888888..           .+I$$ZZ??$O$78O$8OZ. .            
+          ..DNNNNMNMMNNNOO888D88DD..          ..ND8DI?$+~?IN=7$OO.              
+            .NNNMM$777MMMM8ODDDDDDD.             .DO$=7:,~:~+7Z7O.              
+            . .+ZZ~==$ZZ$MZNNDNDDDDI..           .$$??~~~:++I?~?Z...            
+             ...~+~~?.,+$ZZZZMNNNNDD,.            .,++I??77I$I8ZO7$?            
+          ..:~~~=+~~~?=M++I$ZDNNNNNDD.           .=IZOO8$I$ZOOOOZZO.            
+          ..====+I7I,$NI=?I7ODNNNMNDD.           ..$~=?O8~$$Z+~~=+$7.           
+          ..III7$Z$77~~+N=+?NNNDZOZI..           .=~~~=~.:+~=~~~=+?ZZ.          
+     ........8DD8O8N7DNMM+??IDD887+7,.           I===+=:O?+?===+7I7Z$.          
+   ,.  .::~..:MMMMMMMM$7?II7$8$O$=?$..           $D8Z?=+O$?7Z$$Z78OZ$.          
+. .  .=~~7? ..I+OD8OO7I7$ZZZZ$OZ+?Z..            .,.:.,$$ZDI:.I,,=$7Z.          
+ :..?=~=Z+.=...$IZ7I7ZO888OZZ8MN.. .             :..=OZZOOOO8?~,,~ZZZ.          
+,I7I~?O??~+?. ..O888OO8OZZOONMMM .               I$8+OZZ7$ZZZD8O7788,.          
+.IZO8???87I..IZZ$$Z8OOOZZZZOO7..                   .$O7~~~+I$OOOD8887.          
+ $ZOO$I+?87$Z$++?8OOO88OOOOOOZOO.... .           .:I?+?I~????II7O..:.,          
+..D88$7I7+ZZZ++?OOOOO8888OOZZOZOO8..             ,I???II~????I77$ZO...          
+  ?ODIOND$$$ZZZ8DOZZOOOOD888OZZZZZOO..        ..=7??I~~~~~I??II77$ZZ..          
+    .ZMNOZZZZZZOOZOOOO88DNND8OOZZ..,:~:.      ..7$$~~~~~~~~=I7I77$ZO+.          
+  ... ..ZZZZZZZZZZOZZZO88N..ND8Z,.....,,:     ..?=~~~~~~~~~~===ZZ$ZZO.          
+      .IZZZZZZZZZOOZZOOOO8...,N=: .   .,,:.   .I==~~~~~~~~=~====++I$$.          
+      .OOZZOZZZZZZOOOOO8OO8.  ,$,     ..,::~ .,+=~~=~~~~~~=====+++II7$..        
+      .OOOZZOOOOOOOOO88888D?.  =. .. .,,:,~:~.?+=~=~~~~~~~=====+++?II7..        
+      .8OOOOOOOO888888888DDD.  ~..~+...:+~?+7.+====~~~~~~~=====+++?7I7$.        
+       :8888888888DD88888OO8...I,~ZNO.:?II7$O,+==~=~~~~~~=====++++?III$.        
+      ..88DDDDDDDDDD88OOOOOO8  .778::,I$ZO87.?+====~~~~~~======++??III7$        
+      ..DDDDDNNNNNND8OOOOOOOO... O7:$OZDD,   +=====~~~~~======+++??I7I77..      
+      ..DDDDDDDDDNND8OOOOOOOO8.. ..    ...  ,+===+==~~~~===+==+++??IIII7$.      
+       .8DDDDDDNDDND8OOOOOOOO8,.          ..I+===+==~~~====+==+++???III7$.      
+        .DDDDDDDDDDO88OOOOOOO88Z .        ..?+======~~=====?==+++???I7II7+      
+        .DD8DDDDNDD.N8OOOOOOOOO8I.        .:?+======~~=====?==+++???I7II77      
+        ..8888DDDD8D.D8OOOOOOOOO8...       ?+===+==========?==+++???II7I77..    
+        ..DDDDDDD8DD7=DD8888OOOOO8..      ,?+===+===~=====+?=++++???II7II77.    
+        ..DNNNDDDD8DD.DDDD88OOOOO8Z.    ..7++===+=========+?=+++++???I7III$=    
+      ...8Z$ZZ8888888..DD8Z$ZZZZO88,.   ..?+==============+?=+++++???II7II77    
+    ..Z77$$ZOZOOO888D7.D8OZOOZOO8O88..  .?+=======~~~=====+?+==++++???I7III7+.  
+    .Z7II7$$ZZO8DD8DD..~O$$77$$$ZZ8D+.  .I+====+==~~~~=====?====++++??III?I77.  
+    +Z$7I$ZZOOOOO8OOO7..Z$7777$$$ZOO.. .?======+=~~~~~~====++====++++??II?IIOO  
+   .~8OOOO8888DDNNNNM..8Z$7I77$ZZZZO8...77==~~=+~~~~~~~~===+=====++++??I77Z$$$  
+    .NDDDDNNNNMMN888?..8OZ$$$$ZOOOOOO...7II7=~~=~~~~~~~~===+======++++?IZ$77$I  
+    .I$$$ZOO887... ....D88O88888DDDDD.  ,?????77?~~~~~~~~~=+======+=IZ$$$$7=    
+    .............      .MNNNNNNNNMMN~.  ..=++?I???II7777777777777777I7777...    
+                       .8Z$7$$$ZZO8D..    .....+++++?+?????II?????IIIII...      
+                         . .........          ....+???????,. ..::,....                                                        
 
 ===============================================================================================================================
 
