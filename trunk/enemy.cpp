@@ -1,7 +1,12 @@
 /*
-Final_Project
-Justin Bartlett, Jake Flynt, Eli Kloswick
- */
+CSE 20212
+Final Project: Super Mario Side Scroller 
+
+Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
+Copyright 2012. All rights reserved.
+
+"enemy.cpp"
+ */ 
 
 #include <iostream>
 #include <iomanip>
@@ -19,13 +24,10 @@ character (x, y, lives)
   movementSpeed = mSpeed;
   rangeStart = rstart;
   rangeFinish = rfinish;
-
   setXSize (70);
   setYSize (86);
-
-
-  character::leftFacing = 0;
-  character::rightFacing = 1;
+  leftFacing = 0;
+  rightFacing = 1;
 }
 
 void
@@ -69,8 +71,8 @@ enemy::update (int x, int y, int lives, int mSpeed, int rstart, int rfinish)
   rangeStart = rstart;
   rangeFinish = rfinish;
 
-  character::leftFacing = 0;
-  character::rightFacing = 0;
+  leftFacing = 0;
+  rightFacing = 0;
   setXPos (x);
   setYPos (y - (getYSize () / 2) + 8);	//allows it to program easily so that the goombas are on the board if the text file has same y value as board file
   setLives (lives);

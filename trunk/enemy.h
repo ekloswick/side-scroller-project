@@ -1,7 +1,12 @@
 /*
-Final_Project
-Justin Bartlett, Jake Flynt, Eli Kloswick
- */  
+CSE 20212
+Final Project: Super Mario Side Scroller 
+
+Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
+Copyright 2012. All rights reserved.
+
+"enemy.h"
+ */ 
   
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -14,9 +19,7 @@ Justin Bartlett, Jake Flynt, Eli Kloswick
 class enemy:public character 
 {
 public:enemy (int, int, int, int, int, int);
-  //enemy();
   void destroyEnemy ();
-
   void moveLeft ();		// function to move left
   void moveRight ();		// function to move right
   void update (int, int, int, int, int, int);
