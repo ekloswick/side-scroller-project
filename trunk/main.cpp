@@ -18,7 +18,8 @@ main (int argc, char *argv[])
 {
   QApplication app (argc, argv);
 
-  //app->setStyleSheet("background-image: ./back.png");
+	QSound song("theme.wav");
+	song.play();
 
   Draw p;
 
