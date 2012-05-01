@@ -238,9 +238,29 @@ Draw::keyReleaseEvent (QKeyEvent * event)
     case Qt::Key_Escape:
       exit (1);
       break;
-    }
+    case Qt::Key_H:
+	helpMenu();
+      break;
+}   
 }
 
+void Draw::helpMenu()
+{
+ ifstream helpFile;
+  string tempString;
+  helpFile.open("README.txt");
+
+  if (helpFile.is_open ())
+    {
+      while (!helpFile.eof())
+	{
+	  getline (helpFile, tempString);
+	  cout << tempString << endl;
+	  tempString.clear();
+	}
+    }
+	helpFile.close();
+}
 
 void
 Draw::xChange (unsigned int i)

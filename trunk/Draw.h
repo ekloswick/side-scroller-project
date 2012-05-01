@@ -49,6 +49,7 @@ protected:
   void drawMushroom();
   void mushroomCollect();
   void mushroomLoad();
+  void helpMenu();
 
 
 private:

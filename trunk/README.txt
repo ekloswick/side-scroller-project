@@ -159,16 +159,20 @@ face Bowser in a final battle to save the princess.
 	is the leader and most powerful of the Turtle-like Koopa race and is Mario's greedy archnemesis.  Bowser is stronger than other enemies, and 		will take multiple hits to destroy.
 
    D. Goombas...
-	look like shiitake, with bushy eyebrows and a pair of fangs sprouting from their lower jaw.  There are most often found walking about 		  aimlessly, only causing Mario harm.
+	look like shiitake, with bushy eyebrows and a pair of fangs sprouting from their lower jaw.  They are most often found walking about 		  aimlessly, only causing Mario harm.
 
 
 5. Controls
 ------------
+Menu:
+ENTER - move to next stage
+SPACEBAR - begin the game
+H - help (print README to terminal)
+
+In-game:
 A - move left
 D - move right
 W - jump
-ENTER - move to next stage
-SPACEBAR - begin the game
 L - skip a level (debug mode only)
 
 
