@@ -6,7 +6,7 @@ Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
 "mushroom.h"
- */ 
+*/ 
   
 #ifndef MUSHROOM_H
 #define MUSHROOM_H
