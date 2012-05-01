@@ -30,11 +30,16 @@ int rightFacing;
 //functions for tracking lives
 int getLives ();
 void setLives (int);
+
+int setMovementSpeed(int);
 int movementSpeed;
 int xPos;int yPos;int lives;			// number of lives remaining
 
+
 int getXSize ();int getYSize ();void setXSize (int);void setYSize (int);
 private:int xsize; int ysize;
+
+
 };
 
 
