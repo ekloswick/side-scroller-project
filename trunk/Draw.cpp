@@ -29,11 +29,12 @@ using namespace std;
 // Open Window, set title and size.
 Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1, 1, 1, 1, 1), lifeMushroom(2100,450)
 {
+  system("play sounds/itsaME.wav &");
   setWindowTitle (tr ("Super Mario Side Scroller"));
   xWindowSize = 1000;
   yWindowSize = 600;
   resize (xWindowSize, yWindowSize);
-  level = 0;			//the stage the player is one
+  level = 0;			//the stage the player is on
 //  loadBoard ();
   //loadEnemies ();
   startTimer (50);
@@ -59,28 +60,28 @@ void
 Draw::paintEvent (QPaintEvent *)
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
-if (cloudRandomize==1)
-{
-      clouds.clear();
-      cloud.clear ();
-  for (int i = 0; i < 15; i++)
-    {
-      cloud.push_back (20 + rand () % 1000);
-      cloud.push_back (20 + rand () % 150);
-      cloud.push_back (58);
-      cloud.push_back (36);
-      clouds.push_back (cloud);
-      cloud.clear ();
-    }
- cloudRandomize=0;
-}
+	if (cloudRandomize==1)
+	{
+		 clouds.clear();
+		 cloud.clear ();
+	  for (int i = 0; i < 15; i++)
+	    {
+		 cloud.push_back (20 + rand () % 1000);
+		 cloud.push_back (20 + rand () % 150);
+		 cloud.push_back (58);
+		 cloud.push_back (36);
+		 clouds.push_back (cloud);
+		 cloud.clear ();
+	    }
+	 cloudRandomize=0;
+	}
 
 
   if (level == levelMax)
-{
-  painter.setBrush (QBrush ("#ff0000"));
-painter.drawRect(0,0, xWindowSize, yWindowSize);
-}
+	{
+	  	painter.setBrush (QBrush ("#ff0000"));
+		painter.drawRect(0,0, xWindowSize, yWindowSize);
+	}
   if (level != levelMax)
     {
       for (unsigned int i = 0; i < clouds.size (); i++)
@@ -94,11 +95,10 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
 	}
     }
 
-  if (mario.getLives () > 0 && welcome != 0 && levelComplete != 1)
+  if (mario.getLives () > 0 && welcome != 0 && levelComplete < 1)
     {
       updateEnemy ();
       updatePhysics ();
-      //testCollision (); //this already occurs in updatePhysics?
     }
   //Welcome message that is displayed until the user hits the space bar
   if (welcome == 0)
@@ -110,7 +110,6 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
 	  QPainter (this);
 	  painter.drawPixmap (welcomeTarget, welcomePixmap, welcomeSource);
     }
-
   else if (mario.getLives () > 0 && levelComplete == 0)	//while the game is running
     {
       //display the stage info
@@ -125,22 +124,21 @@ painter.drawRect(0,0, xWindowSize, yWindowSize);
 //if mario beat the level with lives remaining display to the user and ask if they would like to play again
   else if (mario.getLives () > 0 && gameComplete == 1)
     {
-      system("play sounds/gameComplete.wav &");
       playerWon ();		//player won screen
     }
   else if (mario.getLives () > 0 && levelComplete == 1)
     {
-      system("play sounds/levelComplete.wav &");
       stageComplete ();		//stage complete screen
     }
   //mario has run out of lives and it is game over; ask the user if they would like to play again
   else if (mario.getLives () < 1 && welcome != 0)
     {
-      system("play sounds/gameOver.wav &");
       gameOver ();		//game over screen
+      system("play sounds/gameOver.wav &");
       playerLost = 1;
     }
-drawMushroom();
+    
+	drawMushroom();
 
 }
 
@@ -167,54 +165,57 @@ Draw::keyPressEvent (QKeyEvent * event)
       jumping = 1;
       break;
     case Qt::Key_Return:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
-      if (levelComplete || gameComplete || playerLost)
-	{
-	  if (playerLost)
-	    {
-	      level = 0;
-	      score = 0;
-	      mario.setLives (3);
-	      playerLost = 0;
-	    }
-	  level += 1;
-          mushroomLoad();
-	  if (level == 1)
-	    {
-	      mario.setLives (5);
-	    }
+     	system("killall play");
+		if (levelComplete  > 0 || gameComplete > 0 || playerLost)
+		{
+		  if (playerLost)
+		    {
+			 level = 0;
+			 score = 0;
+			 mario.setLives (3);
+			 playerLost = 0;
+		    }
+		  	level += 1;
+		     mushroomLoad();
+		  if (level == 1)
+		    {
+			 mario.setLives (3);
+		    }
 
-	  if (level > 1)
-	    {
-	      score += 100;
-	    }
-	  if (level > levelMax)
-	    {
-	      level = 1;
-	      score = 0;
-	      mario.setLives (3);
-	    }
-	  levelComplete = 0;
-	 cloudRandomize=1;
-	  gameComplete = 0;
-	  mario.setXPos (50);
-	  mario.setYPos (50);
-	  loadBoard ();
-	  loadEnemies ();
-	}
+		  if (level > 1)
+		    {
+			 score += 100;
+		    }
+		  if (level > levelMax)
+		    {
+			 level = 1;
+			 score = 0;
+			 mario.setLives (3);
+		    }
+		  levelComplete = 0;
+		 cloudRandomize=1;
+		  gameComplete = 0;
+		  mario.setXPos (50);
+		  mario.setYPos (50);
+		  loadBoard ();
+		  loadEnemies ();
+		}
       break;
     case Qt::Key_L:		//P pressed to play again; reloads the board and enemies, resets mario and his lives
       if (debug)
 	{
 	  levelComplete = 1;
-	  if (level == 3)
+	  if (level == levelMax)
 	    {
 	      gameComplete = 1;
 	    }
 	}
     case Qt::Key_Space:	//Spacebar pressed to begin the game
       welcome = 1;
+      system("killall play");
       break;
     case Qt::Key_Escape:
+   	 system("killall play");
       exit (1);
       break;
     }
@@ -236,6 +237,7 @@ Draw::keyReleaseEvent (QKeyEvent * event)
       jumping = 0;
       break;
     case Qt::Key_Escape:
+    	 system("killall play");
       exit (1);
       break;
     case Qt::Key_H:
@@ -265,8 +267,6 @@ void Draw::helpMenu()
 void
 Draw::xChange (unsigned int i)
 {
-
-
   //prevent from walking into the wall
   for (int z = 0; z < abs (mario.getXVel ()); z++)
     {
@@ -359,7 +359,7 @@ mushroomCollect();
 	      if (i == board.size () - 2)
 		{
 		  // cout << "Game Over";
-		  if (level == 3)
+		  if (level == levelMax)
 		    {
 		      gameComplete = 1;
 		      levelComplete = 1;
@@ -487,8 +487,8 @@ Draw::testCollision ()
 //tests if the mario is above the enemy and within an appropriate position to squash it
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
-      if ((mario.getXPos () < (enemies[z].getXPos () + 32))
-	  && (mario.getXPos () > (enemies[z].getXPos () - 32))
+      if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+	  && (mario.getXPos () > (enemies[z].getXPos () - 27))
 	  && (mario.getYPos () < (enemies[z].getYPos () - 18))
 	  && (mario.getYPos () > (enemies[z].getYPos () - 65))
 	  && (mario.getYVel () > 0))
@@ -499,8 +499,8 @@ Draw::testCollision ()
 	  score += 10;
 
 	}
-      else if ((mario.getXPos () < (enemies[z].getXPos () + 32))
-	       && (mario.getXPos () > (enemies[z].getXPos () - 32))
+      else if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+	       && (mario.getXPos () > (enemies[z].getXPos () - 27))
 	       && (mario.getYVel () == 0)
 	       && (mario.getYPos () > (enemies[z].getYPos () - 65)))
 	{
@@ -662,7 +662,7 @@ Draw::loadEnemies ()
 
 void
 Draw::displayStageInfo ()
-{
+{  
   QPainter painter (this);	// get a painter object to send drawing commands to
   //Set font
   QFont myFont;
@@ -868,22 +868,23 @@ QRectF boardTarget (board[i].getX (), board[i].getY (),
 void
 Draw::drawMushroom()
 {
-QPainter painter (this);	// get a painter object to send drawing commands to	  
-  QRectF mushroomTarget (lifeMushroom.getXPos (),
+	QPainter painter (this);	// get a painter object to send drawing commands to	  
+  	QRectF mushroomTarget (lifeMushroom.getXPos (),
 				      lifeMushroom.getYPos (),
 				      lifeMushroom.getXSize ()*2,
 				      lifeMushroom.getYSize ()*2);
 	    QRectF mushroomSource (0.0, 0.0, 16, 16);
 	    QPixmap mushroomPixmap ("1up.png");
 	    QPainter (this);
-painter.drawPixmap (mushroomTarget, mushroomPixmap, mushroomSource);
+	painter.drawPixmap (mushroomTarget, mushroomPixmap, mushroomSource);
 }
 
 void
 Draw::drawEnemies ()
 {
 	static int goombaTimer = 0;
-
+	static int bowserTimer = 0;
+	
   QPainter painter (this);	// get a painter object to send drawing commands to
   //loop through all enemies on the board to draw them based on their position
   // right-facing enemy
@@ -912,6 +913,52 @@ Draw::drawEnemies ()
 	    QRectF bowserSourceLeft (0.0, 0.0, 200, 202);
 	    QPixmap bowserPixmapLeft ("bowserLeft.png");
 	    QPainter (this);
+
+/*/ bowser animations
+if (enemies[z].rightFacing == 1)
+    {
+		if (enemies[z].getXVel() != 0)
+		{
+			if (bowswerTimer >= 0 && animationTimer < 2)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
+			else if (animationTimer >= 2 && animationTimer < 4)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightTwo, marioSourceRight);
+			else if (animationTimer >= 4 && animationTimer < 6)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
+			else if (animationTimer >= 6 && animationTimer < 8)
+				painter.drawPixmap (marioTargetRight, marioPixmapRightThree, marioSourceRight);
+			
+			if (animationTimer >= 7)
+				animationTimer = 0;
+			else
+				animationTimer++;
+		}
+		else
+			painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
+    }
+  if (enemies[z].leftFacing == 1)
+    {
+      if (enemies[z].getXVel() != 0)
+		{
+			if (animationTimer >= 0 && animationTimer < 2)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
+			else if (animationTimer >= 2 && animationTimer < 4)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftTwo, marioSourceLeft);
+			else if (animationTimer >= 4 && animationTimer < 6)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
+			else if (animationTimer >= 6 && animationTimer < 8)
+				painter.drawPixmap (marioTargetLeft, marioPixmapLeftThree, marioSourceLeft);
+			
+			if (animationTimer >= 7)
+				animationTimer = 0;
+			else
+				animationTimer++;
+		}
+		else
+			painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
+    }*/
+    
+    
 
 
 	    //if the enemy has more than 1 life draw them on the board
@@ -1003,23 +1050,7 @@ void
 Draw::playerWon ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
-  //set backround to black and font to white
-  painter.setBrush (QBrush ("#000000"));
-  painter.drawRect (0, 0, xWindowSize, yWindowSize);
-  painter.setPen (QPen ("#ffffff"));
-  QFont myFont;
-  myFont.setPointSizeF (60.0);
-  painter.setFont (myFont);
   //display text and score to the user
-  painter.drawText (200, 100, 600, 600, Qt::AlignHCenter, "YOU\nWIN\n");
-  myFont.setPointSizeF (40.0);
-  painter.setFont (myFont);
-  char displayScore[15];
-  int trash;
-  trash = sprintf (displayScore, "Score: %d", score);
-  painter.drawText (200, 300, 600, 600, Qt::AlignHCenter, displayScore);
-  painter.drawText (200, 450, 600, 600, Qt::AlignHCenter,
-		    "Press 'P' to play Again\n");
 QRectF winTarget(0,0,1000,600);
 	  QRectF winSource (0.0, 0.0, 1000, 600);
 	  QPixmap winPixmap ("winScreen.png");
@@ -1030,9 +1061,10 @@ QRectF winTarget(0,0,1000,600);
 void
 Draw::stageComplete ()
 {
+  //static int playstart = 1;
   QPainter painter (this);	// get a painter object to send drawing commands to
   //set backround to black and pen to red 
-
+  
   if (level < levelMax - 1)
     {
       painter.setBrush (QBrush ("#000000"));
@@ -1052,6 +1084,7 @@ Draw::stageComplete ()
 	  QPixmap stagePixmap ("stageScreen.png");
 	  QPainter (this);
 	  painter.drawPixmap (stageTarget, stagePixmap, stageSource);
+
     }
   else
     {
@@ -1067,7 +1100,7 @@ Draw::stageComplete ()
       QPixmap finalStagePixmap ("bowserScreen.png");
       QPainter (this);
       painter.drawPixmap (finalStageTarget, finalStagePixmap, finalStageSource);
-
+	 //system("play sounds/bowserStart.wav");	// replace with Bowser music
     }
 
 }
@@ -1102,8 +1135,9 @@ Draw::mushroomCollect()
 {
 	if ((mario.getXPos() >= lifeMushroom.getXPos()-20) && (mario.getXPos() <= lifeMushroom.getXPos()+20) && (mario.getYPos() >= lifeMushroom.getYPos()-20) && (mario.getYPos() <= lifeMushroom.getYPos()+20))
 		{
-		mario.setLives(mario.getLives()+1);
-		lifeMushroom.update(-5000,-5000);
+			mario.setLives(mario.getLives()+1);
+			system("play sounds/oneUp.wav &");
+			lifeMushroom.update(-5000,-5000);
 		}
 }
 
