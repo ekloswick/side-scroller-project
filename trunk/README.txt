@@ -118,12 +118,12 @@ The game was programmed in C++, using QT Creator, and is stored on Google Code a
 
 In the game's directory, upon compiling, there are N files:
 
-   4 .h file(s)
-   5 .cpp file(s)
+   6 .h file(s)
+   8 .cpp file(s)
    5 .o file(s)
-   17 .png file(s)
-   0 .wav file(s)
-   1 .txt file(s)
+   28 .png file(s)
+   11 .wav file(s)
+   9 .txt file(s)
    1 .pro file(s)
    1 Executable file(s)
 
