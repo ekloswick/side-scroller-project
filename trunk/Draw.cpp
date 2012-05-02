@@ -1123,7 +1123,6 @@ Draw::drawEnemies ()
 			else
 				bowserTimer++;
 		  
-		  	cout << bowserTimer << endl;
 	      }
 	  }
 	}
@@ -1199,11 +1198,22 @@ Draw::playerWon ()
 {
   QPainter painter (this);	// get a painter object to send drawing commands to
   //display text and score to the user
-QRectF winTarget(0,0,1000,600);
-	  QRectF winSource (0.0, 0.0, 1000, 600);
-	  QPixmap winPixmap ("winScreen.png");
-	  QPainter (this);
-	  painter.drawPixmap (winTarget, winPixmap, winSource);
+  QRectF winTarget(0,0,1000,600);
+  QRectF winSource (0.0, 0.0, 1000, 600);
+  QPixmap winPixmap ("winScreen.png");
+  QPainter (this);
+  painter.drawPixmap (winTarget, winPixmap, winSource);
+
+  painter.setPen (QPen ("#ffff00"));
+  QFont myFont;
+
+  myFont.setPointSizeF (25.0);
+  painter.setFont (myFont);
+  char displayScore[15];
+  int trash;
+  trash = sprintf (displayScore, "Score: %d", score);
+  painter.drawText (200, 540, 600, 600, Qt::AlignHCenter, displayScore);
+
 }
 
 void
