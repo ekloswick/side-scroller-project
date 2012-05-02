@@ -46,6 +46,7 @@ protected:
   void stageComplete ();
   void gameOver ();
   void xChange (unsigned int);
+  void xChangeOverAir (unsigned int);
   void drawMushroom();
   void mushroomCollect();
   void mushroomLoad();

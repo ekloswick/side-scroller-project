@@ -120,6 +120,8 @@ Draw::paintEvent (QPaintEvent *)
       drawStage ();
       //Draw the enemies
       drawEnemies ();
+      //Draw mushroom
+drawMushroom();
     }
 //if mario beat the level with lives remaining display to the user and ask if they would like to play again
   else if (mario.getLives () > 0 && gameComplete == 1)
@@ -136,10 +138,10 @@ Draw::paintEvent (QPaintEvent *)
       gameOver ();		//game over screen
       system("play sounds/gameOver.wav &");
       playerLost = 1;
+
     }
     
-	drawMushroom();
-
+	
 }
 
 // performs actions based on key presses
@@ -304,6 +306,50 @@ Draw::xChange (unsigned int i)
     }
 }
 
+void
+Draw::xChangeOverAir (unsigned int i)
+{
+ //test to determine which board the player is on (between the beginning and the width of the board
+      if (mario.getXPos () >= (board[i].getX ()+board[i].getWidth())
+	  && mario.getXPos () <= board[i+1].getX ())
+	{
+  for (int z = 0; z < abs (mario.getXVel ()); z++)
+    { 
+if (mario.getXVel () > 0)
+	{
+	  mario.setXPos (mario.getXPos () + 1);
+	  if ((board[i + 1].getX () - mario.getXPos ()) <
+	      (mario.getXSize () * marioScalingFactor)
+	      && (mario.getYPos () +
+		  mario.getYSize () * marioScalingFactor) >
+	      board[i + 1].getY ())
+	    {
+	      mario.setXPos (board[i + 1].getX () -
+			     mario.getXSize () * marioScalingFactor);
+	      //   cout << "TEST 1:  wall.." << endl;
+	      break;
+
+	    }
+	}
+else if (mario.getXVel () < 0)
+	{
+	  mario.setXPos (mario.getXPos () - 1);
+	  if (mario.getXPos () -
+	      (board[i].getX () + board[i].getWidth ()) < 1
+	      && (mario.getYPos () + mario.getYSize () * marioScalingFactor) >
+	      board[i].getY ())
+	    {
+	      mario.setXPos (board[i].getX () + board[i].getWidth () +
+			     1);
+	      //  cout << "TEST 2: hitting wall.." << endl;
+	      break;
+	    }
+
+	}
+}
+	}
+}
+
 // upates the locations/velocities of the objects onscreen
 void
 Draw::updatePhysics ()
@@ -384,7 +430,11 @@ mushroomCollect();
     }
   if (test == 0)
     {
-      mario.setXPos (mario.getXPos () + mario.getXVel ());
+
+  for (unsigned int i = 0; i < board.size ()-1; i++)
+    {
+     xChangeOverAir(i);
+   }
     }
 
 // test if mario has fallen off the board
