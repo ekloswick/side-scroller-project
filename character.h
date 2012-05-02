@@ -24,20 +24,25 @@ Character is used as a base class from which hero and enemy derive. It mainly de
 public:
 	character (int, int, int);
 	//functions for the position	int getXPos ();  	int getYPos ();	void setXPos (int); 	void setYPos (int);
-	//function for moving
 	//functions for tracking lives
 	int getLives ();
 	void setLives (int);
+	//functions for movement
 	void setMovementSpeed(int);
-	int leftFacing;
-	int rightFacing;
+	int getMovementSpeed(void);
+	//functions for the size
 	int getXSize ();	int getYSize ();	void setXSize (int);	void setYSize (int);
-int getMovementSpeed(void);
-
-
+	//functions for the direction moving
+	int getRightFacing(void);
+	int getLeftFacing(void);
+	void setRightFacing(int);
+	void setLeftFacing(int);
 private:	int xsize; 	int ysize;	int lives;			// number of lives remaining
 	int xPos;	int yPos;
 	int movementSpeed;
+	//direction facing
+	int leftFacing;
+	int rightFacing;
 
 
 };

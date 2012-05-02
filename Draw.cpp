@@ -155,14 +155,14 @@ Draw::keyPressEvent (QKeyEvent * event)
     case Qt::Key_A:		//A pressed to move the character to the left
       movingLeft = 1;
       movingRight = 0;
-      mario.leftFacing = 1;
-      mario.rightFacing = 0;
+      mario.setLeftFacing (1);
+      mario.setRightFacing (0);
       break;
     case Qt::Key_D:		//D pressed to move the character to the right
       movingRight = 1;
       movingLeft = 0;
-      mario.leftFacing = 0;
-      mario.rightFacing = 1;
+      mario.setLeftFacing (0);
+      mario.setRightFacing (1);
       break;
     case Qt::Key_W:		//W pressed to jump
       jumping = 1;
@@ -488,20 +488,20 @@ Draw::updateEnemy ()
 //loop through all of the enemies
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
-      if (enemies[z].leftFacing == 0 && enemies[z].rightFacing == 0)
+      if (enemies[z].getLeftFacing() == 0 && enemies[z].getRightFacing() == 0)
 	{
-	  enemies[z].rightFacing = 1;
-	  enemies[z].leftFacing = 0;
+	  enemies[z].setRightFacing(1);
+	  enemies[z].setLeftFacing(0);
 	}
       if (enemies[z].getXPos () == enemies[z].getRangeFinish ())
 	{
-	  enemies[z].leftFacing = 1;
-	  enemies[z].rightFacing = 0;
+	  enemies[z].setLeftFacing(1);
+	  enemies[z].setRightFacing(0);
 	}
       if (enemies[z].getXPos () == enemies[z].getRangeStart ())
 	{
-	  enemies[z].rightFacing = 1;
-	  enemies[z].leftFacing = 0;
+	  enemies[z].setRightFacing(1);
+	  enemies[z].setLeftFacing(0);
 	}
 //additional testing for the movement of the board checking if ememies have escaped range
       if (enemies[z].getXPos () > (enemies[z].getRangeFinish ()))
@@ -514,11 +514,11 @@ Draw::updateEnemy ()
 	  enemies[z].setXPos (enemies[z].getRangeStart () + 1);
 	}
 //move the enemy the appropriate direction
-      if (enemies[z].rightFacing == 1)
+      if (enemies[z].getRightFacing() == 1)
 	{
 	  enemies[z].moveRight ();
 	}
-      if (enemies[z].leftFacing == 1)
+      if (enemies[z].getLeftFacing() == 1)
 	{
 	  enemies[z].moveLeft ();
 	}
@@ -855,7 +855,7 @@ Draw::drawMario ()
   QPainter (this);
 
   // update mario sprite state based on what direction he is moving
-  if (mario.rightFacing == 1)
+  if (mario.getRightFacing() == 1)
     {
 		if (mario.getXVel() != 0)
 		{
@@ -876,7 +876,7 @@ Draw::drawMario ()
 		else
 			painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
     }
-  if (mario.leftFacing == 1)
+  if (mario.getLeftFacing() == 1)
     {
       if (mario.getXVel() != 0)
 		{
@@ -1157,13 +1157,13 @@ Draw::drawEnemies ()
 	  if (enemies[z].getLives () > 0)
 	    {
 	      // update enemy sprite state based on what direction they are moving
-	      if (enemies[z].rightFacing == 1)
+	      if (enemies[z].getRightFacing() == 1)
 		{
 		  painter.drawPixmap (enemyTargetRight, enemyPixmapRight,
 				      enemySourceRight);
 		}
 
-	      if (enemies[z].leftFacing == 1)
+	      if (enemies[z].getLeftFacing() == 1)
 		{
 		  painter.drawPixmap (enemyTargetLeft, enemyPixmapLeft,
 				      enemySourceLeft);

@@ -22,7 +22,7 @@ This class is used to create the object MARIO!
 //constructorhero::hero (int x, int y, int lives):
 character (x, y, lives) 
 {	setXVel (0);	setYVel (getGravity ());	gravity = 25;
-	rightFacing = 1; 	setXSize (15); 	setYSize (27);	setMovementSpeed (16);} void
+	setRightFacing (1); 	setXSize (15); 	setYSize (27);	setMovementSpeed (16);} void
 hero::moveLeft ()		// function to move left
 {	xVel -= getMovementSpeed();}
 void
