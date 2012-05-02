@@ -24,7 +24,7 @@ using namespace std;
 enemy::enemy (int x, int y, int lives, int mSpeed, int rstart, int rfinish):
 character (x, y, lives)
 {
-  movementSpeed = mSpeed;
+  setMovementSpeed(mSpeed);
   rangeStart = rstart;
   rangeFinish = rfinish;
   setXSize (70);
@@ -37,24 +37,24 @@ character (x, y, lives)
 void
 enemy::destroyEnemy ()
 {
-  xPos = -5000;
-  yPos = -5000;
+  setXPos(-5000);
+  setYPos(-5000);
   rangeStart = -5000;
   rangeFinish = -5000;
-  movementSpeed = 0;
+  setMovementSpeed (0);
 }
 
 //motion functions
 void
 enemy::moveLeft ()
 {
-  setXPos (getXPos () - movementSpeed);
+  setXPos (getXPos () - getMovementSpeed());
 }
 
 void
 enemy::moveRight ()
 {
-  setXPos (getXPos () + movementSpeed);
+  setXPos (getXPos () + getMovementSpeed());
 }
 
 //range tracking
@@ -74,7 +74,7 @@ enemy::getRangeFinish (void)
 void
 enemy::update (int x, int y, int lives, int mSpeed, int rstart, int rfinish)
 {
-  movementSpeed = mSpeed;
+  setMovementSpeed (mSpeed);
   rangeStart = rstart;
   rangeFinish = rfinish;
 
