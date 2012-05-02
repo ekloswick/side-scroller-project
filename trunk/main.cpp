@@ -10,18 +10,16 @@ Copyright 2012. All rights reserved.
 Runs the program
  */
 
-
 #include <QApplication>
 #include <QPrinter>
 #include <QtGui>
 #include "Draw.h"
 
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
-  QApplication app (argc, argv);
-  Draw p;
-  p.show ();
+	QApplication app (argc, argv);
+	Draw p;
+	p.show (); // makes the widget
 
-  return app.exec ();
+	return app.exec ();
 }

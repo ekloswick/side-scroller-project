@@ -20,22 +20,25 @@ This class is used to make 1UP mushroom objects
   using namespace std;
 class mushroom
 {
-public:	mushroom (int, int);
-	//set functions
-	void setXPos(int);
-	void setYPos(int);
-	//get functions	
-	int getXPos(void);
-	int getYPos(void);
-	int getXSize(void);
-	int getYSize(void);
-	void update(int, int);		//updates x and y position	
-	void moveWithPlatform (int);    //scrolls the mushroom w/ marios movement
-private:
-	int xPos;
-	int yPos;
-	int xSize;
-	int ySize;
+	public:		mushroom (int, int);
+		
+		//set functions
+		void setXPos(int);
+		void setYPos(int);
+		
+		//get functions	
+		int getXPos(void);
+		int getYPos(void);
+		int getXSize(void);
+		int getYSize(void);
+		void update(int, int);		//updates x and y position	
+		void moveWithPlatform (int);  //scrolls the mushroom w/ marios movement
+	private:
+		int xPos;
+		int yPos;
+		int xSize;
+		int ySize;
 };
 
 #endif
+
