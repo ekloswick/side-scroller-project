@@ -84,6 +84,8 @@ private:
   int playerLost;		//user lost
   int debug;			//set to 1 for debug mode; otherwise 0
 int cloudRandomize;
+
+	int bowserTimer;
 };
 
 #endif
