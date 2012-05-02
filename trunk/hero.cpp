@@ -6,7 +6,10 @@ Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
 "hero.cpp"
-*/   
+
+hero class inherits from base class character
+This class is used to create the object MARIO!
+*/  
   
 #include <iostream>
 #include <iomanip>
@@ -16,25 +19,31 @@ Copyright 2012. All rights reserved.
 #include <QPrinter>
 #include <QtGui>
   using namespace std;
-hero::hero (int x, int y, int lives):
+//constructorhero::hero (int x, int y, int lives):
 character (x, y, lives) 
-{ setXVel (0);setYVel (getGravity ()); gravity = 25; 
-rightFacing = 1; setXSize (15);setYSize (27);movementSpeed = 16;} void
+{	setXVel (0);	setYVel (getGravity ());	gravity = 25;
+	rightFacing = 1; 	setXSize (15); 	setYSize (27);	movementSpeed = 16;} void
 hero::moveLeft ()		// function to move left
-{  xVel -= movementSpeed;} void
+{	xVel -= movementSpeed;}
+void
 hero::moveRight ()		// function to move right
-{ xVel += movementSpeed;} void
-hero::jump () 
-{ yVel = -70;} int
+{ 	xVel += movementSpeed;} void
+hero::jump ()      		// function to jump 
+{	yVel = -70;} 
+//return the velocites
+int
 hero::getXVel () 
-{ return xVel;}int
+{	return xVel;}int
 hero::getYVel () 
-{  return yVel;}void
+{ 	return yVel;}
+//set the position
+void
 hero::setXVel (int n) 
-{ xVel = n;} void
+{  	xVel = n;} void
 hero::setYVel (int n) 
-{yVel = n;} int
+{	yVel = n;} 
+int
 hero::getGravity () 
-{ return gravity;}
+{	return gravity;}
 
-
+

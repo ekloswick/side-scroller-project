@@ -6,6 +6,8 @@ Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
 "platform.cpp"
+
+These platforms are used in an array to create the board
 */  
   
 #include <iostream>
@@ -16,66 +18,39 @@ Copyright 2012. All rights reserved.
 #include <QPrinter>
 #include <QtGui>
   using namespace std;
-platform::platform (int X, int Y, int W, int H) 
-{
-  xPos = X;
-  yPos = Y;
-  width = W;
-  height = H;
-} void
-
+platform::platform (int X, int Y, int W, int H) 
+{ 	xPos = X;  	yPos = Y;	width = W; 	height = H;} void
 platform::setX (int n) 
-{
-  xPos = n;
-} void
-
+{ 	xPos = n;} void
 platform::setY (int n) 
-{
-  yPos = n;
-}
+{	yPos = n;}
 
 void
 platform::setWidth (int n)
 {
-  width = n;
+	width = n;
 }
 
 void
 platform::setHeight (int n)
 {
-  height = n;
+	height = n;
 } int
-
 platform::getX () 
-{
-  return xPos;
-}
+{	return xPos;}
 
-int
+int
 platform::getY () 
-{
-  return yPos;
-}
-
+{	return yPos;}
 int
 platform::getHeight () 
-{
-  return height;
-}
+{	return height;}
 
-int
+int
 platform::getWidth () 
-{
-  return width;
-}
-
-void
+{ 	return width;}
+void
 platform::moveLeft (int movementSpeed)	// function to move left
-{
-  xPos -= movementSpeed;
-} void
-
+{	xPos -= movementSpeed;} void
 platform::moveRight (int movementSpeed)	// function to move right
-{
-  xPos += movementSpeed;
-} 
+{xPos += movementSpeed;} 
