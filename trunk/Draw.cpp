@@ -985,31 +985,31 @@ Draw::drawEnemies ()
       if ((level == levelMax) && (z == (enemies.size () - 1)))
 	{
 	  {
-	    QRectF bowserTargetOne (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetOne (enemies[z].getXPos (), enemies[z].getYPos ()+27 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceOne (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapOne ("bowser1.png");
 	    QPainter (this);
-	    QRectF bowserTargetTwo (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetTwo (enemies[z].getXPos (), enemies[z].getYPos ()+19 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceTwo (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapTwo ("bowser2.png");
 	    QPainter (this);
-	    QRectF bowserTargetThree (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetThree (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceThree (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapThree ("bowser3.png");
 	    QPainter (this);
-	    QRectF bowserTargetFour (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetFour (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceFour (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapFour ("bowser4.png");
 	    QPainter (this);
-	    QRectF bowserTargetFive (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetFive (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceFive (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapFive ("bowser5.png");
 	    QPainter (this);
-	    QRectF bowserTargetSix (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetSix (enemies[z].getXPos (), enemies[z].getYPos ()+48 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceSix (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapSix ("bowser6.png");
 	    QPainter (this);
-	    QRectF bowserTargetSeven (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetSeven (enemies[z].getXPos (), enemies[z].getYPos ()+48 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceSeven (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapSeven ("bowser7.png");
 	    QPainter (this);
