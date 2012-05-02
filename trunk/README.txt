@@ -140,7 +140,7 @@ To compile, type the following commands, one by one, in order:
    qmake-qt4
    make
 
-The first three commands synthesize the necessary files for a QT executable application, including the Makefile.  The 'make' command compiles the application, as with any C++ program.
+The first three commands synthesize the necessary files for a QT executable application, including the Makefile.  The 'make' command compiles the application, as with any C++ program. When compiling there will be warnings; these can be safely ignored as they are just from playing audio
 
 Typing ./side-scroller-project will run the application in a QT Window.
 
