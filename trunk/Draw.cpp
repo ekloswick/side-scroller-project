@@ -461,7 +461,7 @@ mushroomCollect();
 	{
 	  enemies[j].moveWithPlatform (mario.getXVel ());
 	}
-lifeMushroom.moveWithPlatform(mario.getXVel());
+		lifeMushroom.moveWithPlatform(mario.getXVel());
     }
 
   // prevent mario from going of the left side of the screen
@@ -550,6 +550,7 @@ Draw::testCollision ()
 			  	if ((bowserTimer > 0 && bowserTimer < 44) || (bowserTimer > 56 && bowserTimer < 66))
 			  	{
 					  enemies[z].setLives (enemies[z].getLives () - 1);
+					  bowserTimer = 130;
 					  mario.jump ();
 					  system("play sounds/stomp.wav &");
 					  score += 10;
@@ -985,31 +986,31 @@ Draw::drawEnemies ()
 	{
 	  {
 	    QRectF bowserTargetOne (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceOne (0.0, 0.0, 63, 80);
+	    QRectF bowserSourceOne (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapOne ("bowser1.png");
 	    QPainter (this);
 	    QRectF bowserTargetTwo (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceTwo (0.0, 0.0, 63, 88);
+	    QRectF bowserSourceTwo (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapTwo ("bowser2.png");
 	    QPainter (this);
 	    QRectF bowserTargetThree (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceThree (0.0, 0.0, 63, 96);
+	    QRectF bowserSourceThree (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapThree ("bowser3.png");
 	    QPainter (this);
 	    QRectF bowserTargetFour (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceFour (0.0, 0.0, 63, 96);
+	    QRectF bowserSourceFour (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapFour ("bowser4.png");
 	    QPainter (this);
 	    QRectF bowserTargetFive (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceFive (0.0, 0.0, 63, 96);
+	    QRectF bowserSourceFive (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapFive ("bowser5.png");
 	    QPainter (this);
 	    QRectF bowserTargetSix (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceSix (0.0, 0.0, 63, 64);
+	    QRectF bowserSourceSix (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapSix ("bowser6.png");
 	    QPainter (this);
 	    QRectF bowserTargetSeven (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
-	    QRectF bowserSourceSeven (0.0, 0.0, 63, 64);
+	    QRectF bowserSourceSeven (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapSeven ("bowser7.png");
 	    QPainter (this);
 	    QRectF bowserTargetEight (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
@@ -1023,8 +1024,14 @@ Draw::drawEnemies ()
 	    
 		// bowser animations
 	    //if the enemy has more than 1 life draw them on the board
-	    if (enemies[z].getLives () != 0)
+	    if (enemies[z].getLives () > 0)
 	      {
+	      	if (enemies[z].getLives() <= 0)
+			{
+				bowserTimer = 130;
+				enemies[z].setLives(0);
+			}
+	      
 		// update enemy sprite state based on what direction they are moving
 			// idle out
 			if (bowserTimer >= 0 && bowserTimer < 2)
