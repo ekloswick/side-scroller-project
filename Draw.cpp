@@ -541,7 +541,7 @@ Draw::testCollision ()
     		// bowser stomping
     		if (z == enemies.size() - 1 && level == levelMax)
     		{
-			 if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+			 if ((mario.getXPos () < (enemies[z].getXPos () + 101))
 			  && (mario.getXPos () > (enemies[z].getXPos () - 27))
 			  && (mario.getYPos () < (enemies[z].getYPos () - 18))
 			  && (mario.getYPos () > (enemies[z].getYPos () - 65))
@@ -552,8 +552,9 @@ Draw::testCollision ()
 					  enemies[z].setLives (enemies[z].getLives () - 1);
 					  bowserTimer = 130;
 					  mario.jump ();
-					  system("play sounds/stomp.wav &");
-					  score += 10;
+					  system("play sounds/stun.wav &");
+					  if (enemies[z].getLives() == 0)
+					  	score += 1000;
 				}
 				else
 				{
