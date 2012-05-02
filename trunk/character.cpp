@@ -89,4 +89,23 @@ int character::getMovementSpeed(void)
 	return movementSpeed;
 }
 
+int character::getRightFacing(void)
+{
+	return rightFacing;
+}
+
+int character::getLeftFacing(void)
+{
+	return leftFacing;
+}
+
+void character::setRightFacing(int n)
+{
+	rightFacing=n;
+}
+
+void character::setLeftFacing(int n)
+{
+	leftFacing=n;
+}
 

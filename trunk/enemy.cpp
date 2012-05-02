@@ -29,8 +29,8 @@ character (x, y, lives)
   rangeFinish = rfinish;
   setXSize (70);
   setYSize (86);
-  leftFacing = 0;
-  rightFacing = 1;
+  setLeftFacing (0);
+  setRightFacing (1);
 }
 
 //this function is called once the enemy has been killed in order to move it off of the board
@@ -78,8 +78,8 @@ enemy::update (int x, int y, int lives, int mSpeed, int rstart, int rfinish)
   rangeStart = rstart;
   rangeFinish = rfinish;
 
-  leftFacing = 0;
-  rightFacing = 0;
+  setLeftFacing (0);
+  setRightFacing (0);
   setXPos (x);
   setYPos (y - (getYSize () / 2) + 8);	//allows it to program easily so that the goombas are on the board if the text file has same y value as board file
   setLives (lives);
