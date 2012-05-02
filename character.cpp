@@ -6,6 +6,8 @@ Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
 "character.cpp"
+
+Character is used as a base class from which hero and enemy derive. It mainly deals with positions, lives and movement  
 */ 
 
 #include <iostream>
@@ -20,62 +22,62 @@ using namespace std;
 
 character::character (int x, int y, int lives)
 {
-  setXPos (x);
-  setYPos (y);
-  setLives (lives);
-  rightFacing = 1;
+	setXPos (x);
+	setYPos (y);
+	setLives (lives);
+	rightFacing = 1;
 }
 
 int
 character::getXPos ()
 {
-  return xPos;
+	return xPos;
 }
 
 int
 character::getYPos ()
 {
-  return yPos;
+	return yPos;
 }
 
 void
 character::setXPos (int n)
 {
-  xPos = n;
+	xPos = n;
 }
 
 void
 character::setYPos (int n)
 {
-  yPos = n;
+	yPos = n;
 }
 
 
 void
 character::setLives (int L)
 {
-  lives = L;
+	lives = L;
 }
 
 int
 character::getLives ()
 {
-  return lives;
+	return lives;
 }
 
 int
 character::getXSize () 
-{  return xsize;}
+{  	return xsize;}
 
 int
 character::getYSize () 
-{return ysize;}
+{	return ysize;}
 
 void
 character::setXSize (int n) 
-{xsize = n;} void
+{	xsize = n;} void
 character::setYSize (int n) 
-{ ysize = n;}
+{ 	ysize = n;}
 
 void character::setMovementSpeed(int speed)
 {

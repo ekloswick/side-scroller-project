@@ -6,6 +6,8 @@ Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
 "main.cpp"
+
+Runs the program
  */
 
 
@@ -18,12 +20,7 @@ int
 main (int argc, char *argv[])
 {
   QApplication app (argc, argv);
-
-	QSound song("theme.wav");
-	song.play();
-
   Draw p;
-
   p.show ();
 
   return app.exec ();
