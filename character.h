@@ -32,9 +32,12 @@ public:
 	int leftFacing;
 	int rightFacing;
 	int getXSize ();	int getYSize ();	void setXSize (int);	void setYSize (int);
+int getMovementSpeed(void);
+
+
+private:	int xsize; 	int ysize;	int lives;			// number of lives remaining
 	int xPos;	int yPos;
 	int movementSpeed;
-private:	int xsize; 	int ysize;	int lives;			// number of lives remaining
 
 
 };

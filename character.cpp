@@ -84,4 +84,9 @@ void character::setMovementSpeed(int speed)
 	movementSpeed = speed;
 }
 
+int character::getMovementSpeed(void)
+{
+	return movementSpeed;
+}
+
 
