@@ -18,14 +18,18 @@ These platforms are used in an array to create the board
 #include <stdlib.h>
   using namespace std;
 class platform 
-{public:	platform (int, int, int, int);  //constructor	//set functions	
-	void setX (int); 			void setY (int);
-	void setWidth (int);
-	void setHeight (int); 	//get functions
-	int getX ();	int getY ();	int getHeight ();	int getWidth ();
-	//move the board left and right	void moveLeft (int);		// function to move left
-	void moveRight (int);		// function to move right
-private:	int xPos; 	int yPos; 	int width; 	int height;
-};
+{	public:
+		// constructor		platform (int, int, int, int);
+				//set functions	
+		void setX (int); 				void setY (int);
+		void setWidth (int);
+		void setHeight (int); 
+				//get functions
+		int getX ();		int getY ();		int getHeight ();		int getWidth ();
+		
+		//move the board left and right		void moveLeft (int);
+		void moveRight (int);
+	private:		int xPos; 		int yPos; 		int width; 		int height;};
 
 #endif
+

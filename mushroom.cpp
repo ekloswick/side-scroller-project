@@ -29,7 +29,6 @@ mushroom::mushroom (int x, int y)	//constructor
 }
 
 //set functions
-
 void mushroom::setXPos(int x)
 {
 	xPos=x;
@@ -62,15 +61,13 @@ int mushroom::getYSize(void)
 	return ySize;
 }
 
-void 
-mushroom::update(int x, int y)		//updates x and y position
+void mushroom::update(int x, int y)		//updates x and y position
 {
 	xPos=x;
 	yPos=y;
 }
 
-void
-mushroom::moveWithPlatform (int speed)	//scrolls the mushroom w/ marios movement
+void mushroom::moveWithPlatform (int speed)	//scrolls the mushroom w/ marios movement
 {
 	setXPos (getXPos () - speed);
 }

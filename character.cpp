@@ -14,7 +14,6 @@ Character is used as a base class from which hero and enemy derive. It mainly de
 #include <iomanip>
 #include <stdlib.h>
 #include <character.h>
-
 #include <QPrinter>
 #include <QtGui>
 
@@ -28,55 +27,41 @@ character::character (int x, int y, int lives)
 	rightFacing = 1;
 }
 
-int
-character::getXPos ()
+int character::getXPos ()
 {
 	return xPos;
 }
 
-int
-character::getYPos ()
+int character::getYPos ()
 {
 	return yPos;
 }
 
-void
-character::setXPos (int n)
+void character::setXPos (int n)
 {
 	xPos = n;
 }
 
-void
-character::setYPos (int n)
+void character::setYPos (int n)
 {
 	yPos = n;
 }
 
-
-void
-character::setLives (int L)
+void character::setLives (int L)
 {
 	lives = L;
 }
 
-int
-character::getLives ()
+int character::getLives ()
 {
 	return lives;
 }
 
-int
-character::getXSize () 
+int character::getXSize () 
 {  	return xsize;}
-
-int
-character::getYSize () 
-{	return ysize;}
-
-void
-character::setXSize (int n) 
-{	xsize = n;} void
-character::setYSize (int n) 
+int character::getYSize () 
+{	return ysize;}void character::setXSize (int n) 
+{	xsize = n;} void character::setYSize (int n) 
 { 	ysize = n;}
 
 void character::setMovementSpeed(int speed)
