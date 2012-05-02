@@ -53,7 +53,7 @@ Draw::Draw (QWidget * parent) : QWidget (parent), mario (50, 50, 5), badguy (1, 
 	srand(time(NULL));
 
 	//**DEBUG MODE**
-	debug = 0;
+	debug = 1;
 }
 
 // This method is called when the widget needs to be redrawn
@@ -505,6 +505,12 @@ void Draw::testCollision ()
 					  enemies[z].setLives (enemies[z].getLives () - 1);
 					  bowserTimer = 130;
 					  mario.jump ();
+					  
+					  if (mario.getXPos() < enemies[z].getXPos() + 32)
+					  	mario.setXVel(-150);
+					  else
+						mario.setXVel(150);
+					  
 					  system("play sounds/stun.wav &");
 					  
 					  if (enemies[z].getLives() == 0)
