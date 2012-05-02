@@ -49,6 +49,7 @@ Draw::Draw (QWidget * parent):QWidget (parent), mario (50, 50, 5), badguy (1, 1,
   debug = 1;
   setStyleSheet ("background-color: #4c6cdc");
   cloudRandomize=1;
+  bowserTimer = 0;
 srand(time(NULL));
 
 
@@ -537,28 +538,65 @@ Draw::testCollision ()
 //tests if the mario is above the enemy and within an appropriate position to squash it
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
-      if ((mario.getXPos () < (enemies[z].getXPos () + 27))
-	  && (mario.getXPos () > (enemies[z].getXPos () - 27))
-	  && (mario.getYPos () < (enemies[z].getYPos () - 18))
-	  && (mario.getYPos () > (enemies[z].getYPos () - 65))
-	  && (mario.getYVel () > 0))
-	{
-	  enemies[z].setLives (enemies[z].getLives () - 2);
-	  mario.jump ();
-	  system("play sounds/stomp.wav &");
-	  score += 10;
-
-	}
-      else if ((mario.getXPos () < (enemies[z].getXPos () + 27))
-	       && (mario.getXPos () > (enemies[z].getXPos () - 27))
-	       && (mario.getYVel () == 0)
-	       && (mario.getYPos () > (enemies[z].getYPos () - 65)))
-	{
-	  mario.setLives (mario.getLives () - 1);
-	  system("play sounds/death.wav");
-	  mario.setXPos (50);
-	  mario.setYPos (50);
-	}
+    		// bowser stomping
+    		if (z == enemies.size() - 1 && level == levelMax)
+    		{
+			 if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+			  && (mario.getXPos () > (enemies[z].getXPos () - 27))
+			  && (mario.getYPos () < (enemies[z].getYPos () - 18))
+			  && (mario.getYPos () > (enemies[z].getYPos () - 65))
+			  && (mario.getYVel () > 0))
+			  {
+			  	if ((bowserTimer > 0 && bowserTimer < 44) || (bowserTimer > 56 && bowserTimer < 66))
+			  	{
+					  enemies[z].setLives (enemies[z].getLives () - 1);
+					  mario.jump ();
+					  system("play sounds/stomp.wav &");
+					  score += 10;
+				}
+				else
+				{
+					mario.jump();
+					system("play sounds/thud.wav &");
+				}
+			  }
+			 else if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+				  && (mario.getXPos () > (enemies[z].getXPos () - 27))
+				  && (mario.getYVel () == 0)
+				  && (mario.getYPos () > (enemies[z].getYPos () - 65)))
+			  {
+				  mario.setLives (mario.getLives () - 1);
+				  system("play sounds/death.wav");
+				  mario.setXPos (50);
+				  mario.setYPos (50);
+			  }
+		}
+		// goomba stomping
+		else
+		{
+			if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+			  && (mario.getXPos () > (enemies[z].getXPos () - 27))
+			  && (mario.getYPos () < (enemies[z].getYPos () - 18))
+			  && (mario.getYPos () > (enemies[z].getYPos () - 65))
+			  && (mario.getYVel () > 0))
+			  {
+				  enemies[z].setLives (enemies[z].getLives () - 2);
+				  mario.jump ();
+				  system("play sounds/stomp.wav &");
+				  score += 10;
+			  }
+			 else if ((mario.getXPos () < (enemies[z].getXPos () + 27))
+				  && (mario.getXPos () > (enemies[z].getXPos () - 27))
+				  && (mario.getYVel () == 0)
+				  && (mario.getYPos () > (enemies[z].getYPos () - 65)))
+			  {
+				  mario.setLives (mario.getLives () - 1);
+				  system("play sounds/death.wav");
+				  mario.setXPos (50);
+				  mario.setYPos (50);
+			  }
+		}
+	
 	 if (enemies[z].getLives () == 0)
 	    {
 	      enemies[z].destroyEnemy ();
@@ -933,7 +971,7 @@ void
 Draw::drawEnemies ()
 {
 	static int goombaTimer = 0;
-	static int bowserTimer = 0;
+	static int levitationSpace = 10;
 	
   QPainter painter (this);	// get a painter object to send drawing commands to
   //loop through all enemies on the board to draw them based on their position
@@ -942,90 +980,135 @@ Draw::drawEnemies ()
 
   for (unsigned int z = 0; z < enemies.size (); z++)
     {
-
+		// BOWSER
       if ((level == levelMax) && (z == (enemies.size () - 1)))
 	{
 	  {
-	    // right-facing enemy
-	    QRectF bowserTargetRight (enemies[z].getXPos (),
-				      enemies[z].getYPos (),
-				      badguy.getXSize () * 1.5,
-				      badguy.getYSize () * 1.5);
-	    QRectF bowserSourceRight (0.0, 0.0, 200, 202);
-	    QPixmap bowserPixmapRight ("bowserRight.png");
+	    QRectF bowserTargetOne (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceOne (0.0, 0.0, 63, 80);
+	    QPixmap bowserPixmapOne ("bowser1.png");
 	    QPainter (this);
-
-	    // left-facing enemy
-	    QRectF bowserTargetLeft (enemies[z].getXPos (),
-				     enemies[z].getYPos (),
-				     badguy.getXSize () * 1.5,
-				     badguy.getYSize () * 1.5);
-	    QRectF bowserSourceLeft (0.0, 0.0, 200, 202);
-	    QPixmap bowserPixmapLeft ("bowserLeft.png");
+	    QRectF bowserTargetTwo (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceTwo (0.0, 0.0, 63, 88);
+	    QPixmap bowserPixmapTwo ("bowser2.png");
 	    QPainter (this);
-
-/*/ bowser animations
-if (enemies[z].rightFacing == 1)
-    {
-		if (enemies[z].getXVel() != 0)
-		{
-			if (bowswerTimer >= 0 && animationTimer < 2)
-				painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
-			else if (animationTimer >= 2 && animationTimer < 4)
-				painter.drawPixmap (marioTargetRight, marioPixmapRightTwo, marioSourceRight);
-			else if (animationTimer >= 4 && animationTimer < 6)
-				painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
-			else if (animationTimer >= 6 && animationTimer < 8)
-				painter.drawPixmap (marioTargetRight, marioPixmapRightThree, marioSourceRight);
-			
-			if (animationTimer >= 7)
-				animationTimer = 0;
-			else
-				animationTimer++;
-		}
-		else
-			painter.drawPixmap (marioTargetRight, marioPixmapRightOne, marioSourceRight);
-    }
-  if (enemies[z].leftFacing == 1)
-    {
-      if (enemies[z].getXVel() != 0)
-		{
-			if (animationTimer >= 0 && animationTimer < 2)
-				painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
-			else if (animationTimer >= 2 && animationTimer < 4)
-				painter.drawPixmap (marioTargetLeft, marioPixmapLeftTwo, marioSourceLeft);
-			else if (animationTimer >= 4 && animationTimer < 6)
-				painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
-			else if (animationTimer >= 6 && animationTimer < 8)
-				painter.drawPixmap (marioTargetLeft, marioPixmapLeftThree, marioSourceLeft);
-			
-			if (animationTimer >= 7)
-				animationTimer = 0;
-			else
-				animationTimer++;
-		}
-		else
-			painter.drawPixmap (marioTargetLeft, marioPixmapLeftOne, marioSourceLeft);
-    }*/
-    
-    
-
-
+	    QRectF bowserTargetThree (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceThree (0.0, 0.0, 63, 96);
+	    QPixmap bowserPixmapThree ("bowser3.png");
+	    QPainter (this);
+	    QRectF bowserTargetFour (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceFour (0.0, 0.0, 63, 96);
+	    QPixmap bowserPixmapFour ("bowser4.png");
+	    QPainter (this);
+	    QRectF bowserTargetFive (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceFive (0.0, 0.0, 63, 96);
+	    QPixmap bowserPixmapFive ("bowser5.png");
+	    QPainter (this);
+	    QRectF bowserTargetSix (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceSix (0.0, 0.0, 63, 64);
+	    QPixmap bowserPixmapSix ("bowser6.png");
+	    QPainter (this);
+	    QRectF bowserTargetSeven (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceSeven (0.0, 0.0, 63, 64);
+	    QPixmap bowserPixmapSeven ("bowser7.png");
+	    QPainter (this);
+	    QRectF bowserTargetEight (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceEight (0.0, 0.0, 63, 105);
+	    QPixmap bowserPixmapEight ("bowser8.png");
+	    QPainter (this);
+	    QRectF bowserTargetNine (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserSourceNine (0.0, 0.0, 63, 105);
+	    QPixmap bowserPixmapNine ("bowser9.png");
+	    QPainter (this);
+	    
+		// bowser animations
 	    //if the enemy has more than 1 life draw them on the board
 	    if (enemies[z].getLives () != 0)
 	      {
 		// update enemy sprite state based on what direction they are moving
-		if (enemies[z].rightFacing == 1)
-		  {
-		    painter.drawPixmap (bowserTargetRight, bowserPixmapRight,
-					bowserSourceRight);
-		  }
-
-		if (enemies[z].leftFacing == 1)
-		  {
-		    painter.drawPixmap (bowserTargetLeft, bowserPixmapLeft,
-					bowserSourceLeft);
-		  }
+			// idle out
+			if (bowserTimer >= 0 && bowserTimer < 2)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 2 && bowserTimer < 4)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 4 && bowserTimer < 6)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 6 && bowserTimer < 8)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 8 && bowserTimer < 10)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 10 && bowserTimer < 12)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 12 && bowserTimer < 14)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 14 && bowserTimer < 16)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 16 && bowserTimer < 18)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 18 && bowserTimer < 20)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 20 && bowserTimer < 22)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 22 && bowserTimer < 24)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 24 && bowserTimer < 26)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 26 && bowserTimer < 28)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 28 && bowserTimer < 30)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 30 && bowserTimer < 32)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			else if (bowserTimer >= 32 && bowserTimer < 34)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 34 && bowserTimer < 36)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
+			// moving in
+			else if (bowserTimer >= 36 && bowserTimer < 38)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 38 && bowserTimer < 40)
+				painter.drawPixmap (bowserTargetThree, bowserPixmapThree, bowserSourceThree);
+			else if (bowserTimer >= 40 && bowserTimer < 42)
+				painter.drawPixmap (bowserTargetTwo, bowserPixmapTwo, bowserSourceTwo);
+			else if (bowserTimer >= 42 && bowserTimer < 44)
+				painter.drawPixmap (bowserTargetOne, bowserPixmapOne, bowserSourceOne);
+			// idle in
+			else if (bowserTimer >= 44 && bowserTimer < 46)
+				painter.drawPixmap (bowserTargetSix, bowserPixmapSix, bowserSourceSix);
+			else if (bowserTimer >= 46 && bowserTimer < 48)
+				painter.drawPixmap (bowserTargetSeven, bowserPixmapSeven, bowserSourceSeven);
+			else if (bowserTimer >= 48 && bowserTimer < 50)
+				painter.drawPixmap (bowserTargetSix, bowserPixmapSix, bowserSourceSix);
+			else if (bowserTimer >= 50 && bowserTimer < 52)
+				painter.drawPixmap (bowserTargetSeven, bowserPixmapSeven, bowserSourceSeven);
+			else if (bowserTimer >= 52 && bowserTimer < 54)
+				painter.drawPixmap (bowserTargetSix, bowserPixmapSix, bowserSourceSix);
+			else if (bowserTimer >= 54 && bowserTimer < 56)
+				painter.drawPixmap (bowserTargetSeven, bowserPixmapSeven, bowserSourceSeven);
+			// moving out
+			else if (bowserTimer >= 56 && bowserTimer < 58)
+				painter.drawPixmap (bowserTargetOne, bowserPixmapOne, bowserSourceOne);
+			else if (bowserTimer >= 58 && bowserTimer < 60)
+				painter.drawPixmap (bowserTargetTwo, bowserPixmapTwo, bowserSourceTwo);
+			else if (bowserTimer >= 62 && bowserTimer < 64)
+				painter.drawPixmap (bowserTargetThree, bowserPixmapThree, bowserSourceThree);
+			else if (bowserTimer >= 64 && bowserTimer < 66)
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			// hurt animations
+			else if (bowserTimer >= 130 && bowserTimer < 132)
+				painter.drawPixmap (bowserTargetEight, bowserPixmapEight, bowserSourceEight);
+			else if (bowserTimer >= 132 && bowserTimer < 134)
+				painter.drawPixmap (bowserTargetNine, bowserPixmapNine, bowserSourceNine);
+			else if (bowserTimer >= 134 && bowserTimer < 136)
+				painter.drawPixmap (bowserTargetEight, bowserPixmapEight, bowserSourceEight);
+			else if (bowserTimer >= 136 && bowserTimer < 138)
+				painter.drawPixmap (bowserTargetNine, bowserPixmapNine, bowserSourceNine);
+		
+			if (bowserTimer == 65 || bowserTimer == 137)
+				bowserTimer = 0;
+			else
+				bowserTimer++;
+		  
 	      }
 	  }
 	}
