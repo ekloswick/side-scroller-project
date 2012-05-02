@@ -5,7 +5,10 @@ Final Project: Super Mario Side Scroller
 Created by Jake Flynt, Justin Bartlett, Eli Kloswick.
 Copyright 2012. All rights reserved.
 
-enemy.cpp
+"enemy.cpp"
+
+Enemy class inherits from the base class character
+This is used to create GOOMBA objects
  */ 
 
 #include <iostream>
@@ -17,7 +20,7 @@ enemy.cpp
 #include <QtGui>
 
 using namespace std;
-
+//constructor
 enemy::enemy (int x, int y, int lives, int mSpeed, int rstart, int rfinish):
 character (x, y, lives)
 {
@@ -30,6 +33,7 @@ character (x, y, lives)
   rightFacing = 1;
 }
 
+//this function is called once the enemy has been killed in order to move it off of the board
 void
 enemy::destroyEnemy ()
 {
@@ -40,6 +44,7 @@ enemy::destroyEnemy ()
   movementSpeed = 0;
 }
 
+//motion functions
 void
 enemy::moveLeft ()
 {
@@ -52,6 +57,7 @@ enemy::moveRight ()
   setXPos (getXPos () + movementSpeed);
 }
 
+//range tracking
 int
 enemy::getRangeStart (void)
 {
@@ -64,6 +70,7 @@ enemy::getRangeFinish (void)
   return rangeFinish;
 }
 
+//updates the goomba to allow the information of it to be read in from a text file
 void
 enemy::update (int x, int y, int lives, int mSpeed, int rstart, int rfinish)
 {
@@ -78,6 +85,7 @@ enemy::update (int x, int y, int lives, int mSpeed, int rstart, int rfinish)
   setLives (lives);
 }
 
+//updates the values of the goombas to allow it to scroll along with the platform as mario moves
 void
 enemy::moveWithPlatform (int speed)
 {
