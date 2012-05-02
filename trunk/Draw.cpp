@@ -972,7 +972,8 @@ void
 Draw::drawEnemies ()
 {
 	static int goombaTimer = 0;
-	static int levitationSpace = 10;
+	int levitationSpace = 10;
+	double bowserScalingFactor = 1.5;
 	
   QPainter painter (this);	// get a painter object to send drawing commands to
   //loop through all enemies on the board to draw them based on their position
@@ -985,39 +986,39 @@ Draw::drawEnemies ()
       if ((level == levelMax) && (z == (enemies.size () - 1)))
 	{
 	  {
-	    QRectF bowserTargetOne (enemies[z].getXPos (), enemies[z].getYPos ()+27 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetOne (enemies[z].getXPos (), enemies[z].getYPos ()+27 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceOne (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapOne ("bowser1.png");
 	    QPainter (this);
-	    QRectF bowserTargetTwo (enemies[z].getXPos (), enemies[z].getYPos ()+19 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetTwo (enemies[z].getXPos (), enemies[z].getYPos ()+19 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceTwo (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapTwo ("bowser2.png");
 	    QPainter (this);
-	    QRectF bowserTargetThree (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetThree (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceThree (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapThree ("bowser3.png");
 	    QPainter (this);
-	    QRectF bowserTargetFour (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetFour (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceFour (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapFour ("bowser4.png");
 	    QPainter (this);
-	    QRectF bowserTargetFive (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetFive (enemies[z].getXPos (), enemies[z].getYPos ()+9 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceFive (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapFive ("bowser5.png");
 	    QPainter (this);
-	    QRectF bowserTargetSix (enemies[z].getXPos (), enemies[z].getYPos ()+48 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetSix (enemies[z].getXPos (), enemies[z].getYPos ()+48 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceSix (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapSix ("bowser6.png");
 	    QPainter (this);
-	    QRectF bowserTargetSeven (enemies[z].getXPos (), enemies[z].getYPos ()+48 - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetSeven (enemies[z].getXPos (), enemies[z].getYPos ()+48 - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceSeven (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapSeven ("bowser7.png");
 	    QPainter (this);
-	    QRectF bowserTargetEight (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetEight (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceEight (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapEight ("bowser8.png");
 	    QPainter (this);
-	    QRectF bowserTargetNine (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * 1.5, badguy.getYSize () * 1.5);
+	    QRectF bowserTargetNine (enemies[z].getXPos (), enemies[z].getYPos () - levitationSpace, badguy.getXSize () * bowserScalingFactor, badguy.getYSize () * 1.5);
 	    QRectF bowserSourceNine (0.0, 0.0, 63, 105);
 	    QPixmap bowserPixmapNine ("bowser9.png");
 	    QPainter (this);
@@ -1026,13 +1027,7 @@ Draw::drawEnemies ()
 	    //if the enemy has more than 1 life draw them on the board
 	    if (enemies[z].getLives () > 0)
 	      {
-	      	if (enemies[z].getLives() <= 0)
-			{
-				bowserTimer = 130;
-				enemies[z].setLives(0);
-			}
-	      
-		// update enemy sprite state based on what direction they are moving
+			// update enemy sprite state based on what direction they are moving
 			// idle out
 			if (bowserTimer >= 0 && bowserTimer < 2)
 				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
@@ -1101,6 +1096,8 @@ Draw::drawEnemies ()
 				painter.drawPixmap (bowserTargetThree, bowserPixmapThree, bowserSourceThree);
 			else if (bowserTimer >= 64 && bowserTimer < 66)
 				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
+			else if (bowserTimer >= 66 && bowserTimer < 68)
+				painter.drawPixmap (bowserTargetFive, bowserPixmapFive, bowserSourceFive);
 			// hurt animations
 			else if (bowserTimer >= 130 && bowserTimer < 132)
 				painter.drawPixmap (bowserTargetEight, bowserPixmapEight, bowserSourceEight);
@@ -1110,12 +1107,23 @@ Draw::drawEnemies ()
 				painter.drawPixmap (bowserTargetEight, bowserPixmapEight, bowserSourceEight);
 			else if (bowserTimer >= 136 && bowserTimer < 138)
 				painter.drawPixmap (bowserTargetNine, bowserPixmapNine, bowserSourceNine);
+			else if (bowserTimer >= 138 && bowserTimer < 140)
+				painter.drawPixmap (bowserTargetEight, bowserPixmapEight, bowserSourceEight);
+			else if (bowserTimer >= 140 && bowserTimer < 142)
+				painter.drawPixmap (bowserTargetNine, bowserPixmapNine, bowserSourceNine);
+			else if (bowserTimer >= 142 && bowserTimer < 144)
+				painter.drawPixmap (bowserTargetEight, bowserPixmapEight, bowserSourceEight);
+			else if (bowserTimer >= 144 && bowserTimer < 146)
+				painter.drawPixmap (bowserTargetNine, bowserPixmapNine, bowserSourceNine);
+			else
+				painter.drawPixmap (bowserTargetFour, bowserPixmapFour, bowserSourceFour);
 		
-			if (bowserTimer == 65 || bowserTimer == 137)
+			if ((bowserTimer >= 67 && bowserTimer < 129) || bowserTimer >= 145)
 				bowserTimer = 0;
 			else
 				bowserTimer++;
 		  
+		  	cout << bowserTimer << endl;
 	      }
 	  }
 	}
